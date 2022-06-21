@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Line Chart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="mainChartStyle">
+                    <canvas id="line1" width="500" height="300"></canvas>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mainChartStyle">
+                    <canvas id="bar" width="500" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="mainChartStyle">
+                    <canvas id="line2" width="500" height="300"></canvas>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mainChartStyle">
+                    <canvas id="pie" width="500" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        let pieOptions = {
+            tooltips: {
+                enabled: false
+            },
+            plugins: {
+                datalabels: {
+                    formatter: (value, ctx) => {
+
+                        let sum = 0;
+                        let dataArr = ctx.chart.data.datasets[0].data;
+                        dataArr.map(data => {
+                            sum += data;
+                        });
+                        let percentage = (value * 100 / sum).toFixed(2) + "%";
+                        return percentage;
+
+
+                    },
+                    color: '#fff',
+                }
+            }
+        };
+
+        let pieData = [{
+            label: '1',
+            data: [2, 1, 9, 15, 12, 13],
+            backgroundColor: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            borderWidth: 1
+        }]
+
+        let lineOptions = {
+            // 這行能讓滑鼠移過去任一個點 都會顯示資訊
+            // interaction: {   
+            //     mode: 'index',
+            //     intersect: false,
+            // },
+            
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: false
+        }
+        let lineData = [{
+            label: '1',
+            data: [2, 1, 9, 15, 12, 13],
+            backgroundColor: ['Red'],
+            borderWidth: 1
+        }]
+
+
+        genChart('line1', 'line', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
+        genChart('bar', 'bar', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
+        genChart('line2', 'line', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
+        genChart('pie', 'pie', ['dsad', 'zcx', 'qwc', 'zxc', 'Purpasle', 'Oranasasge'], pieData, pieOptions)
+        
+        async function genChart(chartId, type, chartTimeLabel, chartData, options) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            const realtimeChart = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: chartTimeLabel,
+                    datasets: chartData,
+                },
+                tooltips: {
+                    mode: 'index'
+                },
+                options: options
+            });
+        }
+
+    </script>
+</body>
+
+</html>

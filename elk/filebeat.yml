@@ -1,0 +1,29 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  backoff: "1s"             # 一秒掃一次
+  tail_files: false         # 預設是false 會從log最後一行開始記錄
+  paths:
+    - /var/log/nginx/access.log
+  exclude_files: ['\.gz$']
+  fields:                   # 這邊設的變數可以從logstash的output中取得 [fields][log_topics]
+    log_topics: log_nginx_access
+  fields_under_root: true   # 這邊設置true output那邊就不用加[fields]
+- type: log
+  enabled: true
+  backoff: "1s"
+  tail_files: false
+  paths:
+    - /var/log/nginx/access-1.log
+  exclude_files: ['\.gz$']
+  fields:
+    log_topics: log_nginx_access1
+  fields_under_root: true
+
+output.logstash:
+  hosts: ["localhost:5044"]
+
+
+
+# 當機的話 資訊會存在 var/lib/filebeat/registry
+# 檔案太大的話 clean_inactive clean_removed

@@ -1,0 +1,23 @@
+apiVersion: apps/v1 # for kubectl versions >= 1.9.0 use apps/v1
+kind: Deployment
+metadata:
+  name: hello-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-deployment
+  template:
+    metadata:
+      labels:
+        app: my-deployment
+    spec:
+      containers:
+      - name: my-pod
+        image: zxcvbnius/docker-demo:latest
+        ports:
+        - containerPort: 3000
+        resources: #container的資源設定
+          requests:
+            cpu: 100m
+        

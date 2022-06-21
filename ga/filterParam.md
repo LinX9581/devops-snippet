@@ -1,0 +1,2 @@
+ga:pagePath=@
+ga:hostname=@

@@ -1,0 +1,4 @@
+/usr/java/jdk1.8.0_221/jre/bin/java -Djava.util.logging.config.file=/etc/tomcat/apache-tomcat-8.5.50/conf/logging.properties -Djava.util.logging.mana
+ger=org.apache.juli.ClassLoaderLogManager -server -Xms10240m -Xmx10240m -Duser.timezone=Asia/Taipei -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catali
+na.security.SecurityListener.UMASK=0027 -Duser.timezone=Asia/Taipei -Dignore.endorsed.dirs= -classpath /etc/tomcat/apache-tomcat-8.5.50/bin/bootstrap.jar:/etc/tomcat/apache-tomcat-8.5.50/bin/tomcat-juli.jar -Dcatali
+na.base=/etc/tomcat/apache-tomcat-8.5.50 -Dcatalina.home=/etc/tomcat/apache-tomcat-8.5.50 -Djava.io.tmpdir=/etc/tomcat/apache-tomcat-8.5.50/temp org.apache.catalina.startup.Bootstrap start

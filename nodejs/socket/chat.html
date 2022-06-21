@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Socket.IO chat</title>
+</head>
+
+<body>
+  socket-client
+  <script type="module">
+    import {io} from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+    const socket = io('ws://127.0.0.1:4000');
+
+    async function client_disconnect(){
+      console.log('client disconnect');
+      socket.close();
+    }
+    setTimeout(client_disconnect, 5000);
+
+    // 監聽 Server Event
+    socket.on('earthquake event', function (msg) {
+      let date = new Date();
+      console.log(date);
+      console.log(msg);
+    })
+
+    // 壓測 funciton
+    // let clientCount = 0;
+    // const MAX_CLIENTS = 1000;
+    // const createClient = () => {
+    //   setInterval(() => {
+    //     socket.emit("client to server event", 'zcxzczxczxc');
+    //   }, 1000);
+    //   console.log(clientCount);
+    //   if (++clientCount < MAX_CLIENTS) {
+    //     setTimeout(createClient, 1000);
+    //   }
+    // };
+    // createClient();
+  </script>
+</body>
+
+</html>

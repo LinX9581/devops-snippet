@@ -1,0 +1,51 @@
+{
+    "insertId": "jpqdmte63ydi",
+    "logName": "projects/tactile-zephyr-336102/logs/cloudaudit.googleapis.com%2Fdata_access",
+    "protoPayload": {
+        "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
+        "authenticationInfo": {
+            "principalEmail": "linx9581@gmail.com"
+        },
+        "authorizationInfo": [
+            {
+                "granted": true,
+                "permission": "compute.globalOperations.get",
+                "resourceAttributes": {
+                    "name": "projects/tactile-zephyr-336102/global/operations/operation-1642472106777-5d5d1d67a5ab3-eb887a2f-285cdf71",
+                    "service": "compute",
+                    "type": "compute.globalOperations"
+                }
+            }
+        ],
+        "methodName": "v1.compute.globalOperations.get",
+        "request": {
+            "@type": "type.googleapis.com/compute.globalOperations.get"
+        },
+        "requestMetadata": {
+            "callerIp": "61.216.80.98",
+            "destinationAttributes": {},
+            "requestAttributes": {
+                "auth": {},
+                "time": "2022-01-18T02:15:15.882948Z"
+            }
+        },
+        "resourceLocation": {
+            "currentLocations": [
+                "global"
+            ]
+        },
+        "resourceName": "projects/tactile-zephyr-336102/global/operations/operation-1642472106777-5d5d1d67a5ab3-eb887a2f-285cdf71",
+        "serviceName": "compute.googleapis.com"
+    },
+    "receiveTimestamp": "2022-01-18T02:15:16.242209848Z",
+    "resource": {
+        "labels": {
+            "location": "global",
+            "operation_name": "operation-1642472106777-5d5d1d67a5ab3-eb887a2f-285cdf71",
+            "project_id": "tactile-zephyr-336102"
+        },
+        "type": "gce_operation"
+    },
+    "severity": "INFO",
+    "timestamp": "2022-01-18T02:15:15.755163Z"
+}

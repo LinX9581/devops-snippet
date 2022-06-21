@@ -1,0 +1,13 @@
+version: '3'                      # 目前使用的版本
+services:                         # services 固定字
+  web:                            # 可以隨機命名，識別用
+    image: nginx:1.12.1           # image 容器 + 版本號
+    container_name: nginx-servie  # 容器名稱
+    restart: always               # 當機器重新啟動時，服務會自動啟動
+    ports:                        # 容器外與容器內的Port
+      - 8081:80
+    volumes:                      # 將容器外檔案掛載至容器內,如果容器內相同路徑已經存在相同檔案，則會覆蓋內容
+      - /var/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - /var/nginx/index.html:/var/html/index.html
+
+      

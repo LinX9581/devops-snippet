@@ -1,0 +1,37 @@
+kind: pipeline
+type: docker
+name: default
+steps:
+- name: deploy
+  image: appleboy/drone-ssh
+  pull: true  # always pull the latest version of the `drone-ssh` plugin 
+  settings:       
+    host: 
+      - 10.140.0.6
+      - 10.140.0.7
+    username: lin-drone
+    key:
+      from_secret: Lonely-Kill-History-Bury-7
+    target: /root/.ssh/id_rsa
+    script:
+      - cd /opt/tomcat/webapps/test
+      - git fetch --all
+      - git reset --hard origin/main
+      - git pull origin main
+      - sudo /opt/shutdown.sh
+      - sudo /opt/startup.sh
+trigger:     # 觸發 pipeline 條件，分支為 master，且進行 push 行為
+  branch: 
+  - main
+  event:
+  - push
+  # slack:
+  #   image: plugins/slack
+  #   webhook: https://hooks.slack.com/services/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
+  #   channel: drone
+  #   template: > 
+  #     {{#success build.status}}
+  #       build {{build.number}} succeeded. Good job.
+  #     {{else}}
+  #       build {{build.number}} failed. Fix me please.
+  #     {{/success}}

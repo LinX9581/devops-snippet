@@ -1,0 +1,30 @@
+pipeline:
+  build:
+    image: node:8.11.3-alpine
+    commands:
+      - npm install
+      - npm test
+  ssh-deploy:
+    image: appleboy/drone-ssh
+    pull: true  # always pull the latest version of the `drone-ssh` plugin        
+    host: 
+      - 10.140.0.19
+      # - 10.140.0.14
+    username: lin-drone
+    key:
+      from_secret: Inward-Jump-Mechanism-Destructive-7
+    target: /root/.ssh/id_rsa
+    script:
+      - sudo sh /opt/startup.sh  # or whereever you put your `deploy.sh`       
+    when:
+      event: [push, tag, deployment]
+  # slack:
+  #   image: plugins/slack
+  #   webhook: https://hooks.slack.com/services/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
+  #   channel: drone
+  #   template: > 
+  #     {{#success build.status}}
+  #       build {{build.number}} succeeded. Good job.
+  #     {{else}}
+  #       build {{build.number}} failed. Fix me please.
+  #     {{/success}}

@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-helloworld
+  labels:
+    app: helloworld
+spec:
+  containers:
+  - name: k8s-demo
+    image: 105552010/k8s-demo
+    ports:
+    - name: nodejs-port
+      containerPort: 3000
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 15
+      timeoutSeconds: 30
+
+
+
+# initialDelaySeconds：容器啟動後第一次執行探測是需要等待多少秒，這邊是15秒。
+
+# timeoutSeconds：探測超時時間默認30秒，最小1秒。

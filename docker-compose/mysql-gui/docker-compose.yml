@@ -1,0 +1,10 @@
+version: '2'
+services:
+  db:
+     image: mysql
+     environment:
+        MYSQL_ROOT_PASSWORD: 123456
+  admin:
+     image: adminer
+     ports:
+       - 8088:8080

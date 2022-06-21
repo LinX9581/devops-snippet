@@ -1,0 +1,1 @@
+docker run -d -p 3005:3000 grafana/grafana -e TZ=Asia/Taipei
