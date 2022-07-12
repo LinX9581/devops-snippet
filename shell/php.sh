@@ -1,16 +1,16 @@
 
 #! /bin/bash
-# 預設系統是 ubuntu & php8.0
-# 如果是debian要指定OS
-# export os=debian
-# 7.4 8.0 都裝
-# export php=all
+# 預設系統是 ubuntu & php7.4
+export os=ubuntu	# debian or ubuntu
+export php=7.4		# 8.0 or all
+
 sudo apt update
 sudo apt upgrade -y
 sudo apt install ca-certificates apt-transport-https -y 
 sudo apt upgrade -y
 sudo timedatectl set-timezone Asia/Taipei
 sudo apt install wget net-tools -y
+
 if [ $os = "debian" ]
 then
 	# php for debian
@@ -29,11 +29,11 @@ sudo apt-get install ca-certificates apt-transport-https -y
 apt install git nginx mariadb-server mariadb-client -y
 sudo systemctl start nginx mariadb
 sudo systemctl enable nginx mariadb
-if [ $php = "7.4" ]
+if [ $php = "8.0" ]
 then
-	sudo apt install php7.4 php7.4-fpm php7.4-cli php7.4-common php7.4-xmlrpc php7.4-opcache php7.4-mysql php7.4-gd php7.4-zip php7.4-xml php7.4-cli php7.4-dev php7.4-imap php7.4-soap php7.4-intl php7.4-curl php7.4-mbstring -y
-	sudo systemctl enable php7.4-fpm
-	sudo systemctl start php7.4-fpm
+	sudo apt install php8.0-fpm php8.0-common php8.0-mysql php8.0-gmp php8.0-curl php8.0-intl php8.0-mbstring php8.0-xmlrpc php8.0-gd php8.0-xml php8.0-cli php8.0-zip -y
+	sudo systemctl enable php8.0-fpm
+	sudo systemctl start php8.0-fpm
 elif [ $php = "all" ]
 then
 	sudo apt install php7.4 php7.4-fpm php7.4-cli php7.4-common php7.4-xmlrpc php7.4-opcache php7.4-mysql php7.4-gd php7.4-zip php7.4-xml php7.4-cli php7.4-dev php7.4-imap php7.4-soap php7.4-intl php7.4-curl php7.4-mbstring -y
@@ -41,8 +41,9 @@ then
 	sudo systemctl start php8.0-fpm php7.4-fpm
 	sudo systemctl enable php8.0-fpm php7.4-fpm
 else 
-	sudo apt install php8.0-fpm php8.0-common php8.0-mysql php8.0-gmp php8.0-curl php8.0-intl php8.0-mbstring php8.0-xmlrpc php8.0-gd php8.0-xml php8.0-cli php8.0-zip -y
-	sudo systemctl enable php8.0-fpm
+	sudo apt install php7.4 php7.4-fpm php7.4-cli php7.4-common php7.4-xmlrpc php7.4-opcache php7.4-mysql php7.4-gd php7.4-zip php7.4-xml php7.4-cli php7.4-dev php7.4-imap php7.4-soap php7.4-intl php7.4-curl php7.4-mbstring -y
+	sudo systemctl enable php7.4-fpm
+	sudo systemctl start php7.4-fpm
 fi
 
 cat>/var/www/html/index.php<<EOF
@@ -168,7 +169,7 @@ server {
 
   location ~ \.php\$ {
     include snippets/fastcgi-php.conf;
-    fastcgi_pass unix:/run/php/php8.0-fpm.sock;
+    fastcgi_pass unix:/run/php/php7.4-fpm.sock;
   }
 
   location ~ /\.ht {
@@ -177,9 +178,9 @@ server {
 }
 EOF
 
-if [ $php = "7.4" ]
+if [ $php = "8.0" ]
 then
-	sed -i 's/8.0/7.4/g' /etc/nginx/sites-enabled/default
+	sed -i 's/7.4/8.0/g' /etc/nginx/sites-enabled/default
 fi
 
 service nginx restart

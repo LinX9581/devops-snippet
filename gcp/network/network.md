@@ -8,3 +8,4 @@
 建立 cloud router
 找不到IP 先從外部IP的服務找
 
+此時每個VM curl其他網站記錄的IP都會是同一個

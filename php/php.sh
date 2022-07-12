@@ -169,7 +169,7 @@ server {
 
   location ~ \.php\$ {
     include snippets/fastcgi-php.conf;
-    fastcgi_pass unix:/run/php/7.4-fpm.sock;
+    fastcgi_pass unix:/run/php/php7.4-fpm.sock;
   }
 
   location ~ /\.ht {

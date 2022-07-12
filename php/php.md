@@ -17,6 +17,43 @@ keepalive_timeout
 php.ini
 max_execution_time = 600
 max_input_time = 600
+
+# 通訊方式
+unix socket
+效率高
+/etc/php/7.4/fpm/pool.d/www.conf
+
+```
+location ~ \.php$ {
+
+include fastcgi_params;
+
+fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;;
+
+fastcgi_pass unix:/var/run/php5-fpm.sock;
+
+fastcgi_index index.php;
+
+}
+```
+
+tcp socket
+windows 只能走tcp
+php nginx不同台時的連線方式
+```
+location ~ \.php$ {
+
+include fastcgi_params;
+
+fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;;
+
+fastcgi_pass 127.0.0.1:9000;
+
+fastcgi_index index.php;
+
+}
+```
+
 # 上傳大小
 (https://blog.gtwang.org/wordpress/how-to-increase-the-maximum-file-upload-size-in-wordpress/)
 修改單一檔案大小上限：

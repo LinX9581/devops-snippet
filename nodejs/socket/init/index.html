@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+</head>
+
+<body>
+    <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+    <script>
+        const socket = io('ws://34.92.123.7:4010');
+        socket.on('reload', function(msg) {
+            let date = new Date();
+            window.location.reload();
+            console.log(date);
+            console.log(msg);
+        })
+    </script>
+
+
+</body>
+
+</html>

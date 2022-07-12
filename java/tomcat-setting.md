@@ -22,6 +22,9 @@
     server="server" 
 />
 
+查看所有參數
+java -XX:+PrintFlagsInitial -version
+
 //找出當前thread數  平均落在 300
 netstat -nat | grep 80 | wc -l
 

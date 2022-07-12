@@ -1,3 +1,14 @@
+# nginx req limit
+server.conf
+limit_req zone=uat;
+
+nginx.conf
+limit_req_status 403;
+limit_req_zone $http_x_forwarded_for zone=uat:10m rate=5r/s;
+limit_req zone=uat burst=5 nodelay; 
+
+https://blog.csdn.net/hellow__world/article/details/78658041
+
 # nginx cors
 add_header Access-Control-Allow-Origin *;
 add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';

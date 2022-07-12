@@ -5,7 +5,7 @@ sudo apt update
 sudo apt install openjdk-8-jdk -y
 sudo apt install git nginx net-tools -y
 sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
-VERSION=8.5.73
+VERSION=8.5.81
 wget https://www-eu.apache.org/dist/tomcat/tomcat-8/v${VERSION}/bin/apache-tomcat-${VERSION}.tar.gz -P /tmp
 sudo tar -xf /tmp/apache-tomcat-${VERSION}.tar.gz -C /opt/tomcat/
 sudo ln -s /opt/tomcat/apache-tomcat-${VERSION} /opt/tomcat/latest
