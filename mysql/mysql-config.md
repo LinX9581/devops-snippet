@@ -50,6 +50,6 @@ show status like 'Threads%';
 [優先參考2](https://wulijun.github.io/2012/09/29/mysql-innodb-intro.html)
 [參數介紹1](https://medium.com/@stock0139/mysql-%E5%8F%83%E6%95%B8%E5%84%AA%E5%8C%96-%E7%B3%BB%E5%88%97%E6%96%87-1-9696557faf30)
 [參數介紹2](https://medium.com/@stock0139/mysql-%E5%8F%83%E6%95%B8-%E7%B3%BB%E5%88%97%E6%96%872-15db08f7e31)
-
+https://ppfocus.com/0/di7936d1c.html
 ## 高併發
 qps幾十，資料量數千萬 // 拆表分多次SQL 少用JOIN

@@ -34,6 +34,8 @@ while [ 1 ]; do netstat -nat | grep 80 | wc -l; sleep 1; echo '------'; done
 ps -eLf | grep java | wc -l
 while [ 1 ]; do ps -eLf | grep java | wc -l; sleep 1; echo '------'; done
 
+while [ 1 ]; do ps -eLf | grep php-fpm | wc -l; sleep 1; echo '------'; done
+
 // 參數介紹
 https://www.itread01.com/content/1545137663.html
 
