@@ -3,6 +3,7 @@
 1. 先到pvc
 2. 進私人服務連線建立 分配的服務IP範圍
 3. 再到私人服務連線指派新增的IP 
+
 # 多個無對外IP的VM 共用同一個對外IP
 建立 cloud nat 綁定自訂網域、自訂IP
 建立 cloud router

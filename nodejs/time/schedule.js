@@ -4,7 +4,7 @@ let now = moment().format('YYYY/MM/DD HH:mm:ss')
 console.log(now);
 
 //每10 30秒
-schedule.scheduleJob('10,30 * * * * *', function() {
+schedule.scheduleJob('10,20,30,40 * * * * *', function() {
         let now = moment().format('YYYY/MM/DD HH:mm:ss')
         console.log(now);
     })

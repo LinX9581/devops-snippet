@@ -1,0 +1,15 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  hosts: atom
+  tasks:
+    - name: show tcp_fin_timeout
+      shell: "sudo sysctl -a | grep tcp_fin_timeout"
+      register: tcp_fin_timeout
+
+    - name: show tcp_tw_reuse
+      shell: "sudo sysctl -a | grep tcp_tw_reuse"
+      register: tcp_tw_reuse
+
+    - name: Print
+      debug:
+        msg: "'{{ tcp_fin_timeout.stdout }}' '{{ tcp_tw_reuse.stdout }}'"

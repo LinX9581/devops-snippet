@@ -1,3 +1,17 @@
+# 增加VM硬碟空間
+```
+growpart /dev/sda 1 (要先裝 cloud-utils)
+把剛剛新增的硬碟容量(disk) 擴增到 第一分割區(part)
+part = 主要硬碟區
+
+resize2fs /dev/sda1
+根據不同的檔案系統 重新調整硬碟空間
+
+centos 
+xfs_growfs /dev/sda1
+
+```
+
 ## 新增移除分割硬碟 mount
 [分割參考](https://blog.gtwang.org/linux/linux-add-format-mount-harddisk/)
 ```
@@ -46,23 +60,6 @@ nano /etc/fstab
 /dev/disk/by-id/scsi-0Google_PersistentDisk_persistent-disk-1-part1 /mnt/mydisk ext4 defaults 1 1
 
 ```
-
-### 增加硬碟空間
-```
-growpart /dev/sda 1 (要先裝 cloud-utils)
-把剛剛新增的硬碟容量(disk) 擴增到 第一分割區(part)
-part = 主要硬碟區
-
-resize2fs /dev/sda1
-根據不同的檔案系統 重新調整硬碟空間
-
-centos 
-xfs_growfs /dev/sda1
-
-
-```
-
-
 ### 建立LVM & Mount
 apt install -y lvm2
 yum install -y lvm2

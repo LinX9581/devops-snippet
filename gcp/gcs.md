@@ -1,10 +1,7 @@
 ## GCS
 免費5G
 超過照下面計算
-[官方](https://cloud.google.com/storage/pricing/?hl=zh-TW)
-![](https://i.imgur.com/FzhbPiF.png)
-![](https://i.imgur.com/RCjfV5K.png)
-
+https://cloud.google.com/storage/pricing/?hl=zh-TW
 
 建立方式
 WP 套件名稱 WP-Stateless

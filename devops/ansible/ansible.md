@@ -19,10 +19,39 @@ EOF
 
 ansible all -a "df -h"
 
+## ssh 進去機器不會要求確認
+echo -> ansible.cfg (如果機器都是固定則拿掉)
+host_key_checking = False
 ## 改成自建設定檔
 cp /etc/ansible/hosts /etc/ansible/inventory
 ansible all -i inventory -m ping
+ansible atom -i inventory -a "sysctl -a | grep conntrack"
+sysctl -a | grep conntrack
 
 ## 自建 playbook
 ansible-playbook -i inventory sh.yml
 
+
+## ansilble 指令 用法
+https://www.796t.com/content/1525534899.html
+https://ithelp.ithome.com.tw/articles/10205652
+
+-m：要執行的模塊，默認為command
+-a：模塊的參數
+-u：ssh連接的用戶名，默認用root，ansible.cfg中可以配置
+-k：提示輸入ssh登錄密碼，當使用密碼驗證的時候用
+-s：sudo運行
+-U：sudo到哪個用戶，默認為root
+-K：提示輸入sudo密碼，當不是NOPASSWD模式時使用
+-C：只是測試一下會改變什麽內容，不會真正去執行
+-c：連接類型(default=smart)
+-f：fork多少進程並發處理，默認為5個
+-i：指定hosts文件路徑，默認default=/etc/ansible/hosts
+-I：指定pattern，對已匹配的主機中再過濾一次
+--list-host：只打印有哪些主機會執行這個命令，不會實際執行
+-M：要執行的模塊路徑，默認為/usr/share/ansible
+-o：壓縮輸出，摘要輸出
+--private-key：私鑰路徑
+-T：ssh連接超時時間，默認是10秒
+-t：日誌輸出到該目錄，日誌文件名以主機命名
+-v：顯示詳細日誌

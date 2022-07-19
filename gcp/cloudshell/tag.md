@@ -1,5 +1,4 @@
 # tags相關
-#--------------------------------------------------------------------------------
 # 查看所有標記
 gcloud compute instances list --format="table(name,status,tags.list())"
 # 查看特定標記

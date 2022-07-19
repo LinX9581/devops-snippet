@@ -2,7 +2,6 @@
 1. 先在私人服務連線建立 分配的服務IP範圍
 2. 再到私人服務連線指派新增的IP
 
-
 # cloud sql QA
 https://ikala.cloud/gcp-cloud-sql-faq/
 

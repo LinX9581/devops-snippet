@@ -1,0 +1,15 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  hosts: lb
+  tasks:
+    - name: upload shell scripts
+      synchronize:
+        mode: push
+        dest: /home/lin/
+        src: ./devops/
+
+    - name: run exporter.sh
+      shell: "sudo sh /home/lin/shell/exporter.sh"
+
+    - name: run kernel.sh
+      shell: "sudo sh /home/lin/shell/kernel.sh"

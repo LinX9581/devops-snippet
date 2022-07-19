@@ -128,16 +128,16 @@ export PATH="$PATH":/home/bin
 或
 export PATH=${PATH}:/home/bin
 輸入之後可以使用export指令來查看環境變數是否有輸入進去。
-* 此修改重開機後，就必須再作一次
 
+* 此修改重開機後，就必須再作一次
 修改profile
 profile的路徑是在 "/etc/profile"
 直接修改profile這個檔案在裡面加入
 export PATH="$PATH":/home/bin
 或
 export PATH=${PATH}:/home/bin
-* 此修改必須在重開機之後，才會有作用
 
+* 此修改必須在重開機之後，才會有作用
 修改.bashrc
 .bashrc的路徑是在"/home/danny/.bashrc"
 在檔案最後面加入
@@ -145,22 +145,19 @@ export PATH="$PATH":/home/bin
 或
 export PATH=${PATH}:/home/bin
 source ~/.bashrc
-* 此修改只需關掉Terminal在開啟後，就都會被設定
 
+* 只需關掉Terminal在開啟後，就會被設定
 修改 /etc/enviroment  
 這檔案裡面包含原本PATH變數的資料, 要增加請在最後面用:加上你要加入的路徑即可
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin"
-## IPtables
-```
-iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
-iptables -A INPUT -p tcp --dport 110 -j ACCEPT
-https://www.it145.com/9/12010.html
-```
 
 ## 查看 背景執行的Proccess
 ```
 查詢哪些port被占用
 netstat -tnlp
+
+查看源站 port
+nc -v -w 1 107.167.0.0 80
 
 查看node的詳細
 ps -fC node
@@ -331,7 +328,7 @@ Apr 27 19:06:25 wordpress-mysql-error-test google-accounts: INFO Adding user lin
 Apr 27 19:04:33 wordpress-mysql-error-test systemd[1]: Started Session 97323 of user linx.
 ```
 
-## 防火牆
+## local linux 防火牆
 sudo apt-get install ufw
 sudo ufw status //防火牆
 sudo ufw enable
@@ -350,7 +347,6 @@ dns-nameservers X.X.X.X
 
 設定完重新啟動:
 sudo /etc/init.d/networking restart
-
 
 ## 參考
 [別人的筆記整理](https://blog.gtwang.org/category/linux/page/2/)

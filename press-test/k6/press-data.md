@@ -7,6 +7,10 @@
 3m 3500 fail 1.61% AVG 6.06 P90 8.36 P95 9.24
 3m 3500 fail 1.17% AVG 6.17 P90 9.84 P95 10.24
 3m 3000 fail 2.56% AVG 5.35 P90 8.11 P95 9.49
+3m 4000 fail 2.51% AVG 6.41 P90 10.58 P95 11.63
+
+* mysql 4C16G -> 8C16G  ,  sysctl -w net.ipv4.tcp_fin_timeout=15 , sysctl -w net.ipv4.tcp_tw_reuse=1
+3m 4000 fail 2.46% AVG 6.78 P90 10.34 P95 11.32
 
 # 16c64g * 1
 30s 6000 (O) fail 8%  avg 5.62 p90 11.64s
@@ -32,6 +36,11 @@ proxy_send_timeout 180;1
 # 8C32G * 4
 10S 8000 for 5m -> fail 5.86%  AVG 3.27 ,P90 9.92 , p95 11.37
 
+* 三台 sysctl -w net.ipv4.tcp_fin_timeout=15 , sysctl -w net.ipv4.tcp_tw_reuse=2 其餘預設
+3m 4000 fail 6.82%  AVG 0.89 ,P90 1.58 , p95 1.73
+
+* 
+
 # 8C32G * 5
 30s 3500 30s/+200 -> 3500 fail 0.99 P95% 1.95
 30s 5000 30s/+200 -> 5800 fail 1.31 P95% 2.95
@@ -52,6 +61,7 @@ proxy_send_timeout 180;1
 04M, 10000, fail 0.00% ,AVG 1.29S, P90 2.21 P95 2.26
 04M, 12000, fail 0.00% ,AVG 1.84S, P90 3.18 P95 4.07
 16M, 15000, fail 0.24% ,AVG 2.75S, P90 5.03 P95 5.88
+90M, 10000, fail 0.01% ,AVG 1.79S, P90 2.61 P95 3.38
 
 # 8C32G * 9
 30S, 5000,  fail 0.2%  ,AVG 1.9S , P95 4.9S

@@ -1,0 +1,9 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  hosts: atom
+  tasks:
+    - name: restart fpm
+      shell: "sudo service php7.4-fpm restart"
+
+    - name: restart nginx
+      shell: "sudo service nginx restart"

@@ -1,7 +1,3 @@
-# 設定帳戶&專案
-gcloud auth login
-gcloud config set project tactile-zephyr-336102
-
 # 停啟增減VM
 start stop create delete
 gcloud compute instances start php1 --zone asia-east1-b
