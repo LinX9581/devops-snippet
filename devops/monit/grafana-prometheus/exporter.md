@@ -77,6 +77,8 @@ EOF
 
 
 # node-exporter
+grafana id = 11074(主要) 1860 8919
+
 docker run -d -p 9100:9100 \
 -v "/proc:/host/proc" \
 -v "/sys:/host/sys" \

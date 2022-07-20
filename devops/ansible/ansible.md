@@ -19,14 +19,36 @@ EOF
 
 ansible all -a "df -h"
 
-## ssh 進去機器不會要求確認
-echo -> ansible.cfg (如果機器都是固定則拿掉)
-host_key_checking = False
+## 基本 playbook
+vars_prompt -> 輸入指令不會馬上執行 需要輸入參數
+
+cat>/etc/ansible/env.yml<<EOF
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+
+  hosts: '{{ host }}'
+  tasks:
+    - name: show tcp_fin_timeout
+      shell: "sudo sysctl -a | grep tcp_fin_timeout"
+      register: tcp_fin_timeout
+
+    - name: Print
+      debug:
+        msg: "'{{ tcp_fin_timeout.stdout }}'"
+EOF
+
 ## 改成自建設定檔
 cp /etc/ansible/hosts /etc/ansible/inventory
 ansible all -i inventory -m ping
 ansible atom -i inventory -a "sysctl -a | grep conntrack"
 sysctl -a | grep conntrack
+## ssh 進去機器不會要求確認
+echo -> ansible.cfg (如果機器都是固定則拿掉)
+host_key_checking = False
 
 ## 自建 playbook
 ansible-playbook -i inventory sh.yml
