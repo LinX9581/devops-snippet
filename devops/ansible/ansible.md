@@ -17,9 +17,10 @@ ansible_ssh_user=lin
 ansible_ssh_private_key_file=/root/.ssh/id_rsa
 EOF
 
-ansible all -a "df -h"
+## 改成自建設定檔
+cp /etc/ansible/hosts /etc/ansible/inventory
 
-## 基本 playbook
+## 自建 playbook
 vars_prompt -> 輸入指令不會馬上執行 需要輸入參數
 
 cat>/etc/ansible/env.yml<<EOF
@@ -41,18 +42,15 @@ cat>/etc/ansible/env.yml<<EOF
         msg: "'{{ tcp_fin_timeout.stdout }}'"
 EOF
 
-## 改成自建設定檔
-cp /etc/ansible/hosts /etc/ansible/inventory
+* 用自建設定檔 & playbook
+ansible-playbook -i inventory env.yml
+
+* 對所有host下指令
 ansible all -i inventory -m ping
 ansible atom -i inventory -a "sysctl -a | grep conntrack"
-sysctl -a | grep conntrack
 ## ssh 進去機器不會要求確認
 echo -> ansible.cfg (如果機器都是固定則拿掉)
 host_key_checking = False
-
-## 自建 playbook
-ansible-playbook -i inventory sh.yml
-
 
 ## ansilble 指令 用法
 https://www.796t.com/content/1525534899.html

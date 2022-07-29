@@ -3,15 +3,25 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install terraform
 
-gcloud auth activate-service-account  --key-file terra2.json
+gcloud auth activate-service-account --key-file terra2.json
 gcloud config set project terra-355307
 gcloud compute instances list
 
 # terraform init
 mkdir terra
 cd /terra/
-terraform init
+
 touch main.tf ..
+
+cat>/terraformer/main.tf<<EOF
+provider "google" {
+credentials = file("./terra.json")
+  project = "terra-test-353202"
+  region  = "asia-east1"
+  zone    = "asia-east1-b"
+}
+EOF
+
 換專案則換資料夾初始化
 terraform plan
 terraform apply
@@ -66,12 +76,30 @@ terraform apply
 
 2. 自動化工具 terraformer
 export PROVIDER=google
-curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-${PROVIDER}-darwin-amd64
-chmod +x terraformer-${PROVIDER}-darwin-amd64
-sudo mv terraformer-${PROVIDER}-darwin-amd64 /usr/local/bin/terraformer
+curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-${PROVIDER}-linux-amd64
+chmod +x terraformer-${PROVIDER}-linux-amd64
+sudo mv terraformer-${PROVIDER}-linux-amd64 /usr/local/bin/terraformer
+
+完成上面的 init動作才可以import
+terraform init
+terraformer import google --resources=instances,networks,subnetworks --connect=true --regions=asia-east1 --projects=terra-test-353202
+
+
+* terraformer吃的是key是環境變數 GOOGLE_APPLICATION_CREDENTIALS=/gcp-terraform/terra-test/terra-355307-6c259aff1e19.json
+* import iam 需允許 Identity and Access Management (IAM) API
+* 如果外層版本太舊 import出來的 都會是低版本 需要下面指令更新
+cd /terraformer/generated/google/terra-test-353202/instances/asia-east1
+terraform state replace-provider \
+-auto-approve \
+"registry.terraform.io/-/google" \
+"hashicorp/google"
+
+
+
 
 https://github.com/GoogleCloudPlatform/terraformer/blob/master/docs/gcp.md
 https://arivictor.medium.com/turn-your-gcp-project-into-terraform-with-terraformer-cli-eeec36cbe0d8
+https://www.youtube.com/watch?v=2GE0GAsIz_M&ab_channel=GoogleCloudTech
 
 
 # sample

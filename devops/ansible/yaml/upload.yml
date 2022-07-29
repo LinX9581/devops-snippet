@@ -7,8 +7,8 @@
       
   hosts: '{{ host }}'
   tasks:
-    - name: run exporter.sh
-      shell: "sudo sh /home/lin/shell/exporter.sh"
-
-    - name: run kernel.sh
-      shell: "sudo sh /home/lin/shell/kernel.sh"
+    - name: upload shell scripts
+      synchronize:
+        mode: push
+        dest: /home/ansible/
+        src: ./devops/

@@ -15,6 +15,10 @@
       shell: "sudo sysctl -a | grep tcp_tw_reuse"
       register: tcp_tw_reuse
 
+    - name: show tcp_count
+      shell: "sudo netstat -ant | wc -l"
+      register: tcp_count
+
     - name: Print
       debug:
-        msg: "'{{ tcp_fin_timeout.stdout }}' '{{ tcp_tw_reuse.stdout }}'"
+        msg: "'{{ tcp_fin_timeout.stdout }}' '{{ tcp_tw_reuse.stdout }}' 'tcp連線數:{{ tcp_count.stdout }}'"
