@@ -89,10 +89,7 @@ terraformer import google --resources=instances,networks,subnetworks --connect=t
 * import iam 需允許 Identity and Access Management (IAM) API
 * 如果外層版本太舊 import出來的 都會是低版本 需要下面指令更新
 cd /terraformer/generated/google/terra-test-353202/instances/asia-east1
-terraform state replace-provider \
--auto-approve \
-"registry.terraform.io/-/google" \
-"hashicorp/google"
+terraform state replace-provider -auto-approve "registry.terraform.io/-/google" "hashicorp/google"
 
 
 

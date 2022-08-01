@@ -21,6 +21,28 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 
+# blackbox_exporter
+grafana id 13659 7587
+
+cd exporter
+mkdir blackbox_exporter -p
+cd blackbox_exporter
+cat>./blackbox.yml<<EOF
+modules:
+  http_2xx_with_ip4:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+EOF
+
+docker run -d -p 9115:9115 --name blackbox-exporter -v /exporter/blackbox_exporter:/config prom/blackbox-exporter --config.file=/config/blackbox.yml
+
+wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.21.1/blackbox_exporter-0.21.1.linux-386.tar.gz
+tar -zxvf blackbox_exporter-0.21.1.linux-386.tar.gz
+cd blackbox_exporter-0.21.1.linux-386
+./blackbox_exporter --config.file=./blackbox.yml
+
 # mysql-exporter
 https://www.jianshu.com/p/faac55bd0a5b
 grafana id 7362
@@ -62,7 +84,9 @@ process_names:
     cmdline:
     - '.+'
 EOF
-docker run -itd -p 9256:9256 --privileged --name=process-exporter -v /proc:/host/proc -v /process-exporter/:/config ncabatoff/process-exporter --procfs /host/proc -config.path config/config.yml path config/config.yml
+docker run -itd -p 9256:9256 --privileged --name=process-exporter -v /proc:/host/proc -v /process-exporter/:/config ncabatoff/process-exporter --procfs /host/proc -config.path config/config.yml
+
+path config/config.yml
 
 * 非docker
 wget https://github.com/ncabatoff/process-exporter/releases/download/v0.7.5/process-exporter-0.7.5.linux-amd64.tar.gz
