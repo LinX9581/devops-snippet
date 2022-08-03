@@ -201,3 +201,18 @@ chmod +x  /usr/local/src/php-fpm-exporter
 nohup /usr/local/src/php-fpm-exporter --addr 0.0.0.0:9190 --endpoint http://172.16.2.10:8080/status
 
 docker-compose up -d
+
+https://blog.gtwang.org/linux/nginx-enable-php-fpm-status-page-tutorial/
+
+nano etc/php/7.4/fpm/pool.d/www.conf
+pm.status_path = /status
+ping.path = /ping
+
+server {
+    listen 8080;
+    location ~ ^/(status|ping)$ {
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+    }
+}

@@ -1,7 +1,7 @@
 # 概要
 1. 要監控的VM裝 agent
 exporter.md 有各個監控指標
-mysql,nginx,node,cadvisor,redis-exporter  -> export to prometheus
+mysql,nginx,node,cadvisor,black-exporter  -> export to prometheus
 
 k6.sh -> export to influxdb
 

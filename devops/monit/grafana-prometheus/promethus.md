@@ -1,13 +1,3 @@
-## gce pending
-* 官方
-https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config
-https://github.com/cloudalchemy/ansible-prometheus/issues/153
-* gce tag filter
-https://github.com/prometheus/prometheus/issues/8233
-
-## for GCE
-https://blog.beck-yeh.idv.tw/linux/monitor/prometheus-grafana/prometheus-install/
-https://github.com/DazWilkin/gcp-exporter
 ## 先在該目錄建立 /prometheus/prometheus.yml 寫入設定檔
 docker run \
     -d \
@@ -97,5 +87,12 @@ EOF
 systemctl daemon-reload
 service prometheus restart
 
-# cp gcptest-12123-a1b9b05eb13c.json /root/.config/gcloud/
-# GOOGLE_APPLICATION_CREDENTIALS=/gcp123.json
+## gce pending -> 改用ansible大量裝agent services
+* 官方
+https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config
+https://github.com/cloudalchemy/ansible-prometheus/issues/153
+* gce tag filter
+https://github.com/prometheus/prometheus/issues/8233
+
+https://blog.beck-yeh.idv.tw/linux/monitor/prometheus-grafana/prometheus-install/
+https://github.com/DazWilkin/gcp-exporter

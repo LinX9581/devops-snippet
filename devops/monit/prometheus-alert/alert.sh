@@ -1,13 +1,13 @@
 
-# debian 安裝方式會不一樣
+# IP 127.0.0.1 改成VM的內部IP
+
 sudo apt update
 sudo apt -y upgrade
 sudo timedatectl set-timezone Asia/Taipei
-sudo apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common net-tools -y
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
 sudo apt update
-apt-cache policy docker-ce
 sudo apt install docker-ce -y
 sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)"  -o /usr/local/bin/docker-compose
 sudo mv /usr/local/bin/docker-compose /usr/bin/docker-compose
@@ -15,7 +15,8 @@ chmod +x /usr/bin/docker-compose
 systemctl enable docker.service
 
 mkdir prometheus
-cat>/prometheus/prometheus.yml<<EOF
+cd prometheus
+cat>prometheus.yml<<EOF
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
@@ -27,18 +28,18 @@ alerting:
   alertmanagers:
     - static_configs:
       - targets:
-        - 10.140.0.26:9093
+        - 127.0.0.1:9093
   
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-      - targets: ['10.140.0.26:9090']
+      - targets: ['127.0.0.1:9090']
   - job_name: 'host1'
     static_configs:
-      - targets: ['10.140.0.26:9100']
+      - targets: ['127.0.0.1:9100']
 EOF
 
-cat>/prometheus/rules.yml<<EOF
+cat>rules.yml<<EOF
 groups:
 - name: AllInstances
   rules:
@@ -55,7 +56,7 @@ groups:
       severity: 'critical'
 EOF
 
-cat>/prometheus/alertmanager.yml<<EOF
+cat>alertmanager.yml<<EOF
 global: 
   resolve_timeout: 5m
 route:
@@ -74,17 +75,17 @@ receivers:
 EOF
 
 
-docker run --name alertmanager -d -p 9093:9093 -v /prometheus:/alertmanager \
+docker run --name alertmanager -d -p 9093:9093 -v /devops/prometheus:/alertmanager \
 prom/alertmanager --storage.path=/tmp --config.file=/alertmanager/alertmanager.yml
 
-docker run -d -p 9090:9090 -v /prometheus:/etc/prometheus \
+docker run --name prometheus -d -p 9090:9090 -v /devops/prometheus:/etc/prometheus \
 prom/prometheus --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
 
 docker run -d -p 9100:9100 \
 -v "/proc:/host/proc" \
 -v "/sys:/host/sys" \
 -v "/:/rootfs" \
---name=gra_node-exporter \
+--name=node-exporter \
 prom/node-exporter \
 --path.procfs /host/proc \
 --path.sysfs /host/sys \
