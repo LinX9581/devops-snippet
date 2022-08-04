@@ -7,8 +7,8 @@
       
   hosts: '{{ host }}'
   tasks:
-    - name: upload shell scripts
+    - name: upload
       synchronize:
         mode: push
         dest: /home/ansible/
-        src: ./devops/
+        src: ./devops

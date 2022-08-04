@@ -38,10 +38,27 @@ EOF
 
 docker run -d -p 9115:9115 --name blackbox-exporter -v /exporter/blackbox_exporter:/config prom/blackbox-exporter --config.file=/config/blackbox.yml
 
+* Loacl install
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.21.1/blackbox_exporter-0.21.1.linux-386.tar.gz
 tar -zxvf blackbox_exporter-0.21.1.linux-386.tar.gz
 cd blackbox_exporter-0.21.1.linux-386
 ./blackbox_exporter --config.file=./blackbox.yml
+
+* prometheus config add
+- job_name: 'blackbox'
+  metrics_path: /probe
+  params:
+    module: [http_2xx_with_ip4]  # Look for a HTTP 200 response.
+  static_configs:
+    - targets:
+      - http://probe.linx.services    # Target to probe with http.
+  relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: 172.16.97.10:9115  # The blackbox exporter's real hostname:port.
 
 # mysql-exporter
 https://www.jianshu.com/p/faac55bd0a5b
