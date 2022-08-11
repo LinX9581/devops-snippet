@@ -8,5 +8,5 @@
   hosts: '{{ host }}'
   tasks:
     - name: run php.sh
-      shell: "sudo sh /home/ansible/devops/shell/php.sh"
+      shell: "sudo sh /home/ansible/deploy/shell/php.sh"
       register: sh

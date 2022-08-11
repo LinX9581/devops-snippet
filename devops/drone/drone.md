@@ -24,11 +24,14 @@ https://example.com/login
  
 ## 取得DRONE_RPC_SECRET
 隨機建立 [連結](https://correcthorsebatterystaple.net/)
-DRONE_RPC_SECRET = drone repo setting's screct name
-= .drone.yml
+
+drone web screct name = DRONE_RPC_SECRET
+drone web screct value = drone-server's rsa private key
+
+上面兩個值相當於 .drone.yml 的 Key & Target
 key:
 	from_secret: ${DRONE_RPC_SECRET}
-target: /root/.ssh/id_rsa	# = drone repo setting's screct value
+target: /root/.ssh/id_rsa
 
 ## 建立 RSA Key
 ssh-keygen -t rsa

@@ -11,4 +11,4 @@
       synchronize:
         mode: push
         dest: /home/ansible/
-        src: ./devops
+        src: ./deploy
