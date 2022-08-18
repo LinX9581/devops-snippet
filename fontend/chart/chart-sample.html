@@ -79,13 +79,28 @@
             //     mode: 'index',
             //     intersect: false,
             // },
-            
+
             scales: {
                 y: {
                     beginAtZero: true
                 }
             },
-            responsive: false
+            responsive: false,
+            // 客製化滑鼠滑過去的顯示
+            // plugins: {
+            //     tooltip: {
+            //         callbacks: {
+            //             label: function (tooltipItem, data) {
+            //                 console.log(tooltipItem);
+            //                 console.log(data);
+            //                 // var corporation = data.datasets[tooltipItem.datasetIndex].label;
+            //                 // var valor = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+            //                 // var total = eval(data.datasets[tooltipItem.datasetIndex].data.join("+"));
+            //                 return "asda";
+            //             }
+            //         }
+            //     }
+            // },
         }
         let lineData = [{
             label: '1',
@@ -99,7 +114,7 @@
         genChart('bar', 'bar', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
         genChart('line2', 'line', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
         genChart('pie', 'pie', ['dsad', 'zcx', 'qwc', 'zxc', 'Purpasle', 'Oranasasge'], pieData, pieOptions)
-        
+
         async function genChart(chartId, type, chartTimeLabel, chartData, options) {
             const ctx = document.getElementById(chartId).getContext('2d');
             const realtimeChart = new Chart(ctx, {

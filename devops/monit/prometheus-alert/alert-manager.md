@@ -56,7 +56,7 @@ receivers:
     #   html: '{{ template "test.html" . }}' # 設定郵箱的內容模板
     #   headers: { Subject: "[WARN] 報警郵件"} # 接收郵件的標題
     webhook_configs: # webhook配置
-    - url: 'https://nowbot.nownews.com/stackdriver/prome'
+    - url: 'webhook.url'
     - send_resolved: true
     # wechat_configs: # 企業微信報警配置
     # - send_resolved: true

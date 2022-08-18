@@ -64,9 +64,21 @@ minikube status
 # 運行在GKE
 先在GKE建立cluster
 ## 授權後 連結到該cluster
-gcloud auth login
-gcloud config set project k88888888s-329606
-gcloud container clusters get-credentials cluster-2 --zone=asia-east1-a --project=k88888888s-329606
+
+* 取得SA授權
+gcloud auth activate-service-account --key-file json
+gcloud config set project terra-test-353202
+
+* 先裝SDK 再裝kubectl
+https://cloud.google.com/sdk/docs/install-sdk#linux
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-397.0.0-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-397.0.0-linux-x86_64.tar.gz
+./google-cloud-sdk/install.sh
+source ~/.bashrc
+gcloud components install kubectl
+
+* 先手動建立GKE Cluster 再遠端連接
+gcloud container clusters get-credentials autopilot-cluster-1 --zone=asia-east1 --project=terra-test-353202
 
 * 查看node狀態
 kubectl get node -o wide 
@@ -75,7 +87,7 @@ kubectl get node -o wide
 nano ~/.bashrc
 
 ```
-alias k8s='kubectl'
+alias kubectl='k'
 ## get
 alias kgp='kubectl get pod -o wide'
 alias kgn='kubectl get node'

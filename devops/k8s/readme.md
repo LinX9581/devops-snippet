@@ -9,9 +9,9 @@ yaml>basic.yaml
 
 # 進階設定
 三者基本一樣 
-* deployment    //normal
+* deployment    //normal 用來建構無狀態Pod
 * daemonset     //殺掉會重生
-* stateful      //殺掉會原地重生
+* stateful      //殺掉會原地重生 用來建構有狀態Pod
 
 # scaling 
 vertical        //調整cpu & ram

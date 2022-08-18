@@ -23,8 +23,8 @@ kubectl rollout undo deployment hello-deployment
 kubectl rollout undo deploy hello-deployment --to-revision=3
 
 # 停止
-kubectl rollout pause deployment/helloworld-deployment
-kubectl rollout resume deployment/helloworld-deployment
+kubectl rollout pause deployment/hello-deployment
+kubectl rollout resume deployment/hello-deployment
 
 # 更改效能配置
-kubectl set resources deployment helloworld-deployment --limits=cpu=200m,memory=512Mi
+kubectl set resources deployment hello-deployment --limits=cpu=200m,memory=512Mi

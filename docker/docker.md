@@ -13,6 +13,7 @@ docker network inspect bridge : 查看container走哪個IP
 docker-compose up -d : 啟用dockerfile
 docker rename open_ovpn_1 gra_open_ovpn_1
 ping -c 2 172.17.0.3 : ping
+docker update --restart=always ID : 讓container重開機自動重啟
 
 # phpmyadmin docker
 註解IP

@@ -36,7 +36,7 @@ resource "google_compute_instance" "import-test" {
   name         = "import-test"
   machine_type = "e2-medium"
 
-  tags = ["nownews-allow-ssh","nownews-allow-80","nownews-allow-443","nownews-allow-others"]
+  tags = ["test-allow-ssh","test-allow-80","test-allow-443","test-allow-others"]
 
   boot_disk {
     initialize_params {
