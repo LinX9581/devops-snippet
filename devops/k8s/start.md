@@ -4,6 +4,68 @@ Pod、Worker Node、Master Node、Cluster
 api,vps,
 [pusg image to gkr 官方文件](https://cloud.google.com/container-registry/docs/pushing-and-pulling)
 
+# 運行在GKE
+先在GKE建立cluster
+## 授權後 連結到該cluster
+
+* 取得SA授權
+gcloud auth activate-service-account --key-file jsonPath
+gcloud config set project terra-test-353202
+
+* 先裝SDK 再裝kubectl
+https://cloud.google.com/sdk/docs/install-sdk#linux
+
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-397.0.0-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-397.0.0-linux-x86_64.tar.gz
+./google-cloud-sdk/install.sh
+source ~/.bashrc
+gcloud components install kubectl
+
+* 先手動建立GKE Cluster 再遠端連接
+gcloud container clusters get-credentials autopilot-cluster-1 --zone=asia-east1 --project=terra-test-353202
+
+* 查看node狀態
+kubectl get node -o wide 
+
+* 簡化指令
+nano ~/.bashrc
+
+```
+alias kubectl='k'
+## get
+alias kgp='kubectl get pod -o wide'
+alias kgn='kubectl get node'
+alias kgd='kubectl get deployment'
+alias kgs='kubectl get service'
+alias kgh='kubectl get HorizontalPodAutoscaler'
+alias kgl='kubectl logs'
+alias kgr='kubectl get rs'
+alias kgd='kubectl get deployment'
+
+## create
+alias kcy='kubectl apply -f'
+
+## describe
+alias kdsp='kubectl describe pod'
+alias kdsn='kubectl describe node'
+alias kdsd='kubectl describe deployment'
+alias kdss='kubectl describe service'
+alias kdsh='kubectl describe HorizontalPodAutoscaler'
+
+## delete
+alias kdd='kubectl delete deployment'
+alias kds='kubectl delete service'
+alias kdh='kubectl delete HorizontalPodAutoscaler'
+alias kdn='kubectl delete node'
+alias kdp='kubectl delete pod'
+
+## monit
+alias ktp='kubectl top pod'
+alias ktn='kubectl top node'
+```
+
+
+
 ## 建立 Docker Image
 
 ## 上傳 Imgae to GKR
@@ -59,63 +121,4 @@ sudo usermod -aG docker $USER
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 minikube status
-```
-
-# 運行在GKE
-先在GKE建立cluster
-## 授權後 連結到該cluster
-
-* 取得SA授權
-gcloud auth activate-service-account --key-file json
-gcloud config set project terra-test-353202
-
-* 先裝SDK 再裝kubectl
-https://cloud.google.com/sdk/docs/install-sdk#linux
-curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-397.0.0-linux-x86_64.tar.gz
-tar -xf google-cloud-cli-397.0.0-linux-x86_64.tar.gz
-./google-cloud-sdk/install.sh
-source ~/.bashrc
-gcloud components install kubectl
-
-* 先手動建立GKE Cluster 再遠端連接
-gcloud container clusters get-credentials autopilot-cluster-1 --zone=asia-east1 --project=terra-test-353202
-
-* 查看node狀態
-kubectl get node -o wide 
-
-* 簡化指令
-nano ~/.bashrc
-
-```
-alias kubectl='k'
-## get
-alias kgp='kubectl get pod -o wide'
-alias kgn='kubectl get node'
-alias kgd='kubectl get deployment'
-alias kgs='kubectl get service'
-alias kgh='kubectl get HorizontalPodAutoscaler'
-alias kgl='kubectl logs'
-alias kgr='kubectl get rs'
-alias kgd='kubectl get deployment'
-
-## create
-alias kcy='kubectl apply -f'
-
-## describe
-alias kdsp='kubectl describe pod'
-alias kdsn='kubectl describe node'
-alias kdsd='kubectl describe deployment'
-alias kdss='kubectl describe service'
-alias kdsh='kubectl describe HorizontalPodAutoscaler'
-
-## delete
-alias kdd='kubectl delete deployment'
-alias kds='kubectl delete service'
-alias kdh='kubectl delete HorizontalPodAutoscaler'
-alias kdn='kubectl delete node'
-alias kdp='kubectl delete pod'
-
-## monit
-alias ktp='kubectl top pod'
-alias ktn='kubectl top node'
 ```

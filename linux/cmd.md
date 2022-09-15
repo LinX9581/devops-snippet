@@ -332,6 +332,18 @@ Apr 27 19:04:33 wordpress-mysql-error-test systemd[1]: Started Session 97323 of 
 ```
 
 ## local linux 防火牆
+* local
+1. 查看目前防火牆規則
+iptables -L -n 
+2. 接受所有IP 訪問 80 port
+iptables -A INPUT -s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT
+3. 拒絕所有IP 訪問 80 port
+iptables -A INPUT -s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT
+4. 砍規則
+iptables -D INPUT -s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT
+
+
+* module
 sudo apt-get install ufw
 sudo ufw status //防火牆
 sudo ufw enable
@@ -339,17 +351,54 @@ sudo apt-get install gufw
 sudo ufw allow in 80
 
 
-設定真實ip > 前面在wp-config檔案裡的 define 的IP也要同時更改
+設定機器ip > 前面在wp-config檔案裡的 define 的IP也要同時更改
+1. 設定機器固定IP
+ifconfig eno1 172.23.1.20 netmask 255.255.255.0
+
+2. 設定 route
+route add default gw 172.23.1.254 eno1
+
+3. 設定開機自動綁定IP和Route
+
+cat > /route_add.sh << EOF
+#!/bin/bash
+ifconfig eno1 172.23.1.20 netmask 255.255.255.0
+route add default gw 172.23.1.254 eno1
+EOF
+
+cat > /etc/systemd/system/route_add.service << EOF
+[Unit]
+After=network.service
+Description=route_add
+
+[Service]
+ExecStart=/route_add.sh
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl restart route_add.service
+systemctl enable route_add.service
+
 sudo nano /etc/network/interfaces > 新增四行(如果有dhcp要把dhcp註解掉)
+// 有tab 但某些linux無效
 auto eh0
-iface eh0 inet static
-address X.X.X.X
-network X.X.X.X
-gateway X.X.X.X
-dns-nameservers X.X.X.X
+    iface eh0 inet static
+    address X.X.X.X
+    network X.X.X.X
+    gateway X.X.X.X
+    dns-nameservers X.X.X.X
 
 設定完重新啟動:
 sudo /etc/init.d/networking restart
+or
+sudo systemctl restart systemd-networkd
+
+
+
 
 ## 參考
 [別人的筆記整理](https://blog.gtwang.org/category/linux/page/2/)

@@ -13,7 +13,7 @@ cd /terra/
 
 touch main.tf ..
 
-cat>/terraformer/main.tf<<EOF
+cat>/gcp-terraform/init/main.tf<<EOF
 provider "google" {
 credentials = file("./terra.json")
   project = "terra-test-353202"
@@ -26,8 +26,39 @@ EOF
 terraform plan
 terraform apply
 
+# terraform var
+
+cat>/gcp-terraform/init/init.tfvars<<EOF
+project_id = "k8s-2022-09-05"
+project_name = "k8s"
+project_json_path = "~/.sakey/k8s-2022-09-05.json"
+firewall_name = "k8s"
+EOF
+
+* 執行並匯入變數檔案
+terraform apply -var-file="init.tfvars"
+
 # terraform import
-1. 手動建立 並 import
+1. 自動化工具 terraformer
+export PROVIDER=google
+curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-${PROVIDER}-linux-amd64
+chmod +x terraformer-${PROVIDER}-linux-amd64
+sudo mv terraformer-${PROVIDER}-linux-amd64 /usr/local/bin/terraformer
+
+cat>/gcp-terraform/new/version.tf<<EOF
+provider "google" {
+credentials = file("~/.sakey/k8s-2022-09-05.json")
+  project = "k8s-2022-09-05"
+  region  = "asia-east1"
+  zone    = "asia-east1-b"
+}
+EOF
+
+完成上面的 init動作才可以import
+terraform init
+terraformer import google --resources=instances,networks,subnetworks,firewall --connect=true --regions=asia-east1 --projects=terra-test-353202
+
+2. 手動建立 並 import
 假設原有 VM名稱: import-test
 要建立一個相對的 tf file
 terraform import google_compute_instance.import-test import-test
@@ -73,16 +104,6 @@ resource "google_compute_instance" "import-test" {
 看看VM是否會被砍掉重練
 terraform plan
 terraform apply
-
-2. 自動化工具 terraformer
-export PROVIDER=google
-curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-${PROVIDER}-linux-amd64
-chmod +x terraformer-${PROVIDER}-linux-amd64
-sudo mv terraformer-${PROVIDER}-linux-amd64 /usr/local/bin/terraformer
-
-完成上面的 init動作才可以import
-terraform init
-terraformer import google --resources=instances,networks,subnetworks --connect=true --regions=asia-east1 --projects=terra-test-353202
 
 
 * terraformer吃的是key是環境變數 GOOGLE_APPLICATION_CREDENTIALS=/gcp-terraform/terra-test/terra-355307-6c259aff1e19.json

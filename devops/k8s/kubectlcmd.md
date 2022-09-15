@@ -26,8 +26,11 @@ sudo apt-get install kubectl
 * kubectl delete rc rcname
 * kubectl delete svc svcname
 ## Export
-kubectl port-forward my-helloworld 3333:3000
-kubectl expose deploy hello-deployment --type=NodePort --name=my-deployment-service   //建立service 需要先建立deployment
+kubectl port-forward my-helloworld 3333:3000        //把pod的3000 轉發到下這指令的vm:3333 
+kubectl expose deploy hello-deployment --type=NodePort --name=my-deployment-service   
+// 建立service 需要先建立deployment port會在30000–32767隨機產生一個對外port
+// kdsn 列出所有cluster底下的worker node 用該node:servicePort外連
+
 kubectl expose deployment hello-deployment --type=LoadBalancer --name=my-service  //這邊建立完會直接建立一個 loadbalance導到cluster
 ## scal
 kubectl scale deployment hello-deployment –replicas=4

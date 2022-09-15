@@ -1,11 +1,19 @@
+variable "project_name" {
+    type = string
+}
+
+locals {
+  project_name = var.project_name
+}
+
 resource "google_compute_network" "vpc_network" {
-  name                    = "vpc"
+  name                    = "${local.project_name}-vpc"
   auto_create_subnetworks = false
   delete_default_routes_on_create = true
 }
 
 resource "google_compute_subnetwork" "private_network" {
-  name          = "sub-vpc"
+  name          = "${local.project_name}-subvpc"
   ip_cidr_range = "172.16.2.0/24"
   region        = "asia-east1"
   network       = google_compute_network.vpc_network.self_link
@@ -35,8 +43,8 @@ resource "google_compute_route" "private_network_internet_route" {
 
 # firewall
 
-resource "google_compute_firewall" "test1-allow-ssh" {
-  name    = "test1-allow-ssh"
+resource "google_compute_firewall" "allow-ssh" {
+  name    = "${local.project_name}-allow-ssh"
   network = google_compute_network.vpc_network.self_link
 
   allow {
@@ -48,13 +56,13 @@ resource "google_compute_firewall" "test1-allow-ssh" {
     ports    = ["22"]
   }
 
-  source_ranges = ["35.235.240.0/20", "173.194.93.0/24"]
+  source_ranges = ["35.235.240.0/20", "173.194.93.0/24", "0.0.0.0/0"]
 
 #   都不下=全吃
 }
 
-resource "google_compute_firewall" "test1-allow-80" {
-  name    = "test1-allow-80"
+resource "google_compute_firewall" "allow-80" {
+  name    = "${local.project_name}-allow-80"
   network = google_compute_network.vpc_network.self_link
 
   allow {
@@ -62,11 +70,11 @@ resource "google_compute_firewall" "test1-allow-80" {
     ports    = ["80"]
   }
 
-  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
-  target_tags = ["test1-allow-80"]
+  source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "0.0.0.0/0"]
+  target_tags = ["${local.project_name}-allow-80"]
 }
 
-resource "google_compute_firewall" "test1-allow-443" {
+resource "google_compute_firewall" "allow-443" {
   name    = "test1-allow-443"
   network = google_compute_network.vpc_network.self_link
 
@@ -76,5 +84,5 @@ resource "google_compute_firewall" "test1-allow-443" {
   }
 
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
-  target_tags = ["test1-allow-443"]
+  target_tags = ["${local.project_name}-allow-443"]
 }

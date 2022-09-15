@@ -29,3 +29,10 @@ kubelet會與Container還有node相互溝通,
 會讓pod跑到最適合的node
 
 下新增pod的指令 -> 1 -> 3(判斷資源許可就建立) -> 4(有新的pod就送到對應node)
+
+# service
+https://medium.com/andy-blog/kubernetes-%E9%82%A3%E4%BA%9B%E4%BA%8B-service-%E7%AF%87-d19d4c6e945f
+
+# ingress
+https://medium.com/andy-blog/kubernetes-%E9%82%A3%E4%BA%9B%E4%BA%8B-ingress-%E7%AF%87-%E4%B8%80-92944d4bf97d
+https://medium.com/andy-blog/kubernetes-%E9%82%A3%E4%BA%9B%E4%BA%8B-ingress-%E7%AF%87-%E4%BA%8C-559c7a41404b
