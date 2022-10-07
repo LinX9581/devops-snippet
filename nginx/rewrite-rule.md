@@ -13,6 +13,10 @@ location ~/(.*)/(.*) {
     $2 = 5421700
 }
 
+if ($arg_p = 'str') {
+    
+}
+
 location / {
     set $para2 $uri&$args;
     echo $para2;

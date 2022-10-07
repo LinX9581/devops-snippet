@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Trend v3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        /* @charset "UTF-8";@import url(https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap);.header h1,.header p{letter-spacing:1.5px}.nav-tabs .nav-link.active,footer{--bs-bg-opacity:1;background-color:rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important}:root{--main:#ffbb00;--secondary:#000000;--bg:#e6e6e6;--white:#ffffff;--black:#000000;--fonts:'Roboto',Helvetica,'Noto Sans TC','Microsoft JhengHei',sans-serif}*{-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6,p{margin-bottom:0;transform:scale(1,.96);-webkit-transform:scale(1,.96)}canvas,img{max-width:100%}body{color:var(--black);font-family:var(--fonts);font-size:18px;font-weight:400;line-height:1.3;background:var(--bg);height:100%;margin:0 auto;padding:0;overflow-x:hidden}.logo-nn{display:flex;width:110px;height:33px;padding:0}.logo-nn a{width:100%;height:100%;background:url(https://www.nownews.com/adultcomics/img/logo-nownews.svg) center/100% no-repeat;text-indent:101%;white-space:nowrap;filter:drop-shadow(rgba(0, 0, 0, .5) 0px 0px 8px);overflow:hidden;-webkit-filter:drop-shadow(rgba(0,0,0,.5) 0px 0px 8px)}.header h1{font-size:32px}.header p{font-size:16px;font-weight:300;white-space:nowrap}.header .title-wrap{display:flex;flex-flow:row nowrap;justify-content:space-between;align-items:center}.card{box-shadow:0 .46875rem 2.1875rem rgb(4 9 20 / 3%),0 .9375rem 1.40625rem rgb(4 9 20 / 3%),0 .25rem .53125rem rgb(4 9 20 / 5%),0 .125rem .1875rem rgb(4 9 20 / 3%);border-width:0;transition:.2s;-webkit-transition:.2s}.btn-outline-dark{--bs-btn-border-color:#e7e7e7}.nav-tabs .nav-link.active{--bs-text-opacity:1;color:rgba(var(--bs-white-rgb),var(--bs-text-opacity))!important}footer p{color:#777;font-size:16px;text-align:center}@media (max-width:767px){.logo-nn{display:none}.header h1,.hot-top .h2,.rc18 .h2{font-size:5.5vmin}.header h1 img{width:5.5vmin}.header p{font-size:3vmin;letter-spacing:unset}.card-header-title{font-size:4.5vmin}.hot-top .nav-link,.time-btn .card-body label{font-size:4vmin}.hot-top .nav{flex-wrap:nowrap}footer p{font-size:3.5vmin}} */
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+    <!-- DataTables JS-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/datatables.min.js"></script>
+    <script type="text/javascript" src="https://sit.linx.services/js/dataTable/sum.js"></script>
+    <script type="text/javascript" src="https://sit.linx.services/js/dataTable/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://sit.linx.services/js/dataTable/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://sit.linx.services/js/dataTable/jszip.min.js"></script>
+
+    <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/2965_RC01/embed_loader.js"></script>
+    <!-- <script nonce="b065dc4c-d274-4cd5-8d5b-3790d25a865c">(function(w,d){!function(a,e,t,r){a.zarazData=a.zarazData||{};a.zarazData.executed=[];a.zaraz={deferred:[],listeners:[]};a.zaraz.q=[];a.zaraz._f=function(e){return function(){var t=Array.prototype.slice.call(arguments);a.zaraz.q.push({m:e,a:t})}};for(const e of["track","set","debug"])a.zaraz[e]=a.zaraz._f(e);a.zaraz.init=()=>{var t=e.getElementsByTagName(r)[0],z=e.createElement(r),n=e.getElementsByTagName("title")[0];n&&(a.zarazData.t=e.getElementsByTagName("title")[0].text);a.zarazData.x=Math.random();a.zarazData.w=a.screen.width;a.zarazData.h=a.screen.height;a.zarazData.j=a.innerHeight;a.zarazData.e=a.innerWidth;a.zarazData.l=a.location.href;a.zarazData.r=e.referrer;a.zarazData.k=a.screen.colorDepth;a.zarazData.n=e.characterSet;a.zarazData.o=(new Date).getTimezoneOffset();a.zarazData.q=[];for(;a.zaraz.q.length;){const e=a.zaraz.q.shift();a.zarazData.q.push(e)}z.defer=!0;for(const e of[localStorage,sessionStorage])Object.keys(e||{}).filter((a=>a.startsWith("_zaraz_"))).forEach((t=>{try{a.zarazData["z_"+t.slice(7)]=JSON.parse(e.getItem(t))}catch{a.zarazData["z_"+t.slice(7)]=e.getItem(t)}}));z.referrerPolicy="origin";z.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(a.zarazData)));t.parentNode.insertBefore(z,t)};["complete","interactive"].includes(e.readyState)?zaraz.init():a.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,0,"script");})(window,document);</script> -->
+</head>
+
+<body>
+    <header class="header text-white bg-dark">
+        <div class="container-fluid">
+            <div class="row p-3">
+                <div class="title-wrap col">
+                    <div class="logo-nn">
+                        <a href="https://www.nownews.com" target="_blank" title="NOWnews今日新聞" alt="NOWnews今日新聞logo" rel="noopener">NOWnews今日新聞</a>
+                    </div>
+                    <h1>即時議題儀表板</h1>
+                    <p>2022-09-15 17:05:37</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="time-btn">
+        <div class="container">
+            <div class="row mt-3 mt-lg-5">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header p-3">
+                            <h3 class="h4 card-header-title">即時數據 Top10 24H 時段</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <div>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio1">01:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio2">02:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio3">03:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio4">04:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio5">05:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio6">06:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio7">07:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio8" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio8">08:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio9" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio9">09:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio10" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio10">10:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio11" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio11">11:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio12" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio12">12:00</label>
+                            </div>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio13" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio13">13:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio14" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio14">14:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio15" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio15">15:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio16" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio16">16:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio17" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio17">17:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio18" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio18">18:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio19" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio19">19:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio20" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio20">20:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio21" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio21">21:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio22" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio22">22:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio23" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio23">23:00</label>
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio24" autocomplete="off">
+                                <label class="btn btn-outline-dark m-1 m-md-2" for="btnradio24">24:00</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 mt-3 mt-lg-5">
+                <div class="col mb-3 mb-md-4">
+                    <div class="card">
+                        <div class="card-header p-3">
+                            <h3 class="h4 card-header-title">GA Total 即時數據 24H PV</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="https://picsum.photos/624/312/?random=10">
+                            <!-- <canvas id="rtTotalPvLineChart"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-3 mb-md-4">
+                    <div class="card">
+                        <div class="card-header p-3">
+                            <h3 class="h4 card-header-title">GA Total 即時數據 24H PV</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="https://picsum.photos/624/312/?random=11">
+                            <!-- <canvas id="rtGoogleLineChart"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-3 mb-md-4">
+                    <div class="card">
+                        <div class="card-header p-3">
+                            <h3 class="h4 card-header-title">GA Total 即時數據 24H PV</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="https://picsum.photos/624/312/?random=12">
+                            <!-- <canvas id="rtFbPvLineChart"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-3 mb-md-4">
+                    <div class="card">
+                        <div class="card-header p-3">
+                            <h3 class="h4 card-header-title">GA Total 即時數據 24H PV</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="https://picsum.photos/624/312/?random=13">
+                            <!-- <canvas id="rtLinePvLineChart"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 18禁文章 -->
+    <section class="rc18 bg-dark py-3 py-lg-5 mt-3 mt-lg-5">
+        <div class="container pb-3">
+            <h3 class="h2 text-white py-3">18禁文章</h3>
+            <div class="row row-cols-1 row-cols-md-2">
+                <div class="col mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <img src="https://picsum.photos/624/312/?random=14">
+                            <!-- <canvas id="post18PvLineChart"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-2 mb-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <img src="https://picsum.photos/624/312/?random=15">
+                            <!-- <canvas id="post18CountLineChart"></canvas> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOP熱門議題 -->
+    <section class="hot-top">
+        <div class="container">
+            <div class="row mt-3 mt-lg-5 pb-3 pb-lg-5 mb-2">
+                <h3 class="h2 py-3">TOP熱門議題</h3>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <nav>
+                                <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
+                                    <button class="nav-link text-dark active" id="nav-googleTrend-tab" data-bs-toggle="tab" data-bs-target="#nav-googleTrend" type="button" role="tab" aria-controls="nav-googleTrend" aria-selected="true">Google Trends</button>
+                                    <button class="nav-link text-dark" id="nav-tagAnalysis-tab" data-bs-toggle="tab" data-bs-target="#nav-tagAnalysis" type="button" role="tab" aria-controls="nav-tagAnalysis" aria-selected="false">新文易數</button>
+                                    <button class="nav-link text-dark" id="nav-tagNownews-tab" data-bs-toggle="tab" data-bs-target="#nav-tagNownews" type="button" role="tab" aria-controls="nav-tagNownews" aria-selected="false">今日新聞</button>
+                                    <button class="nav-link text-dark" id="nav-tagCommon-tab" data-bs-toggle="tab" data-bs-target="#nav-tagCommon" type="button" role="tab" aria-controls="nav-tagCommon" aria-selected="false">最熱議題</button>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-googleTrend" role="tabpanel" aria-labelledby="nav-googleTrend-tab"></div>
+                                <div class="tab-pane fade" id="nav-tagAnalysis" role="tabpanel" aria-labelledby="nav-tagAnalysis-tab"></div>
+                                <div class="tab-pane fade" id="nav-tagNownews" role="tabpanel" aria-labelledby="nav-tagNownews-tab"></div>
+                                <div class="tab-pane fade" id="nav-tagCommon" role="tabpanel" aria-labelledby="nav-tagCommon-tab"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center py-3 py-md-4">
+                <div class="col">
+                    <p>© 今日傳媒(股)公司 © 2022 NOWnews.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 相關新聞 Modal -->
+    <div class="modal fade" id="relatied-news" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Related News</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body related-news-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NN相關新聞 Modal -->
+    <div class="modal fade" id="nn-relatied-news" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">NN News</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body nn-related-news-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top10 Realtime News Modal -->
+    <div class="modal fade" id="top10-news" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title top10-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body top10-news-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(async function(e) {
+            let reloadTime = setInterval('window.location.reload();', 1800000);
+            $(window).on('unload', function() {
+                clearInterval(reloadTime)
+            })
+
+            getRealtimeSource()
+            async function getRealtimeSource() {
+                let getRealtimeSource = await fetch('/googleTrend/rtSourcePv', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                }).then(res => res.json()).then(res => {
+                    return res;
+                })
+
+                // commond data
+                let lineChartLable = ['今日', '昨日']
+                let color = ['#CC0000', '#CCFFFF', '#CCFF99', '#CCCCFF']
+                let timeLableArray = [];
+
+                for (let i = 0; i < 24; i++) timeLableArray.push(i)
+
+                // line chart
+                let totalLineChartArray = [],
+                    googleLineChartArray = [],
+                    fbLineChartArray = [],
+                    lineLineChartArray = [],
+                    totalLineData = [],
+                    googleLineData = [],
+                    fbLineData = [],
+                    lineLineData = [];
+
+                totalLineData.push(getRealtimeSource.totalSourceLineObj.nowTotalPvArray, getRealtimeSource.totalSourceLineObj.day1AgoHourDataArray)
+                for (var i in lineChartLable) {
+                    totalLineChartArray.push({
+                        label: lineChartLable[i],
+                        data: totalLineData[i],
+                        backgroundColor: color[i],
+                        borderColor: color[i],
+                        borderWidth: 5
+                    })
+                }
+                googleLineData.push(getRealtimeSource.totalSourceLineObj.nowGooglePvArray, getRealtimeSource.totalSourceLineObj.day1AgoGooglePvArray)
+                for (var i in lineChartLable) {
+                    googleLineChartArray.push({
+                        label: lineChartLable[i],
+                        data: googleLineData[i],
+                        backgroundColor: color[i],
+                        borderColor: color[i],
+                        borderWidth: 5
+                    })
+                }
+                fbLineData.push(getRealtimeSource.totalSourceLineObj.nowFbPvArray, getRealtimeSource.totalSourceLineObj.day1FbPvArray)
+                for (var i in lineChartLable) {
+                    fbLineChartArray.push({
+                        label: lineChartLable[i],
+                        data: fbLineData[i],
+                        backgroundColor: color[i],
+                        borderColor: color[i],
+                        borderWidth: 5
+                    })
+                }
+                lineLineData.push(getRealtimeSource.totalSourceLineObj.nowLinePvArray, getRealtimeSource.totalSourceLineObj.day1LinePvArray)
+                for (var i in lineChartLable) {
+                    lineLineChartArray.push({
+                        label: lineChartLable[i],
+                        data: lineLineData[i],
+                        backgroundColor: color[i],
+                        borderColor: color[i],
+                        borderWidth: 5
+                    })
+                }
+
+                let opt = {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let total = 0;
+                                    for (let i = 0; i <= context.dataIndex; i++) {
+                                        total += parseInt(context.dataset.data[i])
+                                    }
+                                    return "加總: " + total + ",目前:" + context.dataset.data[context.dataIndex];
+                                }
+                            }
+                        }
+                    },
+                }
+                genChart('line', 'rtTotalPvLineChart', timeLableArray, totalLineChartArray, opt)
+                genChart('line', 'rtGoogleLineChart', timeLableArray, googleLineChartArray, opt)
+                genChart('line', 'rtFbPvLineChart', timeLableArray, fbLineChartArray, opt)
+                genChart('line', 'rtLinePvLineChart', timeLableArray, lineLineChartArray, opt)
+            }
+            getPost18()
+            async function getPost18() {
+                let getPost18Data = await fetch('/googleTrend/post18', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    }).then(res => res.json()).then(res => {
+                        return res;
+                    })
+                    // commond data
+                let lineChartLable = ['今日', '昨日']
+                let color = ['#CC0000', '#CCFFFF', '#CCFF99', '#CCCCFF']
+                let timeLableArray = [];
+
+                let dateLable = [],
+                    post18PvArray = [],
+                    post18CountArray = [];
+                console.log(getPost18Data.post18Obj);
+                for (let i = 0; i < getPost18Data.post18Obj.length; i++) {
+                    dateLable.push(moment(getPost18Data.post18Obj[i].date).format('YYYY-MM-DD'))
+                    post18PvArray.push(getPost18Data.post18Obj[i].pv)
+                    post18CountArray.push(getPost18Data.post18Obj[i].count)
+                }
+
+                // line chart
+                let post18PvChartArray = [],
+                    post18PvBarData = [],
+                    post18PostChartArray = [],
+                    post18PostBarData = [];
+                console.log(dateLable);
+                console.log(post18PvArray);
+                console.log(post18CountArray);
+                post18PvBarData = [{
+                    label: '18禁文章PV',
+                    data: post18PvArray,
+                    backgroundColor: ['pink'],
+                    borderWidth: 1
+                }]
+                post18PostBarData = [{
+                    label: '18禁文章則數',
+                    data: post18CountArray,
+                    backgroundColor: ['pink'],
+                    borderWidth: 1
+                }]
+
+                genChart('bar', 'post18PvLineChart', dateLable, post18PvBarData)
+                genChart('bar', 'post18CountLineChart', dateLable, post18PostBarData)
+            }
+
+            topKeyword()
+            async function topKeyword() {
+                // Get RT Top10 News
+                let rtHourHtml = ''
+                for (let i = 0; i < 24; i++) {
+                    rtHourHtml += `<div class="col top10News" hour="${(i+1)}">${(i+1)}</div>`
+                }
+                $('.rtHour').html(rtHourHtml)
+
+                $(".top10News").click(async function() {
+                    $('.top10-title').html('今日即時Top10')
+                    $('.top10-news-body').html('')
+                    let clickHour = $(this).attr('hour')
+                    let rtTop10 = await fetch('/googleTrend/rtTop10', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            "clickHour": clickHour,
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    }).then(res => res.json()).then(res => {
+                        return res;
+                    })
+                    $('#top10-news').modal('show');
+                    $('.top10-news-body').html("<pre>" + rtTop10.rtTop10News[0].top10news + "</pre>")
+                    $('.top10-title').html(`<div>今日 ` + clickHour + `時 即時Top10"</div>`)
+                })
+                let innerGoogleTrendHtml = '';
+                let innerTagAnalysisHtml = '';
+                let innerTagNownewsHtml = '';
+                let innerCommonsHtml = '';
+
+                let googleKeyword = await fetch('/googleTrend', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                }).then(res => res.json()).then(res => {
+                    return res;
+                })
+                console.log(googleKeyword);
+
+                let googleRelatedLinkColor = "",
+                    tagAnalysisRelatedLinkColor = "";
+                let nnKeywordMatchGoogleCount = 0
+                let nnKeywordMatchTagAnalysisCount = 0
+                let commonTagArray = [];
+                let commonTagCount = [];
+                let commonTagIndex = [];
+                let googleTagIndex = -1;
+                let tagAnalysisIndex = -1;
+
+                innerGoogleTrendHtml += '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">Google關鍵字</th><th scope="col">Nownews報導筆數</th><th scope="col">Google相關查詢</th></tr></thead><tbody>'
+                innerTagAnalysisHtml += '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">新文易數關鍵字</th><th scope="col">Nownews報導筆數</th></tr></thead><tbody>'
+                innerTagNownewsHtml += '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">以文章則數排名</th><th scope="col">文章則數</th><th scope="col">以文章PV數排名</th><th scope="col">PV</th></tr></thead><tbody>'
+                innerCommonsHtml += '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">共同關鍵字</th><th scope="col">Nownews報導筆數</th></tr></thead><tbody>'
+                    // 顯示前10個關鍵字                
+                for (let i = 0; i < 10; i++) {
+                    // NN keyword match
+                    nnKeywordMatchGoogleCount = 0;
+                    nnKeywordMatchTagAnalysisCount = 0;
+                    googleTagIndex = -1;
+                    tagAnalysisIndex = -1;
+                    googleRelatedLinkColor = "";
+                    tagAnalysisRelatedLinkColor = "";
+                    for (const nnKeyWord in googleKeyword.keyword.全站.keyword) {
+                        // GoogleTrend Match Nownews
+                        if (i < googleKeyword.googleTrend.length && googleKeyword.googleTrend[i].title == googleKeyword.keyword.全站.keyword[nnKeyWord].tag) {
+                            commonTagArray.push(googleKeyword.googleTrend[i].title)
+                            commonTagCount.push(googleKeyword.keyword.全站.keyword[nnKeyWord].cnt)
+                            commonTagIndex.push(nnKeyWord)
+                            nnKeywordMatchGoogleCount += googleKeyword.keyword.全站.keyword[nnKeyWord].cnt
+                            googleTagIndex = nnKeyWord
+                        }
+                        // TagAnalysis Match Nownews
+                        if (googleKeyword.tagAnalysis[i].keyword == googleKeyword.keyword.全站.keyword[nnKeyWord].tag) {
+                            commonTagArray.push(googleKeyword.keyword.全站.keyword[nnKeyWord].tag)
+                            commonTagCount.push(googleKeyword.keyword.全站.keyword[nnKeyWord].cnt)
+                            commonTagIndex.push(nnKeyWord)
+                            nnKeywordMatchTagAnalysisCount += googleKeyword.keyword.全站.keyword[nnKeyWord].cnt
+                            tagAnalysisIndex = nnKeyWord
+                        }
+                    }
+                    if (googleTagIndex != -1) googleRelatedLinkColor = "blue"
+                    if (tagAnalysisIndex != -1) tagAnalysisRelatedLinkColor = "blue"
+                    if (i < googleKeyword.googleTrend.length) innerGoogleTrendHtml += `<tr><th scope="row">` + (i + 1) + `</th><td style="color:blue" td-google-tag-index="${i}" td-google-tag="${googleKeyword.googleTrend[i].title}" class="googleTag">` + googleKeyword.googleTrend[i].title + `</td><td td-related-tag-index="${googleTagIndex}" td-related-tag="${googleKeyword.googleTrend[i].title}" class="td-nn-related-news" style="color:${googleRelatedLinkColor}">NOWnews : ` + nnKeywordMatchGoogleCount + `筆</a></td><td>相關查詢 : ` + googleKeyword.googleTrend[i].queries + `</td>`
+                    innerTagAnalysisHtml += `<tr><th scope="row">` + (i + 1) + `</th><td>` + googleKeyword.tagAnalysis[i].keyword + `</td><td td-related-tag-index="${tagAnalysisIndex}" td-related-tag="${googleKeyword.tagAnalysis[i].keyword}" class="td-nn-related-news" style="color:${tagAnalysisRelatedLinkColor}">NOWnews : ` + nnKeywordMatchTagAnalysisCount + `筆</td>`
+                    innerTagNownewsHtml += `<tr><th scope="row">` + (i + 1) + `</th><td>` + googleKeyword.keyword.全站.keyword[i].tag + `</td><td td-related-tag-index="${i}" td-related-tag="${googleKeyword.keyword.全站.keyword[i].tag}" class="td-nn-related-news" style="color:blue">NOWnews : ` + googleKeyword.keyword.全站.keyword[i].cnt + `筆</td><td>` + googleKeyword.keyword.全站.pv[i].tag + `</td><td>` + googleKeyword.keyword.全站.pv[i].pv + `</td>`
+
+                    //Google Match TagAnalysis
+                    for (const tagAnalysiskey in googleKeyword.tagAnalysis) {
+                        if (i < googleKeyword.googleTrend.length && googleKeyword.tagAnalysis[tagAnalysiskey].keyword == googleKeyword.googleTrend[i].title) {
+                            commonTagArray.push(googleKeyword.googleTrend[i].title)
+                            commonTagCount.push(0)
+                            commonTagIndex.push(-1)
+                        }
+                    }
+                }
+
+                let uniqCommonTagIndexArray = []
+                commonTagArray.forEach((element, index) => {
+                    uniqCommonTagIndexArray.push({
+                        'keyword': commonTagArray[index],
+                        'index': commonTagIndex[index],
+                        'count': commonTagCount[index]
+                    })
+                });
+                const uniqueIds = [];
+
+                const uniqCommonTagArray = uniqCommonTagIndexArray.filter(element => {
+                    const isDuplicate = uniqueIds.includes(element.keyword);
+                    if (!isDuplicate) {
+                        uniqueIds.push(element.keyword);
+                        return true;
+                    }
+                    return false;
+                });
+
+                uniqCommonTagArray.forEach((keyword, index) => {
+                    innerCommonsHtml += '<tr><th scope="row">' + (index + 1) + '</th><td>' + keyword.keyword + '</td><td style="color:blue" td-related-tag-index="' + keyword.index + '" td-related-tag="' + keyword.keyword + '" class="td-nn-related-news">Nownews:' + keyword.count + '筆</td>'
+                });
+                innerGoogleTrendHtml += '</tbody></table>'
+                innerTagAnalysisHtml += '</tbody></table>'
+                innerTagNownewsHtml += '</tbody></table>'
+                innerCommonsHtml += '</tbody></table>'
+                $('#nav-googleTrend').html(innerGoogleTrendHtml)
+                $('#nav-tagAnalysis').html(innerTagAnalysisHtml)
+                $('#nav-tagNownews').html(innerTagNownewsHtml)
+                $('#nav-tagCommon').html(innerCommonsHtml)
+
+
+                // Google 關鍵字相關文章連結
+                $("td.googleTag").click(function() {
+                        let relatedNewsModalBodyHtml = '';
+                        let googleTag = $(this).attr('td-google-tag')
+                        let googleTagIndex = $(this).attr('td-google-tag-index')
+
+                        relatedNewsModalBodyHtml += '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">關鍵字: ' + googleTag + ' </th></tr></thead><tbody>';
+                        for (let i = 0; i < googleKeyword.googleTrend[googleTagIndex].news.length; i++) {
+                            relatedNewsModalBodyHtml += `<tr><th scope="row">` + (i + 1) + `</th><td>新聞來源: ${googleKeyword.googleTrend[googleTagIndex].news[i].source} </td><td>文章標題: <a href="${googleKeyword.googleTrend[googleTagIndex].news[i].url}" target="_blank">${googleKeyword.googleTrend[googleTagIndex].news[i].title}</a> </td><td>發佈時間: ${googleKeyword.googleTrend[googleTagIndex].news[i].timeAgo}</td>`
+                        }
+                        relatedNewsModalBodyHtml += '</tbody></table>'
+                        $('#relatied-news').modal('show');
+                        $('.related-news-body').html(relatedNewsModalBodyHtml)
+                    })
+                    // NN相關文章連結
+                $("td.td-nn-related-news").click(function() {
+                    let nnRelatedNewsModalBodyHtml = '';
+                    let relatedTag = $(this).attr('td-related-tag')
+                    let relatedIndex = $(this).attr('td-related-tag-index')
+
+                    nnRelatedNewsModalBodyHtml += '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">關鍵字: ' + relatedTag + ' </th></tr></thead><tbody>';
+                    for (let i = 0; i < googleKeyword.keyword.全站.keyword[relatedIndex].ids.length; i++) {
+                        nnRelatedNewsModalBodyHtml += `<tr><th scope="row">` + (i + 1) + `</th><td>文章標題: <a href="https://nownews.com/news/${googleKeyword.keyword.全站.keyword[relatedIndex].ids[i].id}" target="_blank">${googleKeyword.keyword.全站.keyword[relatedIndex].ids[i].title}</a> </td><td>  發佈日期: ${googleKeyword.keyword.全站.keyword[relatedIndex].ids[i].time}</td>`
+                    }
+                    nnRelatedNewsModalBodyHtml += '</tbody></table>'
+
+                    if (relatedIndex != -1) {
+                        $('#nn-relatied-news').modal('show');
+                        $('.nn-related-news-body').html(nnRelatedNewsModalBodyHtml)
+                    }
+                })
+
+            }
+
+            async function genChart(type, chartId, chartTimeLabel, chartData, opt) {
+                const ctx = document.getElementById(chartId).getContext('2d');
+                const realtimeChart = new Chart(ctx, {
+                    type: type,
+                    data: {
+                        labels: chartTimeLabel,
+                        datasets: chartData,
+                    },
+                    tooltips: {
+                        mode: 'index'
+                    },
+                    options: opt
+                });
+            }
+
+            function addCommas(nStr) {
+                nStr += '';
+                x = nStr.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? ',' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                return x1 + x2;
+            }
+        });
+    </script>
+</body>
+
+</html>
