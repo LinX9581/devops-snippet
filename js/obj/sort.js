@@ -1,5 +1,4 @@
-
-let allSource = ['Yahoo奇摩股市','Yahoo奇摩股市','經濟日報','經濟日報','經濟日報']
+let allSource = ['Yahoo奇摩股市', 'Yahoo奇摩股市', '經濟日報', '經濟日報', '經濟日報']
 for (const num of allSource) {
     newsCounts[num] = newsCounts[num] ? newsCounts[num] + 1 : 1;
 }
@@ -25,6 +24,10 @@ for (let i = 0; i < Object.values(newsCounts).length; i++) {
 newsCountsObj.sort((a, b) => {
     return a.count - b.count;
 });
+// 時間排序
+// googleRelatedNews.sort((a, b) => {
+//     return b.newsTime.localeCompare(a.newsTime);
+// });
 
 // 排序方式2. 取的所有value 排序後 再去拿該索引的 Keys+Value
 let sortNewsCounts = Object.values(newsCounts)

@@ -1,0 +1,46 @@
+apiVersion: apps/v1 # for kubectl versions >= 1.9.0 use apps/v1
+kind: Deployment
+metadata:
+  name: blue-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blue-nginx
+  template:
+    metadata:
+      labels:
+        app: blue-nginx
+    spec:
+      containers:
+      - name: my-pod
+        image: hcwxd/blue-whale
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 100m
+---
+apiVersion: apps/v1 # for kubectl versions >= 1.9.0 use apps/v1
+kind: Deployment
+metadata:
+  name: purple-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: purple-nginx
+  template:
+    metadata:
+      labels:
+        app: purple-nginx
+    spec:
+      containers:
+      - name: my-pod-purple
+        image: hcwxd/purple-whale
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 100m
+        

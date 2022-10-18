@@ -1,7 +1,3 @@
-## minikube 相關指令
-* minikube ip
-* minikube ssh
-* minikube dashboard //開啟後 GKE 即可監控
 ## kubectl 相關指令
 sudo apt-get install kubectl
 ## SSH
@@ -14,6 +10,7 @@ sudo apt-get install kubectl
 * kubectl describe pods podname --namespace=develop
 * kubectl describe no minikube          //查看pod cpu ram ip
 * kubectl describe rc                   //查看replica set
+* kubectl get svc -o wide -A            //=netstat -ntlp
 ## 新增
 * kubectl apply -f pod.yaml             //建完後 ssh minukube 會看到新增的container
 * kubectl apply -R -f example-app       //執行整個目錄
@@ -32,6 +29,8 @@ kubectl expose deploy hello-deployment --type=NodePort --name=my-deployment-serv
 // kdsn 列出所有cluster底下的worker node 用該node:servicePort外連
 
 kubectl expose deployment hello-deployment --type=LoadBalancer --name=my-service  //這邊建立完會直接建立一個 loadbalance導到cluster
+kubectl proxy   //讓k8s對內服務 對外部VM機器 但要多一層nginx才能對外
+kubectl proxy --address='0.0.0.0' --accept-hosts='^*$' 
 ## scal
 kubectl scale deployment hello-deployment –replicas=4
 ## 監控
@@ -39,7 +38,13 @@ kubectl top pod podname
 ## API
 * kubectl proxy // curl 127.0.0.1:8001 可查看有哪些API可用
 * gcloud container clusters get-credentials cluster-4 --zone=asia-east1-a --project=k88888888s-329606
+
 ## 從節點拔除
 * kubectl uncordon podname
 ## 新增節點
 * kubectl cordon podname
+
+## minikube 相關指令
+* minikube ip
+* minikube ssh
+* minikube dashboard //開啟後 GKE 即可監控

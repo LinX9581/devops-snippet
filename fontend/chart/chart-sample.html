@@ -83,7 +83,21 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    // type: 'logarithmic', 指數顯示
+                    display: true,
+                    // type: 'logarithmic', //指數呈現
+                    // ticks: {
+                    //     autoSkip: true,
+                    //     min: 0, //minimum tick
+                    //     max: 400, //maximum tick
+                    //     callback: function(value, index, values) {
+                                // 要顯示400 一定也要顯示50 
+                    //         if (value == 400) return "400";
+                    //         if (value == 100) return "100";
+                    //         if (value == 50) return "50";
+                    //         if (value === 10) return "10";
+                    //         if (value === 1) return "1";
+                    //     },
+                    // }
                 }
             },
             responsive: false,

@@ -1,3 +1,4 @@
+# 原理
 https://ithelp.ithome.com.tw/articles/10264285
 
 * cluster組成
@@ -34,5 +35,48 @@ kubelet會與Container還有node相互溝通,
 https://medium.com/andy-blog/kubernetes-%E9%82%A3%E4%BA%9B%E4%BA%8B-service-%E7%AF%87-d19d4c6e945f
 
 # ingress
+* old
 https://medium.com/andy-blog/kubernetes-%E9%82%A3%E4%BA%9B%E4%BA%8B-ingress-%E7%AF%87-%E4%B8%80-92944d4bf97d
 https://medium.com/andy-blog/kubernetes-%E9%82%A3%E4%BA%9B%E4%BA%8B-ingress-%E7%AF%87-%E4%BA%8C-559c7a41404b
+
+* new
+https://ithelp.ithome.com.tw/articles/10288843
+* SSL
+https://fufu.gitbook.io/kk8s/task-memory/23.ingress-ssl-secret
+
+# nginx ingress
+https://github.com/kubernetes/ingress-nginx
+
+# 進階設定
+三者基本一樣 
+* deployment    //normal 用來建構無狀態Pod
+* daemonset     //殺掉會重生  //應該是差在pod ID 會不會被更換
+* stateful      //殺掉會原地重生 用來建構有狀態Pod
+
+# scaling 
+vertical        //調整cpu & ram
+horizontal      //可設最小&最大產生Pod
+health-check    
+
+
+設定檔範例參考
+https://ithelp.ithome.com.tw/articles/10263702
+
+概念界介紹
+https://jimmysong.io/kubernetes-handbook/concepts/pod-overview.html
+
+入門到進階到課程
+https://www.hwchiu.com/
+
+
+# Dashboard
+* 參考
+https://kubernetes.io/docs/reference/access-authn-authz/authentication/
+https://ithelp.ithome.com.tw/articles/10287935
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.1/aio/deploy/recommended.yaml
+
+IP:PORT/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+
+kubectl proxy --address='0.0.0.0' --accept-hosts='^*$'
+卡在沒token
