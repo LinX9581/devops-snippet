@@ -15,6 +15,18 @@ docker rename open_ovpn_1 gra_open_ovpn_1
 ping -c 2 172.17.0.3 : ping
 docker update --restart=always ID : 讓container重開機自動重啟
 
+# nodejs
+https://ithelp.ithome.com.tw/articles/10192519
+FROM node:6.2.2
+WORKDIR /app
+ADD . /app
+RUN npm install
+EXPOSE 300
+CMD npm start
+
+docker build .
+docker run -p 3000:3000 -it 59f3e3615488
+
 # phpmyadmin docker
 註解IP
 nano /etc/mysql/mariadb.conf.d/50-server.cnf

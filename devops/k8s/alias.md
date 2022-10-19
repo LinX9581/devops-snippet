@@ -19,6 +19,8 @@ alias kdsn='kubectl describe node'
 alias kdsd='kubectl describe deployment'
 alias kdss='kubectl describe service'
 alias kdsh='kubectl describe HorizontalPodAutoscaler'
+alias kdsi='kubectl describe ingress'
+alias kdsc='kubectl describe configmap'
 
 ## delete
 alias kdd='kubectl delete deployment'

@@ -11,18 +11,20 @@
     import {io} from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
     const socket = io('ws://127.0.0.1:4000');
 
-    async function client_disconnect(){
-      console.log('client disconnect');
-      socket.close();
-    }
-    setTimeout(client_disconnect, 5000);
-
     // 監聽 Server Event
     socket.on('earthquake event', function (msg) {
       let date = new Date();
       console.log(date);
       console.log(msg);
     })
+
+
+    // 5秒後關閉連線
+    // async function client_disconnect(){
+    //   console.log('client disconnect');
+    //   socket.close();
+    // }
+    // setTimeout(client_disconnect, 5000);
 
     // 壓測 funciton
     // let clientCount = 0;

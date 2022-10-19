@@ -12,7 +12,9 @@ kcy ingress.yaml
 * 注意版本 要對應k8s版本
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.4.0/deploy/static/provider/cloud/deploy.yaml
 
+kubectl get all -n ingress-nginx
 刪除則 kcy -> kdy
+
 
 # 原理
 

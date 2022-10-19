@@ -15,9 +15,9 @@ services:
       - NET_ADMIN
     restart: always
 
-docker-compose run --rm ovpn ovpn_genconfig -u udp://172.16.2.7
+docker-compose run --rm ovpn ovpn_genconfig -u udp://34.146.159.216
 docker-compose run --rm ovpn ovpn_initpki
 docker-compose up -d
-export CLIENTNAME="cyber"
+export CLIENTNAME="jpvpn"
 docker-compose run --rm ovpn easyrsa build-client-full "$CLIENTNAME" nopass
 docker-compose run --rm ovpn ovpn_getclient "$CLIENTNAME" > "$CLIENTNAME.ovpn"

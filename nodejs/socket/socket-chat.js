@@ -18,11 +18,7 @@ app.get("/", cors(), function (req, res) {
 let i = 0;
 let connector = 0;
 io.on("connection", function (socket) {
-  // var origin = socket.handshake.headers.origin;
-  let date = 0;
-  let connect_time = setInterval(() => {
-    console.log(date++);
-  }, 1000);
+
   connector++;
   app.post("/socket-to-client", async function (req, res) {
     socket.broadcast.emit("earthquake event", "earthquake msg");
@@ -35,7 +31,7 @@ io.on("connection", function (socket) {
 
   socket.on("disconnect", function () {
     connector--;
-    console.log("left");
+    console.log("left" + "\n" + "連線數: " + connector);
     clearInterval(connect_time)
     socket.broadcast.emit("user left");
   });
