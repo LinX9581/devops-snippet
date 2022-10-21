@@ -14,18 +14,21 @@ docker-compose up -d : 啟用dockerfile
 docker rename open_ovpn_1 gra_open_ovpn_1
 ping -c 2 172.17.0.3 : ping
 docker update --restart=always ID : 讓container重開機自動重啟
+docker search ubuntu -f is-official=true : 搜尋官方Image
+# GUI Docker Portainer
+docker run -d -p 4000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /var/Portainer:/data portainer/portainer
 
-# nodejs
-https://ithelp.ithome.com.tw/articles/10192519
-FROM node:6.2.2
-WORKDIR /app
-ADD . /app
-RUN npm install
-EXPOSE 300
-CMD npm start
+# 自架 Docker registry
+docker run -d -p 3008:5000 -v /docker/registry:/var/lib/registry --name registry registry:2
+cat>/etc/docker/daemon.json<<EOF
+{ "insecure-registries":["34.92.123.7:3008"] }
+EOF
+docker push 34.92.123.7:3008/node-test
+# mount 
 
-docker build .
-docker run -p 3000:3000 -it 59f3e3615488
+# build
+docker build -t node-test . --no-cache
+docker run  --name node-test -p 3000:3000 -it node-test
 
 # phpmyadmin docker
 註解IP

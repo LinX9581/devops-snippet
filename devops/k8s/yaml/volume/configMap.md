@@ -1,3 +1,6 @@
+
+https://ithelp.ithome.com.tw/articles/10196153
+https://ithelp.ithome.com.tw/articles/10196153
 # use cmd
 
 kubectl create configmap pg-connect \

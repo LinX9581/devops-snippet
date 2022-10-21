@@ -4,6 +4,7 @@ https://medium.com/andy-blog/kubernetes-%E9%82%A3%E4%BA%9B%E4%BA%8B-ingress-%E7%
 
 官方
 https://kubernetes.io/docs/concepts/services-networking/ingress/
+https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/
 
 # 建立
 kcy deploy.yaml

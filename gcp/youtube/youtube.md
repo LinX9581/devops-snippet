@@ -8,6 +8,11 @@ https://www.googleapis.com/youtube/v3/channels?part=statistics&id=UCCZS6YMggfiRV
 express-oauth
 client              // not working
 
+# live 
+https://stackoverflow.com/questions/54523948/how-to-identify-if-a-video-is-a-premiere-via-the-youtube-api
+https://github.com/jschuur/learnchinese.club/blob/master/server/update.js#L137
+https://developers.google.com/youtube/v3/live/life-of-a-broadcast
+
 ## 服務條款 隱私權條款
 https://developers.google.com/youtube/terms/api-services-terms-of-service
 https://developers.google.com/youtube/terms/developer-policies

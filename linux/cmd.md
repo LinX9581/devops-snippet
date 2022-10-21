@@ -154,8 +154,13 @@ source ~/.bashrc
 這檔案裡面包含原本PATH變數的資料, 要增加請在最後面用:加上你要加入的路徑即可
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin"
 
-## 查看 背景執行的Proccess
+## 查看 背景執行的Thread
+Thread
+https://ithelp.ithome.com.tw/articles/10297649
 ```
+查詢所有node 執行的路徑
+pwdx $(ps -C "node" --format pid --no-headers)
+
 查詢哪些port被占用
 netstat -tnlp
 
@@ -168,10 +173,10 @@ ps -fC node
 查詢哪些程式在執行
 ps aux | grep node
 
-殺掉特定 Port 的 Proccess
+殺掉特定 Port 的 Thread
 sudo fuser -k 80/tcp
 
-殺掉特定 Proccess ID 
+殺掉特定 Thread ID 
 kill -9 12413
 ```
 ## 解壓縮

@@ -25,6 +25,9 @@ FLUSH PRIVILEGES;
 * drop user
 DROP USER 'username'@'host';
 
+* change user host
+UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='username';
+
 * change user password
 SET PASSWORD FOR 'dev-holywater'@'localhost' = PASSWORD('xO7mjOy3()Z%');
 
