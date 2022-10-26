@@ -96,7 +96,7 @@ image push to gcr
 ```
 gcloud auth activate-service-account --key-file json
 gcloud auth configure-docker
-docker tag linx9581/calendar:0.1 gcr.io/phonic-entity-320408/calendar:0.1
+docker tag linx9581/calendar:0.1 asia.gcr.io/phonic-entity-320408/calendar:0.1
 docker tag [SOURCE_IMAGE] [HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG]
 
 docker push gcr.io/phonic-entity-320408/calendar:0.1

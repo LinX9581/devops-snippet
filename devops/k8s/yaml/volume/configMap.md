@@ -1,6 +1,5 @@
 
 https://ithelp.ithome.com.tw/articles/10196153
-https://ithelp.ithome.com.tw/articles/10196153
 # use cmd
 
 kubectl create configmap pg-connect \
@@ -8,7 +7,11 @@ kubectl create configmap pg-connect \
 --from-literal=port=5432
 
 * use file
-kubectl create configmap redis-config --from-file=my-redis.conf
+kubectl create configmap env-config --from-file=env.conf
+
+env.conf
+mysqlaccount docker
+mysqlpw 00000000
 
 # use yaml
 apiVersion: v1
@@ -20,3 +23,10 @@ metadata:
 data:
   PG_USER: postgres
   PG_PASSWORD: postgres
+
+# get
+kubectl get configmap
+
+# update
+kubectl edit configmap nodejs-config
+更改後 pod 10秒後才會吃到

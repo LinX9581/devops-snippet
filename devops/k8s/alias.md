@@ -9,6 +9,7 @@ alias kgl='kubectl logs'
 alias kgr='kubectl get rs'
 alias kgd='kubectl get deployment'
 alias kgi='kubectl get ingress'
+alias kgc='kubectl get configmap'
 
 ## create
 alias kcy='kubectl apply -f'

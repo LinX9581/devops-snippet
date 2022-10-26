@@ -7,7 +7,7 @@ docker run：執行容器
 docker stop：暫停容器
 docker start：恢復容器
 docker inspect：檢視容器詳細資訊
-docker logs --details 3e2 : 檢視容器log
+docker logs --details 3e2 : 檢視容器log --follow
 docker exec -it id bash : 連到特定container /bin/bash /bin/sh
 docker network inspect bridge : 查看container走哪個IP
 docker-compose up -d : 啟用dockerfile
@@ -25,6 +25,12 @@ cat>/etc/docker/daemon.json<<EOF
 EOF
 docker push 34.92.123.7:3008/node-test
 # mount 
+file to file
+docker run -itd -v ./config.js:/usr/src/app/config.js --name node-template -p 3008:3008 node-template
+
+# transfer
+docker cp mycontainer:/opt/testnew/file.txt /opt/test/
+docker cp /opt/test/file.txt mycontainer:/opt/testnew/
 
 # build
 docker build -t node-test . --no-cache

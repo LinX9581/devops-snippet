@@ -6,4 +6,4 @@ let connect_time = setInterval(() => {
 async function test(){
     console.log('sdf');
 }
-setTimeout(test, 1000);
+setTimeout(test, 5000);
