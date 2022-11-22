@@ -4,12 +4,14 @@
 //會自動判斷user後面有沒有值
 // a.user?.name
 
-const adventurer = {
-    name: 'Alice',
+const pet = {
     cat: {
         name: 'Dinah'
     }
 };
+const petName = pet.dog?.name;
+console.log(petName);
 
-const dogName = adventurer.dog?.name;
-console.log(dogName);
+if (petName == null) {
+    console.log(null);
+}

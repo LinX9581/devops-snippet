@@ -30,3 +30,11 @@ rtmp://ip:1935/live
     flvPlayer.load();
     flvPlayer.play();
 </script>
+
+
+* cn
+https://github.com/illuspas/Node-Media-Server-Admin
+
+
+# 自架 透過 gcp live stream api
+https://cloud.google.com/livestream/docs/quickstarts/quickstart-hls#create-input-nodejs

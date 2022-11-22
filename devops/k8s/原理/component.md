@@ -74,9 +74,18 @@ https://www.hwchiu.com/
 https://kubernetes.io/docs/reference/access-authn-authz/authentication/
 https://ithelp.ithome.com.tw/articles/10287935
 
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.1/aio/deploy/recommended.yaml
+* 優先參考
+https://github.com/880831ian/kubernetes-elk
 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.1/aio/deploy/recommended.yaml
+kubectl get pod -n kubernetes-dashboard
 IP:PORT/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
 
 kubectl proxy --address='0.0.0.0' --accept-hosts='^*$'
+kubectl -n kube-system describe secret `kubectl -n kube-system get secret|grep admin-token|cut -d " " -f1`|grep "token:"|tr -s " "|cut -d " " -f2 >> passwd.txt
+輸入憑證
 卡在沒token
+
+
+# php custom metrics
+https://github.com/880831ian/gcp-k8s-hpa-php-custom-metrics

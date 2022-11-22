@@ -1,20 +1,13 @@
-
 #! /bin/bash
 sudo apt update
 sudo apt upgrade -y
 sudo apt install ca-certificates apt-transport-https -y 
 sudo apt upgrade -y
-sudo apt install wget -y
+sudo timedatectl set-timezone Asia/Taipei
+sudo apt install wget net-tools -y
 # php for ubuntu
 sudo apt install software-properties-common
 sudo add-apt-repository ppa:ondrej/php -y
-# php for debian
-wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
-echo deb https://packages.sury.org/php/ stretch main | sudo tee /etc/apt/sources.list.d/php.list
-sh -c 'echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/php.list'
-sudo apt update
-sudo apt upgrade -y
-sudo apt-get install ca-certificates apt-transport-https -y
 # sudo apt install php7.4 php7.4-fpm php7.4-cli php7.4-common php7.4-xmlrpc php7.4-opcache php7.4-mysql php7.4-gd php7.4-zip php7.4-xml php7.4-cli php7.4-dev php7.4-imap php7.4-soap php7.4-intl php7.4-curl php7.4-mbstring git nginx mariadb-server mariadb-client -y
 sudo apt install php8.0-fpm php8.0-common php8.0-mysql php8.0-gmp php8.0-curl php8.0-intl php8.0-mbstring php8.0-xmlrpc php8.0-gd php8.0-xml php8.0-cli php8.0-zip git nginx mariadb-server mariadb-client -y
 sudo systemctl start php8.0-fpm nginx mariadb
@@ -24,7 +17,10 @@ wget http://wordpress.org/latest.tar.gz
 sudo tar -xvzf latest.tar.gz -C /var/www/
 sudo chown www-data: /var/www/wordpress/ -R
 cd /var/www/wordpress/
-cp wp-config-sample.php wp-config.php
+
+cat>/var/www/wordpress/wp-config.php<<EOF
+
+EOF
 
 cat>/etc/nginx/nginx.conf<<EOF
 

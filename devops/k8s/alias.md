@@ -30,6 +30,8 @@ alias kdh='kubectl delete HorizontalPodAutoscaler'
 alias kdn='kubectl delete node'
 alias kdp='kubectl delete pod'
 
+## ssh
+alias kssh='kubectl exec --stdin --tty'
 ## monit
 alias ktp='kubectl top pod'
 alias ktn='kubectl top node'

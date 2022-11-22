@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random-number-generator
+spec:
+  containers:
+  - image: alpine
+    name: alpine
+    command: ["/bin/bash", "-c"]
+    args: ["shuf -i 0-50 -n 1 >> /opt/result.out"]
+    ##  container中要mount到volume上的目錄
+    volumeMounts:
+    - mountPath: /opt
+      name: test-volume
+  ## vloume的名稱、路徑及類別
+  volumes:
+  - name: test-volume
+    hostPath:
+      path: /data
+      type: Directory

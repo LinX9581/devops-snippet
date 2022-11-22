@@ -3,26 +3,20 @@ kind: Ingress
 metadata:
   name: ingress-3000
   annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
+    # https://kubernetes.github.io/ingress-nginx/examples/affinity/cookie/ 更多的設定
 spec:
+  ingressClassName: nginx
   rules:
   - host: blue.linx.website
     http:
       paths:
-      - path: /blue
+      - path: /(.*)
         pathType: Prefix  
         backend:
           service:
             name: blue-service
-            port:
-              number: 3000
-  - host: purple.linx.website
-    http:
-      paths:
-      - path: /purple
-        pathType: Prefix
-        backend:
-          service:
-            name: purple-service
             port:
               number: 3000

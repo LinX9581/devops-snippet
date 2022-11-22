@@ -9,6 +9,11 @@ limit_req zone=uat burst=5 nodelay;
 
 https://blog.csdn.net/hellow__world/article/details/78658041
 
+# proxy to https
+location / {
+    proxy_pass https://$http_x_forwarded_to; 
+    proxy_ssl_server_name on;
+}
 # nginx cors
 add_header Access-Control-Allow-Origin *;
 add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';

@@ -10,3 +10,7 @@
 匹配 0 个或多个字符（*）：os:centos*
 多条件查询（逻辑运算符请使用大写）：status:[400 TO 499] AND (extension:php OR extension:html)
 查询以下特殊字符需要使用反斜杠转义：+ - && || ! ( ) { } [ ] ^ " ~ * ? : \
+
+nginx.access.response_code : status = [404 TO 504]
+nginx.access.response_code : 40*
+nginx.access.url.keyword : /news/536*

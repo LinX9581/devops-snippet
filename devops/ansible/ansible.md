@@ -44,6 +44,7 @@ EOF
 
 * 用自建設定檔 & playbook
 ansible-playbook -i inventory env.yml
+ansible-playbook -i ./host/stg ./yaml/env.yml
 
 * 對所有host下指令
 ansible all -i inventory -m ping

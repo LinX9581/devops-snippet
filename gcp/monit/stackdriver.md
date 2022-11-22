@@ -8,7 +8,9 @@ curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
 sudo bash add-google-cloud-ops-agent-repo.sh --also-install
 
 * 確認服務是否起來
-sudo service google-fluentd status
+sudo systemctl status google-cloud-ops-agent"*"
+sudo service google-cloud-ops-agent status
+<!-- sudo service google-fluentd status -->
 
 * 砍掉
 [ubuntu/centos]

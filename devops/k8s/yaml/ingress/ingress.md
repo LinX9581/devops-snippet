@@ -7,13 +7,17 @@ https://kubernetes.io/docs/concepts/services-networking/ingress/
 https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/
 
 # 建立
-kcy deploy.yaml
-kcy ingress.yaml
-kcy ingress.yaml
-* 注意版本 要對應k8s版本
+kcy deploy.yaml -n ingress-nginx
+kcy ingress.yaml -n ingress-nginx
+kcy ingress.yaml -n ingress-nginx
+* 注意版本 要對應k8s版本 
+* 注意建出來的任何服務 燈只有在namespace=ingress-nginx才會作用
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.4.0/deploy/static/provider/cloud/deploy.yaml
 
 kubectl get all -n ingress-nginx
+kubectl get pods -n ingress-nginx
+kubectl get service ingress-nginx-controller -n ingress-nginx
+kubectl exec --stdin --tty -n ingress-nginx ingress-nginx-controller-5cc4f7674-brvbf -- /bin/bash
 刪除則 kcy -> kdy
 
 

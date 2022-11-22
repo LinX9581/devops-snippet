@@ -21,8 +21,11 @@ tar -xf google-cloud-cli-397.0.0-linux-x86_64.tar.gz
 source ~/.bashrc
 gcloud components install kubectl
 
+* gcloud create cluster
+gcloud container clusters create linxgke --spot
+
 * 先手動建立GKE Cluster 再遠端連接
-gcloud container clusters get-credentials autopilot-cluster-1 --zone=asia-east1 --project=terra-test-353202
+gcloud container clusters get-credentials linx-gke --zone=asia-east1 --project=k8s-2022-09-05
 
 * 查看node狀態
 kubectl get node -o wide 

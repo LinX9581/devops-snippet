@@ -5,3 +5,5 @@ curl -X POST 'http://127.0.0.1:3020/getVideo' \
 --data-raw '{
     "videoId": "id"
 }'
+
+ curl test --connect-timeout 3

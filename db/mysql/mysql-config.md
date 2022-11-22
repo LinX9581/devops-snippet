@@ -6,6 +6,8 @@ sudo systemctl enable nginx mariadb
 參數修改
 /etc/mysql/mariadb.conf.d/
 
+# create view
+create view year1_post_view as select * from table where date_sub(curdate(),interval 366 day) <= `post_create_date`;
 ## 記憶體相關
 * innodb_buffer_pool_size
 ```

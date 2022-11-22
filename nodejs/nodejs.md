@@ -1,3 +1,9 @@
+## eslint
+npm i eslint -g
+eslint --init
+
+vscode 安裝套件 重開vscode
+
 ---
 alert(window.navigator.userAgent)
 navigator
