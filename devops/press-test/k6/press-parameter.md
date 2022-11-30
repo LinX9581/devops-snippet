@@ -7,6 +7,15 @@ innodb_lock_wait_timeout = 50
 
 ## nginx
 worker_connections
+keepalive
+qps=10000 , 連線時間=100ms 推算長連線=1000
+keepalive 設置為10%到30%。
+
+如果設置太短
+假設
+第一個10毫秒有 100個請求 並且處理完畢 空閒100個連線
+下一個10毫秒有 150個請求 減掉前面空閒100 還有50個連線需要重新建立
+如果 keepalive = 10 則需要重新建立 50-10=40連線需要建立
 
 ## php-fpm
 /etc/php/7.4/fpm/pool.d/www.conf

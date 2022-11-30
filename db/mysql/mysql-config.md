@@ -24,6 +24,9 @@ SHOW VARIABLES LIKE 'query_cache_size';
 * 查看快取狀況
 show status like '%Qcache%';
 
+## timeout
+set innodb_lock_wait_timeout=100;
+
 ## CPU
 * nnodb_read_io_threads
 * innodb_write_io_threads

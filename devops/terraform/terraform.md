@@ -112,8 +112,8 @@ terraform apply
 cd /terraformer/generated/google/terra-test-353202/instances/asia-east1
 terraform state replace-provider -auto-approve "registry.terraform.io/-/google" "hashicorp/google"
 
-
-
+* import armor
+https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_security_policy#import
 
 https://github.com/GoogleCloudPlatform/terraformer/blob/master/docs/gcp.md
 https://arivictor.medium.com/turn-your-gcp-project-into-terraform-with-terraformer-cli-eeec36cbe0d8

@@ -1,6 +1,3 @@
-
-major-MySQLTuner-perl-b6f8f9f
-
 ## install
 基本安裝 & 建立使用者
 sudo apt install mariadb-server mariadb-client -y
