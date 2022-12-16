@@ -1,5 +1,11 @@
+
+https://developers.google.com/analytics/devguides/reporting/core/v3/reference#filters
+https://help.analyticsedge.com/article/google-analytics-api-filter-expressions/
+
 ga:pagePath=@
 ga:hostname=@
+
+GA3 
 
 ==	Equals	%3D%3D
 ga:timeOnPage==10
@@ -23,3 +29,9 @@ ga:country==United States,ga:country==Canada
 
 ; = AND
 ga:country==United States;ga:country==Canada
+
+
+GA4
+EQUAL
+LESS_THAN
+GREATER_THAN

@@ -175,3 +175,38 @@ ga:pageTitle=@新奇 | NOWnews
   "returnPropertyQuota": boolean
 }
 ```
+
+
+## Filter
+  dimensionFilter: {
+      filter: {
+          fieldName: "pageTitle",
+          stringFilter: { matchType: "CONTAINS", value: "愛新覺羅", caseSensitive: false }
+      }
+  },
+  metricFilter: {
+      filter: {
+          fieldName: "sessions",
+          numericFilter: { operation: "GREATER_THAN", value: { doubleValue: 5 } }
+      }
+  },
+
+  'metricFilterClauses': [{
+      'operator: 'AND',
+      'filters': [{
+          'metricName': 'ga:users',
+          'operator': 'GREATER_THAN',
+          'comparisonValue': '200'
+      },
+      {
+          'metricName': 'ga:sessions',
+          'operator': 'LESS_THAN',
+          'comparisonValue': '500'
+      }]
+  }],
+
+## Order
+  'orderBys':
+  [
+      {'fieldName': 'ga:users', 'sortOrder': 'DESCENDING'}
+  ]

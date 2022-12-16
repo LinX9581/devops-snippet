@@ -1,9 +1,3 @@
-let allSource = ['Yahoo奇摩股市', 'Yahoo奇摩股市', '經濟日報', '經濟日報', '經濟日報']
-for (const num of allSource) {
-    newsCounts[num] = newsCounts[num] ? newsCounts[num] + 1 : 1;
-}
-
-// 陣列排序
 let originObj = [
     '中時新聞網 Chinatimes.com': 40,
     'Yahoo奇摩股市': 31,
@@ -16,11 +10,16 @@ let originObj = [
     'Anue鉅亨': 28,
 ]
 
-// 排序方式1. 讓陣列有 key value
+let allSource = ['Yahoo奇摩股市', 'Yahoo奇摩股市', '經濟日報', '經濟日報', '經濟日報']
+for (const num of allSource) {
+    newsCounts[num] = newsCounts[num] ? newsCounts[num] + 1 : 1;
+}
+
 let newsCountsObj = []
 for (let i = 0; i < Object.values(newsCounts).length; i++) {
     newsCountsObj.push({ 'new': Object.keys(newsCounts)[i], 'count': Object.values(newsCounts)[i] })
 }
+
 newsCountsObj.sort((a, b) => {
     return a.count - b.count;
 });
