@@ -12,3 +12,7 @@ leetcode
 如果回送有 ClientID 的 Cookie 或 Payload，就針對 ClientID 去累計，沒有就配發 ClientID
 另外管制同一個 IP 下配發的 ClientID 總量
 以及 ClientID 超過 14 天沒使用就移除
+
+
+## get client userAgent
+https://user-agent-client-hints.glitch.me/
