@@ -2,6 +2,10 @@
 ```
 https://ellis-wu.github.io/2017/03/31/openvpn-installation/
 ```
+
+## 查看網站路由
+traceroute www.google.com
+
 ## 查看 背景執行的Thread
 Thread
 https://ithelp.ithome.com.tw/articles/10297649

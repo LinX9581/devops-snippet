@@ -1,7 +1,10 @@
-alias k8s='kubectl'
+nano ~/.bashrc
+
+alias k='kubectl'
 ## get
 alias kgp='kubectl get pod -o wide'
 alias kgn='kubectl get node'
+alias kgnd='kubectl get node -o wide'
 alias kgd='kubectl get deployment'
 alias kgs='kubectl get service'
 alias kgh='kubectl get HorizontalPodAutoscaler'

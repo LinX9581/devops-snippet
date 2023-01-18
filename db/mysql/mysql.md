@@ -26,6 +26,7 @@ DROP USER 'username'@'host';
 
 * change user host
 UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='username';
+FLUSH PRIVILEGES;
 
 * change user password
 SET PASSWORD FOR 'dev-holywater'@'localhost' = PASSWORD('xO7mjOy3()Z%');

@@ -27,9 +27,10 @@ git merge origin/master #合併遠地版本
 上面 = git pull
 ```
 
-
 6. 修改 commit
 [參考](https://gitbook.tw/chapters/rewrite-history/change-commit-message.html)
+* 單純修改 commit name
+git commit --amend -C HEAD
 
 ## Git Clone Private Repo & Push No Password
 [參考](https://aben20807.blogspot.com/2018/03/1070302-git-push-ssh-key.html)
