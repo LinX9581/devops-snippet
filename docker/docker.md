@@ -21,9 +21,16 @@ docker run -d -p 4000:9000 --name portainer --restart always -v /var/run/docker.
 # 自架 Docker registry
 docker run -d -p 3008:5000 -v /docker/registry:/var/lib/registry --name registry registry:2
 cat>/etc/docker/daemon.json<<EOF
-{ "insecure-registries":["34.92.123.7:3008"] }
+{ "insecure-registries":["172.20.200.1:3008"] }
 EOF
-docker push 34.92.123.7:3008/node-test
+docker tag node-test 172.20.200.1:3008/node-test
+docker push 172.20.200.1:3008/node-test
+docker pull 172.20.200.1:3008/node-test
+
+curl -X GET http://172.20.200.1:3008/v2/_catalog
+curl -X GET http://172.20.200.1:3008/v2/mytomcat/tags/list
+
+
 # mount 
 file to file
 docker run -itd -v ./config.js:/usr/src/app/config.js --name node-template -p 3008:3008 node-template
@@ -51,11 +58,11 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
 
-    ssl_certificate /etc/nginx/ssl/linx-services.crt;
-    ssl_certificate_key /etc/nginx/ssl/linx-services.key;
-    access_log /var/log/nginx/admin.linx.services_ssl-access.log main;
-    error_log /var/log/nginx/admin.linx.services_ssl-error.log;
-    server_name admin.linx.services;
+    ssl_certificate /etc/nginx/ssl/linx-website.crt;
+    ssl_certificate_key /etc/nginx/ssl/linx-website.key;
+    access_log /var/log/nginx/admin.linx.website_ssl-access.log main;
+    error_log /var/log/nginx/admin.linx.website_ssl-error.log;
+    server_name admin.linx.website;
 
     # include /etc/nginx/sites-enabled/cf.conf;
     real_ip_header X-Forwarded-For;

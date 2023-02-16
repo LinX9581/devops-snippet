@@ -1,16 +1,7 @@
 ## 先在該目錄建立 /prometheus/prometheus.yml 寫入設定檔
-docker run \
-    -d \
-    -p 9090:9090 \
-    -v /prometheus /etc/prometheus \
-    --name=gra_prometheus \
-    prom/prometheus \
-    --web.enable-lifecycle \
-    --config.file=/etc/prometheus/prometheus.yml
-
-
-docker run --name prometheus -d -p 9090:9090 -v /prometheus/:/etc/prometheus/ \
+docker run --name prometheus -d -p 9090:9090 -v /devops/prometheus:/etc/prometheus \
 prom/prometheus --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+
 
 ```
 

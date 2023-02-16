@@ -10,7 +10,7 @@ console.log(formatTime);
 
 let afterSelectTime = new moment().format('YYYY-MM-DD HH:mm:ss')
 
-let a = '2021-10-25 15:50:05'
+let a = '2023-02-02'
 let now = moment(a,'YYYY-MM-DD HH:mm:ss')
-let b = '2021-10-25 15:43:05'
-console.log(now.diff(b,'second'));
+let b = '2023-01-30'
+console.log(now.diff(b,'day'));

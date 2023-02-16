@@ -10,7 +10,7 @@ https://alibaba-cloud.medium.com/setting-up-a-server-cluster-for-enterprise-web-
 ## Wordpress上Git
 ```
 一般會濾掉備份檔 和 媒體庫 和 快取
-tar cvf bobee.tar --exclude=bobee.linx.services/wp-content/uploads --exclude=bobee.linx.services/wp-content/uploads2 bobee.linx.services
+tar cvf bobee.tar --exclude=bobee.linx.website/wp-content/uploads --exclude=bobee.linx.website/wp-content/uploads2 bobee.linx.website
 
 .gitignore 也需要濾掉
 wp-content/uploads

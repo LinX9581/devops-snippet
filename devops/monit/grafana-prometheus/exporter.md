@@ -51,7 +51,7 @@ cd blackbox_exporter-0.21.1.linux-386
     module: [http_2xx_with_ip4]  # Look for a HTTP 200 response.
   static_configs:
     - targets:
-      - http://probe.linx.services    # Target to probe with http.
+      - http://probe.linx.website    # Target to probe with http.
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
@@ -90,20 +90,20 @@ curl 127.0.0.1:9104/metrics
 
 # process-exporter
 grafana id = 13882
+需安裝圖表插件打開 Grafana 的網頁，選擇“Configuration” -> “Plugins” -> “Plugins”，然後搜尋“Treemap”插件，並啟用它
+
 localhost
 https://chenzhonzhou.github.io/2020/11/19/prometheus-process-exporter-jian-kong-fu-wu-jin-cheng/
 
 * docker
-mkdir /process-exporter
-cat>/process-exporter/config.yml<<EOF
+mkdir /devops/prometheus/exporter/process_exporter -p
+cat>/devops/prometheus/exporter/process_exporter/process.yml<<EOF
 process_names:
   - name: "{{.Comm}}"
     cmdline:
     - '.+'
 EOF
-docker run -itd -p 9256:9256 --privileged --name=process-exporter -v /proc:/host/proc -v /process-exporter/:/config ncabatoff/process-exporter --procfs /host/proc -config.path config/config.yml
-
-path config/config.yml
+docker run -itd -p 9256:9256 --privileged --name=process-exporter -v /proc:/host/proc -v /devops/prometheus/exporter/process_exporter/:/config ncabatoff/process-exporter --procfs /host/proc -config.path config/process.yml
 
 * 非docker
 wget https://github.com/ncabatoff/process-exporter/releases/download/v0.7.5/process-exporter-0.7.5.linux-amd64.tar.gz

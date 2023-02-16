@@ -11,3 +11,6 @@ gcloud config set compute/zone asia-east1-b
 * 取得 vm列表
 gcloud compute instances list
 
+gcloud compute firewall-rules list
+
+gcloud compute networks list

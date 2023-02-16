@@ -57,9 +57,11 @@ git branch
 ```
 git branch branchname
 git checkout branchname
+(= git checkout -b iss53)
 git push -u origin branchname 
 git branch -a #查看遠端
 git branch -r #查看本地+遠端
+git merge branchname #合併branch
 ```
 
 拉遠端分支到本地新建的分支 & 只拉遠端分支

@@ -12,7 +12,7 @@ async function gsc() {
     // const searchconsole = google.searchconsole('v1');
     const searchconsole = google.webmasters('v3');
     const resSearchAnalytics = await searchconsole.searchanalytics.query({
-        siteUrl: 'https://www.linx.services/',
+        siteUrl: 'https://www.linx.website/',
 
         requestBody: {
             "dimensions": ["query"],

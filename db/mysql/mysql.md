@@ -34,6 +34,11 @@ SET PASSWORD FOR 'dev-holywater'@'localhost' = PASSWORD('xO7mjOy3()Z%');
 * restart Mysql
 sudo service mysql restart
 
+* reset root password on centos
+systemctl stop mysqld
+systemctl set-environment MYSQLD_OPTS=--skip-grant-tables
+systemctl start mysqld
+
 ## 特定網段連線
 CREATE USER 'dc'@'172.16.2.0/24' IDENTIFIED BY 'now@28331543';
 GRANT ALL PRIVILEGES ON *.* TO 'dc'@'172.16.2.0/24' WITH GRANT OPTION;

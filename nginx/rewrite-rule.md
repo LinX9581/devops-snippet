@@ -1,5 +1,5 @@
 
-https://rew.linx.services/news/5421700?utm_source=dable
+https://rew.linx.website/news/5421700?utm_source=dable
 $uri = news/5421700
 $args = utm_source=dable
 $arg_utm_source = dable

@@ -32,4 +32,6 @@ Ingress data processed by load balancer	$0.008	Per GB
 
 4. 網路費
 
+https://cloud.google.com/vpc/network-pricing?hl=zh-tw
+
 https://cloud.google.com/bigquery/pricing/?hl=zh-tw&utm_source=google&utm_medium=cpc&utm_campaign=japac-TW-all-en-dr-skws-all-all-trial-e-dr-1009882&utm_content=text-ad-none-none-DEV_c-CRE_502188639016-ADGP_Hybrid%20%7C%20SKWS%20-%20EXA%20%7C%20Txt%20~%20Data%20Analytics%20~%20BigQuery_Pricing-KWID_43700061618151048-kwd-143282056846&userloc_9040379-network_g&utm_term=KW_bigquery%20pricing&gclid=CjwKCAjw8sCRBhA6EiwA6_IF4QNi7TixUa1rqg8OItyfVm-sKBlKsEMo-LARcjUS7cpN93wR7iQmyxoCIiAQAvD_BwE&gclsrc=aw.ds

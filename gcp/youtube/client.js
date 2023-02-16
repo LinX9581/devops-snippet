@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 let clientSecret = "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";
 let clientId = "134222300814-hb34bisbcqq8j75d94ivek60d9k6bpqs.apps.googleusercontent.com";
-let redirectUrl = "https://yt-test.linx.services/oauth";
+let redirectUrl = "https://yt-test.linx.website/oauth";
 let oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
 const scopes = [
     'https://www.googleapis.com/auth/youtube'

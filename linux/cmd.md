@@ -13,7 +13,7 @@ ssh -o StrictHostKeyChecking=no lin@34.92.123.5 "sudo sh /shell/a.sh && sudo sh 
 ```
 apt-get install apache2-utils -y
 ab -c 20 -n 200 http://127.0.0.1/
-ab -c 20 -n 200 http://elk.linx.services/
+ab -c 20 -n 200 http://elk.linx.website/
 wrk  -t 10 -c 200 -d 60s -T 30s --latency https://
 ```
 ## 簡化指令

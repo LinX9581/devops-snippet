@@ -1,6 +1,6 @@
 # bobee 
 壓縮
-tar cvf bobee.tar --exclude=bobee.linx.services/wp-content/uploads --exclude=bobee.linx.services/wp-content/uploads2 bobee.linx.services
+tar cvf bobee.tar --exclude=bobee.linx.website/wp-content/uploads --exclude=bobee.linx.website/wp-content/uploads2 bobee.linx.website
 
 .gitignore
 wp-content/uploads
@@ -11,7 +11,7 @@ wp-content/ai1wm-backups
 
 # 4wayvoice
 壓縮
-tar cvf 4wayvoice.tar --exclude=4wayvoice.linx.services/wp-content/uploads --exclude=4wayvoice.linx.services/wp-content/ai1wm-backups 4wayvoice.linx.services
+tar cvf 4wayvoice.tar --exclude=4wayvoice.linx.website/wp-content/uploads --exclude=4wayvoice.linx.website/wp-content/ai1wm-backups 4wayvoice.linx.website
 
 .gitignore
 wp-content/uploads

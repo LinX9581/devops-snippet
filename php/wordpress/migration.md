@@ -32,7 +32,7 @@ wp-config.php 加這兩行才能可以導到 new.com
 define('WP_SITEURL', 'https://new.com');
 define('WP_HOME', 'http://new.com');
 
-5. chown www-data: game.linx.services/ -R
+5. chown www-data: game.linx.website/ -R
 # 常見問題
 1. 帳密忘記
 更新admin使用者 密碼為 md5('admin')
@@ -55,9 +55,9 @@ define('FS_METHOD', 'direct');
 設定-固定連結-只要不要用預設網址就能啟用
 
 5. 圖片連結
-select * from wp_postmeta WHERE meta_value LIKE '%https://game.linx.services/wp-content/uploads/2021/08/cf8502c3-2021051141703400-500x326.jpg%' order by meta_id DESC limit 20;
+select * from wp_postmeta WHERE meta_value LIKE '%https://game.linx.website/wp-content/uploads/2021/08/cf8502c3-2021051141703400-500x326.jpg%' order by meta_id DESC limit 20;
 
-select * from wp_posts WHERE post_content LIKE '%https://game.linx.services/wp-content/uploads/2021/08/cf8502c3-2021051141703400-500x326.jpg%';
+select * from wp_posts WHERE post_content LIKE '%https://game.linx.website/wp-content/uploads/2021/08/cf8502c3-2021051141703400-500x326.jpg%';
 
 6. 內文
 wp-includes/media.php:1269 -> image_baseurl 指定往 gcs

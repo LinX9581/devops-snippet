@@ -5,9 +5,9 @@ mkdir /drone
 DRONE_GITHUB_CLIENT_ID=ae3f121358113121b5a9
 DRONE_GITHUB_CLIENT_SECRET=dbe19eb572cf69722acaec3f95d8e4a6e61dda96
 DRONE_RPC_SECRET=Lonely-Kill-History-Bury-7 # = drone setting's screct name 
-DRONE_SERVER_HOST=dronecicd.linx.services
+DRONE_SERVER_HOST=dronecicd.linx.website
 DRONE_SERVER_PROTO=https
-DRONE_RPC_SERVER=rpc.linx.services # 用不到
+DRONE_RPC_SERVER=rpc.linx.website # 用不到
 DRONE_RPC_PROTO=https
 
 sudo apt update
@@ -144,13 +144,13 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
 
-    ssl_certificate /etc/nginx/ssl/linx-services.crt;
-    ssl_certificate_key /etc/nginx/ssl/linx-services.key;
+    ssl_certificate /etc/nginx/ssl/linx-website.crt;
+    ssl_certificate_key /etc/nginx/ssl/linx-website.key;
 
-    access_log /var/log/nginx/drone.linx.services_ssl-access.log main;
-    error_log /var/log/nginx/drone.linx.services_ssl-error.log;
+    access_log /var/log/nginx/drone.linx.website_ssl-access.log main;
+    error_log /var/log/nginx/drone.linx.website_ssl-error.log;
 
-    server_name drone.linx.services;
+    server_name drone.linx.website;
 
 	location / {
 		proxy_pass http://127.0.0.1:4500;
