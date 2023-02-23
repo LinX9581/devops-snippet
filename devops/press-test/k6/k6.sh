@@ -18,6 +18,7 @@ sudo systemctl start grafana-server
 
 # InfluxDb
 sudo apt install influxdb
+# sudo service influxdb stop
 
 mkdir k6
 cat>/k6/hello.js<<EOF
