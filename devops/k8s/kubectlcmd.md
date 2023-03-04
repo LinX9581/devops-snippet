@@ -2,6 +2,7 @@
 sudo apt-get install kubectl
 ## SSH
 kubectl exec --stdin --tty hello -- /bin/bash     //連到VM
+kubectl exec -it php-fpm-nginx-fd5fbf585-xhtmg -c nginx -- /bin/bash    // deployment 可能會建一組
 ## 查詢
 kubectl get pods --namespace=namespace
 kubectl get services --namespace=production

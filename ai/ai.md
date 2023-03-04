@@ -6,12 +6,6 @@ open source
 開源 所以可以自由匯入模型
 且可以用自己顯示卡跑圖
 
-* Stable diffusion 網頁版
-https://github.com/AUTOMATIC1111/stable-diffusion-webui
-
-教學
-https://www.coolaler.com/index/%E4%BD%BF%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E9%A1%AF%E5%8D%A1%E9%80%B2%E8%A1%8C-ai-%E7%B9%AA%E5%9C%96-stable-diffusion-webui-%E5%AE%89%E8%A3%9D%E6%95%99%E5%AD%B8/
-
 * Stable diffusion 套件 ControlNet
 介紹
 https://zhuanlan.zhihu.com/p/607139523
@@ -25,3 +19,31 @@ https://github.com/lllyasviel/ControlNet
 https://midjourney.com/auth/signin/
 https://discord.gg/midjourney
 目前 DC 免費25張圖 之後採訂閱制
+
+## huggingface + AWS
+
+
+## YouTubeGPT
+YouTubeGPT - AI YouTube Summary with Chat GPT
+
+## Notion AI
+
+## RoomGPT
+https://www.roomgpt.io/dream
+https://github.com/Nutlope/roomGPT
+
+用SD產室內設計 常常會用家具擋門
+
+## Galileo 
+透過對話產生 Figma設計稿
+https://www.usegalileo.ai/
+
+## bifrost.so
+把 Figma 轉成 React
+
+以下是一堆新創工程師的奴力成果
+
+或留言補充
+
+## 翻譯
+https://github.com/yihong0618/bilingual_book_maker

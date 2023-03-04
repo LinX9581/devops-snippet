@@ -35,6 +35,7 @@ alias kdp='kubectl delete pod'
 
 ## ssh
 alias kssh='kubectl exec --stdin --tty'
+kubectl exec -it web -- /bin/bash
 ## monit
 alias ktp='kubectl top pod'
 alias ktn='kubectl top node'

@@ -1,9 +1,3 @@
-# K8S
-4個元件
-Pod、Worker Node、Master Node、Cluster
-api,vps,
-[pusg image to gkr 官方文件](https://cloud.google.com/container-registry/docs/pushing-and-pulling)
-
 # 運行在GKE
 先在GKE建立cluster
 ## 授權後 連結到該cluster
@@ -15,8 +9,8 @@ gcloud config set project terra-test-353202
 * 先裝SDK 再裝kubectl
 https://cloud.google.com/sdk/docs/install-sdk#linux
 
-curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-397.0.0-linux-x86_64.tar.gz
-tar -xf google-cloud-cli-397.0.0-linux-x86_64.tar.gz
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-419.0.0-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-419.0.0-linux-x86_64.tar.gz
 ./google-cloud-sdk/install.sh
 source ~/.bashrc
 gcloud components install kubectl
