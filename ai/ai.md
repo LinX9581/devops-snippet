@@ -45,5 +45,8 @@ https://www.usegalileo.ai/
 
 或留言補充
 
+# 音檔
+https://github.com/hayabhay/whisper-ui
+
 ## 翻譯
 https://github.com/yihong0618/bilingual_book_maker

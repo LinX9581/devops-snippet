@@ -5,7 +5,7 @@ https://cloud.google.com/sdk/gcloud/reference/compute/instances/add-tags
 gcloud auth activate-service-account --key-file json
 
 * 設定預設專案&時區
-gcloud config set project terra-test-353202
+gcloud config set project nownews-227907
 gcloud config set compute/zone asia-east1-b
 
 * 取得 vm列表

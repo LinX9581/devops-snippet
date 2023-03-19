@@ -57,25 +57,3 @@ docker tag [SOURCE_IMAGE] [HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG]
 docker push gcr.io/phonic-entity-320408/calendar:0.1
 docker push [HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG]
 ```
-
-## 安裝 Minukube
-他需要運行在 virtual box or docker
-要用docker建立Minikube需要root權限使用者，且不能用root
-建立完 minikube 會起一個container
-minikube ssh 連進去後裡面也會有docker環境 裝了一堆k8s container
-* 創建 root 使用者
-```
-adduser dev
-# password@7
-usermod -aG sudo dev
-su - dev
-
-sudo groupadd docker
-sudo usermod -aG docker $USER
-```
-* 安裝
-```
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo install minikube-linux-amd64 /usr/local/bin/minikube
-minikube status
-```
