@@ -43,7 +43,7 @@ https://dns.sample.com/ga4/308596645/2022-10-25/2022-10-30/date/screenPageViews
 [官方文件]
 (https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunReports)
 
-ga:pageTitle=@新奇 | NOWnews
+ga:pageTitle=@新奇 | NOW
 
 {
   "dateRanges": [

@@ -1,5 +1,7 @@
 
 詳細介紹文
+https://ivonblog.com/posts/stable-diffusion-webui-features/
+
 https://medium.com/%E9%9B%9E%E9%9B%9E%E8%88%87%E5%85%94%E5%85%94%E7%9A%84%E5%B7%A5%E7%A8%8B%E4%B8%96%E7%95%8C/%E6%B7%BA%E8%AB%87aigc%E7%88%86%E7%82%B8%E7%9A%84%E6%99%82%E4%BB%A3-ai%E7%B9%AA%E5%9C%96-stable-diffusion-mid-journey-dall-e-2-4e0cf67afd8d
 ## stable-diffusion
 ### 安裝教學
@@ -62,7 +64,7 @@ https://civitai.com/models/16599/beautypromix
 拿到它的正反面詞 和 seed之外 還要去找它使用的model
 
 model 的 Type = CHECKPOINT MERGE
-https://civitai.com/models/4823/deliberate
+https://civitai.com/models/6424/chilloutmix
 
 model分為主模型或大模型，小模型分為Vae, Lora, Embedding(Text Invertion)，以及輔助模型像是BLIP, CLIP, ControlNet
 
@@ -78,10 +80,27 @@ web-ui -> setting -> stable-diffusion -> SD VAE
 
 6500 -> 改用這個
 https://civitai.com/models/4514/pure-eros-face
+放到 embeddings 資料夾
+藉由關鍵字 prompt 去觸發 Ex. girl
 
 5. sd-webui-cutoff
 https://github.com/hnmr293/sd-webui-cutoff
 讓提示詞的效果不會溢出 像是綠色的裙子 就只會影響裙子
+
+6. Dynamic Thresholding (CFG Scale Fix)
+https://github.com/mcmonkeyprojects/sd-dynamic-thresholding
+讓臉更細緻
+
+7. 讓區塊更細緻
+https://github.com/hnmr293/sd-webui-llul
+
+### 畫畫方式
+* 保留衣服 換臉
+canny 取線條.把不需要的boddy線條刪掉
+保留相對位置 之後就能生出身體了
+
+* 保留圖片的 prompt
+直接版產出來的圖片 丟到prompt格子裡面
 ## midjourney
 用 discord 下prompt產圖
 https://mrmad.com.tw/midjourney

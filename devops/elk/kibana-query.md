@@ -14,3 +14,23 @@
 nginx.access.response_code : status = [404 TO 504]
 nginx.access.response_code : 40*
 nginx.access.url.keyword : /news/536*
+
+
+不區分大小寫，也不會保證順序 也會被分詞
+message:hello world
+
+不會被分詞 也不會區分大小寫
+message:"hello world yes"
+
+or and , and 優先於 or
+name:jane or addr:beijing
+
+response:(200 or 404)
+
+包含200 但整條紀錄不包含yes
+response:200 and not yes
+
+包含200 不包含yes
+response:(200 and not yes)
+
+nginx.access.url: "%E2%AC%85%EF%B8%8F" and not nginx.access.x_forwarded_for.keyword: 66*

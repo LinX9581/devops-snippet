@@ -43,7 +43,7 @@ set innodb_lock_wait_timeout=100;
 
 後端如果超過120秒沒回應 client強制斷開
 ```
-let pvStageStatus = await fetch('https://analytics.nownews.com/checkData', {
+let pvStageStatus = await fetch('https://linx.com/checkData', {
     signal: AbortSignal.timeout(120000),
     method: 'POST',
     headers: {

@@ -27,6 +27,8 @@ UPDATE wp_options
 SET option_value = REPLACE(option_value, 'https://old.com', 'https://new.com')
 WHERE option_value LIKE '%https://old.com%';
 
+find ./new.com -type f -exec sed -i 's/new\.news\.com/replace.linx.com/g' {} +
+
 4. 修改設定檔 wp-config.php
 wp-config.php 加這兩行才能可以導到 new.com
 define('WP_SITEURL', 'https://new.com');
