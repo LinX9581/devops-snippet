@@ -22,7 +22,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'dev'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 * drop user
-DROP USER 'username'@'host';
+DROP USER 'dev'@'localhost';
 
 * change user host
 UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='username';
@@ -40,7 +40,7 @@ systemctl set-environment MYSQLD_OPTS=--skip-grant-tables
 systemctl start mysqld
 
 ## 特定網段連線
-CREATE USER 'dc'@'172.16.2.0/24' IDENTIFIED BY 'now@28331543';
+CREATE USER 'dc'@'172.16.2.0/24' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'dc'@'172.16.2.0/24' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'dc'@'172.16.2.42' WITH GRANT OPTION;
 FLUSH PRIVILEGES;

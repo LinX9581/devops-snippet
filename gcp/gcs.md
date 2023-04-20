@@ -47,3 +47,8 @@ gsutil ls -p test-project
 * 讓特定資料夾公開&設定cache 但每次新增檔案 都要重新下指令
 gsutil -m acl set -R -a public-read gs://sub-project/vote2022/
 gsutil setmeta -h "Cache-Control:no-cache" gs://sub-project/vote2022/*
+
+* gcp lb -> gcs
+建立 http classic
+gcs 要開放所有權限
+Permissions -> GRANT ACCESS -> add allUsers

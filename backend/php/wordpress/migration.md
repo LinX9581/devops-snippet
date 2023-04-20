@@ -66,3 +66,11 @@ wp-includes/media.php:1269 -> image_baseurl 指定往 gcs
 
 7. banner
 wp-includes/post.php:5884 -> url 指定往 gcs
+
+8. 臨時domain
+* Linux
+sudo nano /etc/hosts
+192.168.1.10 example.com
+* Windows
+C:\Windows\System32\drivers\etc\hosts
+192.168.1.10 example.com

@@ -7,6 +7,9 @@ https://awesome-prometheus-alerts.grep.to/rules.html#mysql
 curl -X POST http://localhost:9090/-/reload
 curl -X POST http://localhost:9093/-/reload
 
+# backup prometheus data
+docker cp prometheus:/prometheus-data /local/path/to/backup
+
 ## 基本設定檔
 alert.yml
 ```

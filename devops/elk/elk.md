@@ -1,7 +1,19 @@
 
 
-# 安裝方式
+# index相關
+elasticsearch.yml 增加
+xpack.security.authc.api_key.enabled: true
 
+* 查看目前所有index
+curl -u user:password 172.18.0.1:9200/_cat/indices
+* 刪除index
+curl -u user:password -X DELETE "localhost:9200/index_prefix-access-2023.03.06?pretty"
+
+* 每日砍index 
+sudo nano /etc/cron.d/elk_cron_job
+0 0 * * * root /var/www/delete_index.sh
+
+# 安裝方式
 nginx access log 1~2G 
 每秒量訪問 50~150
 每 1 GB RAM，大約可處理 10 GB 查詢資料

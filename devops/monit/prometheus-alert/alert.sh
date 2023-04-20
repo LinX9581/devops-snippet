@@ -14,9 +14,11 @@ sudo mv /usr/local/bin/docker-compose /usr/bin/docker-compose
 chmod +x /usr/bin/docker-compose
 systemctl enable docker.service
 
-mkdir /devops/prometheus -p
-cd prometheus
-cat>prometheus.yml<<EOF
+mkdir /devops/ansible-deploy-monitor/prometheus/alertManager -p
+mkdir /devops/backupdata/prometheus -p
+chmod 777 /devops/backupdata/prometheus
+
+cat>/devops/ansible-deploy-monitor/prometheus/prometheus.yml<<EOF
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
@@ -39,7 +41,7 @@ scrape_configs:
       - targets: ['127.0.0.1:9100']
 EOF
 
-cat>rules.yml<<EOF
+cat>/devops/ansible-deploy-monitor/prometheus/alertManager/rules.yml<<EOF
 groups:
 - name: AllInstances
   rules:
@@ -56,7 +58,7 @@ groups:
       severity: 'critical'
 EOF
 
-cat>alertmanager.yml<<EOF
+cat>/devops/ansible-deploy-monitor/prometheus/alertManager/alertmanager.yml<<EOF
 global: 
   resolve_timeout: 5m
 route:
@@ -75,11 +77,11 @@ receivers:
 EOF
 
 
-docker run --name alertmanager -d -p 9093:9093 -v /devops/prometheus:/alertmanager \
+docker run --name alertmanager -d -p 9093:9093 -v /devops/ansible-deploy-monitor/prometheus/alertManager:/alertmanager \
 prom/alertmanager --storage.path=/tmp --config.file=/alertmanager/alertmanager.yml
 
-docker run --name prometheus -d -p 9090:9090 -v /devops/prometheus:/etc/prometheus \
-prom/prometheus --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+docker run --name prometheus -d -p 9090:9090 -v /devops/backupdata/prometheus:/prometheus-data -v /devops/ansible-deploy-monitor/prometheus:/etc/prometheus \
+prom/prometheus --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus-data
 
 docker run -d -p 9100:9100 \
 -v "/proc:/host/proc" \
