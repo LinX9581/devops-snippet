@@ -18,3 +18,13 @@
 11. nginx 設定檔 ( 註一 ) 寫入 /etc/nginx/sites-enabled/default
 
 ```
+
+
+
+## 自己編譯的nginx
+* 先找執行檔在哪
+find / -name "nginx"
+
+sudo /etc/nginx/sbin/nginx    # 启动 Nginx 服务
+sudo /etc/nginx/sbin/nginx -s stop   # 停止 Nginx 服务
+sudo /etc/nginx/sbin/nginx -s reload # 重新加载 Nginx 配置文件

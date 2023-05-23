@@ -11,12 +11,12 @@ sudo apt install golang-go
 # 指定版本
 sudo add-apt-repository ppa:gophers/archive
 sudo apt update
-sudo apt install golang-1.13.8-go
+sudo apt install golang-1.20.3-go
 
 
 vim ~/.profile
 
-export GOROOT=/usr/lib/go-1.13
+export GOROOT=/usr/lib/go-1.20.3
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 

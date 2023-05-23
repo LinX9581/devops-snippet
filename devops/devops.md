@@ -14,6 +14,9 @@ leetcode
 以及 ClientID 超過 14 天沒使用就移除
 
 
+## 網站速度測試
+https://pagespeed.web.dev/
+
 ## get client userAgent
 https://user-agent-client-hints.glitch.me/
 

@@ -21,6 +21,24 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 
+# pm2 exporter
+https://github.com/saikatharryc/pm2-prometheus-exporter/blob/master/README.md
+
+git clone https://github.com/saikatharryc/pm2-prometheus-exporter.git
+npm install
+pm2 start exporter.js --name pm2-metrics
+
+- job_name: pm2-metrics
+  scrape_interval: 10s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+    - targets:
+        - localhost:9209
+
+Grafana import ./pm2-dashboard.json
+
 # blackbox_exporter
 grafana id 13659 7587
 

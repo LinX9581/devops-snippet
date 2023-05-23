@@ -32,3 +32,6 @@ yarn add @babel/core @babel/node @babel/preset-env --dev
     "start": "nodemon --exec babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+
+## init 
+yarn add express body-parser cors dotenv

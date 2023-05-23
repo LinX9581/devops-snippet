@@ -18,6 +18,7 @@ sudo systemctl start grafana-server
 
 # InfluxDb
 sudo apt install influxdb
+sudo apt install influxdb-client
 # sudo service influxdb stop
 
 mkdir k6
@@ -40,6 +41,7 @@ EOF
 cd k6
 k6 run --out influxdb=http://localhost:8086/myk6db hello.js
 
+# 一定要先讓 k6 run 過,確定influxdb有資料 grafana才能增加數據來源
 # Grafana Create a data source -> influxdb -> http://localhost:8086 database=myk6db
 # import dashboard id 2587
 # https://grafana.com/grafana/dashboards/2587

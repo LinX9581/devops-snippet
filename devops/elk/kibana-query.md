@@ -33,4 +33,8 @@ response:200 and not yes
 包含200 不包含yes
 response:(200 and not yes)
 
+
+* 要過濾包含特殊字元的 需要雙引號包住
 nginx.access.url: "%E2%AC%85%EF%B8%8F" and not nginx.access.x_forwarded_for.keyword: 66*
+
+nginx.access.url : "search?q="

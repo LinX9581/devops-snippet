@@ -37,6 +37,7 @@ git commit --amend -C HEAD
 1. 把公KEY丟到Github
 2. 連線測試 
 ```ssh -T git@github.com```
+```ssh -i /var/www/rsa_id -T git@github.com```
 3. git remote set-url origin git@github.com:LinX9581/cicd.git
 git clone git@github.com:linx9581/cicd.git
 git clone git@github.com:linx9581/week-report.git

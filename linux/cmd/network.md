@@ -44,8 +44,7 @@ iptables -A INPUT -s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT
 iptables -D INPUT -s 0.0.0.0/0 -p tcp --dport 80 -j ACCEPT
 
 
-
-
+iptables -D sshguard -s 172.16.97.10 -j DROP
 
 
 

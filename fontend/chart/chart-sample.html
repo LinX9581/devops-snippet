@@ -75,10 +75,10 @@
 
         let lineOptions = {
             // 這行能讓滑鼠移過去任一個點 都會顯示資訊
-            // interaction: {   
-            //     mode: 'index',
-            //     intersect: false,
-            // },
+            interaction: {   
+                mode: 'index',
+                intersect: false,
+            },
 
             scales: {
                 y: {
@@ -116,6 +116,24 @@
             //         }
             //     }
             // },
+            onClick: function (event, chartElements) {
+                // console.log(chartElements);
+                if (chartElements.length > 0) {
+                    // 取得被點擊的元素
+                    const element = chartElements[0];
+                    console.log(element);
+                    // 取得被點擊的時間刻度
+                    const clickedLabel = this.data.labels[element.index];
+                    console.log(clickedLabel);
+                    // console.log(clickedLabel);
+                    // console.log(element._index);
+                    // 這裡可以根據 clickedLabel 動態產生 modal 的內容
+                    // ...
+                    return "asdf"
+                    // 顯示 modal
+                    // $(`#${rtSource}RtNews`).modal('show');
+                }
+            }
         }
         let lineData = [{
             label: '1',
@@ -126,9 +144,9 @@
 
 
         genChart('line1', 'line', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
-        genChart('bar', 'bar', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
-        genChart('line2', 'line', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
-        genChart('pie', 'pie', ['dsad', 'zcx', 'qwc', 'zxc', 'Purpasle', 'Oranasasge'], pieData, pieOptions)
+        // genChart('bar', 'bar', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
+        genChart('line2', 'line', ['1', '2', '3', '4', '5', '6'], lineData, lineOptions)
+        // genChart('pie', 'pie', ['dsad', 'zcx', 'qwc', 'zxc', 'Purpasle', 'Oranasasge'], pieData, pieOptions)
 
         async function genChart(chartId, type, chartTimeLabel, chartData, options) {
             const ctx = document.getElementById(chartId).getContext('2d');

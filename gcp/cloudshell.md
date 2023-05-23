@@ -3,6 +3,7 @@ https://cloud.google.com/sdk/gcloud/reference/compute/instances/add-tags
 
 * 透過 IAM 帳號執行 cloud shell
 gcloud auth activate-service-account --key-file json
+export GOOGLE_APPLICATION_CREDENTIALS=~/.sakey/now.json
 
 * 設定預設專案&時區
 gcloud config set project now-227907

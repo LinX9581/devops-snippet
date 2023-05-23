@@ -92,6 +92,9 @@ https://www.youtube.com/watch?v=TaW5JFKLeeg&ab_channel=XavkiEn
 https://www.youtube.com/watch?v=iWFasUQ1tNQ&ab_channel=%E6%B2%88%E5%BC%98%E5%93%B2
 https://github.com/twtrubiks/docker-elk-tutorial/tree/elk-7.6.0/docker-elk
 
+建立參考文章 (docker)
+https://wsgzao.github.io/post/efk/
+
 2. grok
 http://doc.yonyoucloud.com/doc/logstash-best-practice-cn/filter/grok.html
 
@@ -108,3 +111,6 @@ https://cloud.tencent.com/developer/article/1395231
 https://ithelp.ithome.com.tw/articles/10244575
 
 https://jsbin.com/qejufid/5/edit?html,css,js
+
+* 錯誤參考
+https://www.cnblogs.com/zhi-leaf/p/8484337.html
