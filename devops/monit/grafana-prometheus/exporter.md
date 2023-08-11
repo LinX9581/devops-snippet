@@ -54,7 +54,7 @@ modules:
       preferred_ip_protocol: "ip4"
 EOF
 
-docker run -d -p 9115:9115 --name blackbox-exporter -v /exporter/blackbox_exporter:/config prom/blackbox-exporter --config.file=/config/blackbox.yml
+docker run -d -p 9115:9115 --name blackbox-exporter -v /devops/ansible-deploy-monitor/prometheus/exporter/blackbox_exporter:/config prom/blackbox-exporter --config.file=/config/blackbox.yml
 
 * Loacl install
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.21.1/blackbox_exporter-0.21.1.linux-386.tar.gz
@@ -192,6 +192,8 @@ grafana id 12708
 docker run -p 9113:9113 nginx/nginx-prometheus-exporter:0.10.0 -nginx.scrape-uri=http://<nginx>:8080/stub_status
 
 # nginx-blackbox_exporter
+grafana id 13659
+
 https://github.com/prometheus/blackbox_exporter
 https://tech-blog.jameshsu.csie.org/post/devops-prometheus-blackbox_exporter/
 https://blog.csdn.net/ryanlll3/article/details/113829474

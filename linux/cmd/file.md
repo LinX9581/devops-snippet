@@ -17,6 +17,10 @@ fallocate -l 70G /tmp/temp.img
 df -h
 lsblk
 
+yarn cache clean
+
+apt clean
+
 ## 解壓縮
 ```
 壓縮特定檔到特定地方

@@ -13,6 +13,10 @@ curl -u user:password -X DELETE "localhost:9200/index_prefix-access-2023.03.06?p
 sudo nano /etc/cron.d/elk_cron_job
 0 0 * * * root /var/www/delete_index.sh
 
+# 帳號相關
+連進elastic container 執行以下指令
+bin/elasticsearch-users useradd nnviewer -p 1234 -r viewer
+
 # 安裝方式
 nginx access log 1~2G 
 每秒量訪問 50~150

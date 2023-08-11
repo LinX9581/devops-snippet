@@ -53,6 +53,11 @@ ansible atom -i inventory -a "sysctl -a | grep conntrack"
 echo -> ansible.cfg (如果機器都是固定則拿掉)
 host_key_checking = False
 
+## 格式化輸出
+- name: Print
+  debug:
+    msg: "{{ falcon_sensor_status.stdout.split('\n')}}"
+
 ## ansilble 指令 用法
 https://www.796t.com/content/1525534899.html
 https://ithelp.ithome.com.tw/articles/10205652

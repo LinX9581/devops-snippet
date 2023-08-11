@@ -13,7 +13,8 @@ GCS數據匯入
 3. 如果量小 有適合的數據分析平台? 視覺化UI圖表
 
 # 費用
-1. 已量計價 每月前1T免費 1T/$5
+https://cloud.google.com/bigquery/pricing?hl=zh-tw#on_demand_pricing
+1. 已量計價 每月前1T免費 1T/$5.75
 
 2. 固定費率 1M/$2300 100運算單元
 不包含 儲存空間 BI Engin

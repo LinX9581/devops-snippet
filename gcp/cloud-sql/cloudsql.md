@@ -12,6 +12,7 @@ chmod +x cloud_sql_proxy
 要啟用 cloud admin auth api
 
 instances = cloudsql -> overview -> connection name
+多個資料庫就,隔開 key的方式讓跳板機直接吃service account 不要把key存vm
 ./cloud_sql_proxy -instances=k88888888s-329606:asia-east1:vpc2=tcp:0.0.0.0:3306 -credential_file=/k88888888s-329606-5b13666eef94.json &
 * 如果只想讓local連就把 0.0.0.0: 拿掉，否則該台會變跳板機，其他台可以透過該台的IP連到該專案的clous sql
 * 該機器要開放外連 要開啟3306 & 白名單IP

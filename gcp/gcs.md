@@ -4,6 +4,18 @@
 超過照下面計算
 https://cloud.google.com/storage/pricing/?hl=zh-TW
 
+
+四個儲存方式 差別在越便宜的 取出費用越貴
+費用分成A級和B級 如果經常需要從VM讀取 或複製資料都屬於A級操作 會有額外費用
+* Standard Storage A級0.005/1000次
+* Nearline Storage A級0.01/1000次
+* Coldline Storage A級0.02/1000次
+* Archive Storage A級0.05/1000次
+
+如果變更物件類型
+從1變到2
+會收取 1的所有物件 * 2的A級操作費
+
 ## 授權方式
 * WP 套件名稱 WP-Stateless使用方式同下
 進入 storage -> browser -> create a bucket 選擇地區

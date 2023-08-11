@@ -7,6 +7,9 @@ sudo mysql_secure_installation
 全部Y
 
 ## 常見問題
+* 確認連線狀況
+SHOW PROCESSLIST;
+
 * import export error : The user specified as a definer (該table綁定特定使用者而該使用者已不在)
 
 把原來的作者改掉 或者加指令 直接繞過
@@ -17,8 +20,8 @@ SELECT User, Host FROM mysql.user;
 
 * create user
 CREATE DATABASE wp_db;
-CREATE USER 'dev'@'localhost' IDENTIFIED BY '00000000';
-GRANT ALL PRIVILEGES ON *.* TO 'dev'@'localhost' WITH GRANT OPTION;
+CREATE USER 'deve'@'localhost' IDENTIFIED BY '00000000';
+GRANT ALL PRIVILEGES ON *.* TO 'deve'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 * drop user
