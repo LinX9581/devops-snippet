@@ -79,6 +79,9 @@ cd blackbox_exporter-0.21.1.linux-386
       replacement: 172.16.97.10:9115  # The blackbox exporter's real hostname:port.
 
 # mysql-exporter
+
+* 注意 新版的 v0.15.0 授權方式改用.my.cnf 所以下面的設定檔會出問題 要降版 v0.14.0
+
 https://www.jianshu.com/p/faac55bd0a5b
 grafana id 7362
 
@@ -189,7 +192,7 @@ services:
 # nginx-exporter
 grafana id 12708
 
-docker run -p 9113:9113 nginx/nginx-prometheus-exporter:0.10.0 -nginx.scrape-uri=http://<nginx>:8080/stub_status
+docker run -p 9112:9113 -d --restart always nginx/nginx-prometheus-exporter:0.10.0 -nginx.scrape-uri=http://172.16.98.12:8080/stub_status
 
 # nginx-blackbox_exporter
 grafana id 13659

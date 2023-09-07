@@ -43,3 +43,6 @@ before_script:
 3. 讓特定使用者 有root權限
 sudo visudo 
 username ALL=(ALL:ALL) ALL
+
+4. ssh
+ssh -T git@gitlab.example.com
