@@ -8,12 +8,12 @@ gcloud config set project terra-355307
 gcloud compute instances list
 
 # terraform init
-mkdir terra
-cd /terra/
+mkdir terraform
+cd /terraform/
 
 touch main.tf ..
 
-cat>/gcp-terraform/init/main.tf<<EOF
+cat>/terraform/init/main.tf<<EOF
 provider "google" {
 credentials = file("./terra.json")
   project = "terra-test-353202"

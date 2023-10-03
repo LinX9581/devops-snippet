@@ -9,4 +9,5 @@ failover 是算在 SLA 裡面 也就是99.95%
 
 * failvoer
 https://cloud.google.com/sql/docs/mysql/high-availability?hl=zh-cn#normal
-災難復原 會自動切換 而且IP不會變
+災難復原 會自動切換 而且IP不會變 備用機會變成主機 所以客戶不會連到舊的主機
+

@@ -1,3 +1,6 @@
+## 參數詳解
+https://zhuanlan.zhihu.com/p/372610935
+
 # nginx req limit
 server.conf
 limit_req zone=uat;
