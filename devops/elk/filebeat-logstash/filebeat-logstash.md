@@ -1,4 +1,7 @@
 
+* filebeat 參數介紹
+https://iter01.com/517589.html
+
 * filebeat 安裝
 curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.7.1-amd64.deb
 sudo dpkg -i filebeat-8.7.1-amd64.deb

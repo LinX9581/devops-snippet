@@ -1,34 +1,5 @@
-
-
-# index相關
-elasticsearch.yml 增加
-xpack.security.authc.api_key.enabled: true
-
-* 查看目前所有index
-curl -u user:password 172.18.0.1:9200/_cat/indices
-* 刪除index
-curl -u user:password -X DELETE "localhost:9200/index_prefix-access-2023.03.06?pretty"
-
-* 每日砍index 
-sudo nano /etc/cron.d/elk_cron_job
-0 0 * * * root /var/www/delete_index.sh
-
-# 帳號相關
-連進elastic container 執行以下指令
-bin/elasticsearch-users useradd nnviewer -p 1234 -r viewer
-
-# 安裝方式
-nginx access log 1~2G 
-每秒量訪問 50~150
-每 1 GB RAM，大約可處理 10 GB 查詢資料
-每 1vCPU core 大約可處理 20~40 GB 查詢資料
-https://blog.johnwu.cc/article/elk-hardware-specification.html
-
 ## 環境
 Linux Nginx Docker-compose ELK filebeat git
-
-## 官方ELK
-git clone https://github.com/deviantony/docker-elk
 
 ## 本地安裝 filebeat
 ```
@@ -44,8 +15,11 @@ docker-elk/logstash/pipeline/logstash.conf
 內容都在 elk.sh
 
 ## 執行 ELK
+* 官方ELK
+git clone https://github.com/deviantony/docker-elk
 cd /docker-elk
 docker-compose up -d 
+
 如果個別設定檔需要更改
 docker-compose up --detach --build logstash
 
@@ -87,7 +61,33 @@ https://www.elastic.co/guide/en/logstash/6.8/logstash-config-for-filebeat-module
 NOT (nginx.access.agent : *bot*)
 filter 才能絕對符合
 
-# 參考
+# 其他問題
+---
+## index相關
+elasticsearch.yml 增加
+xpack.security.authc.api_key.enabled: true
+
+* 查看目前所有index
+curl -u user:password 172.18.0.1:9200/_cat/indices
+* 刪除index
+curl -u user:password -X DELETE "localhost:9200/index_prefix-access-2023.03.06?pretty"
+
+* 每日砍index 
+sudo nano /etc/cron.d/elk_cron_job
+0 0 * * * root /var/www/delete_index.sh
+
+## 帳號相關
+連進elastic container 執行以下指令
+bin/elasticsearch-users useradd nnviewer -p 1234 -r viewer
+
+## 安裝方式
+nginx access log 1~2G 
+每秒量訪問 50~150
+每 1 GB RAM，大約可處理 10 GB 查詢資料
+每 1vCPU core 大約可處理 20~40 GB 查詢資料
+https://blog.johnwu.cc/article/elk-hardware-specification.html
+
+## 參考
 * 官方
 https://github.com/deviantony/docker-elk
 

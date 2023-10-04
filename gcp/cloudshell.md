@@ -14,6 +14,9 @@ gcloud compute instances list
 gcloud compute firewall-rules list
 gcloud compute networks list
 
+## stop browser ssh
+* 已知的 private key 還是可以連，停止之後新加入的 key 就無法連線
+sudo systemctl stop google-guest-agent
 
 ## get IAM
 gcloud projects get-iam-policy [project] --format="json"
