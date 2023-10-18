@@ -1,17 +1,14 @@
-## 常用環境 Snitppet
-  
-Linebot
-  
-Mysql  
-  
-Mongodb  
-  
-EJS+Babel  
+## 常用環境
 
-wp-config
+### Devops
+* ansible
+* docker
+* elk
+* gitlab
+* ubuntu
+* monitor (grafana prometheus)
+* nginx
+* terraform
 
-Cloudflare Api
-
-Docker
-
+### K8S
 

@@ -5,6 +5,10 @@ https://ellis-wu.github.io/2017/03/31/openvpn-installation/
 
 ## 查看網站路由
 traceroute www.google.com
+dig www.google.com
+
+https://www.whatsmydns.net/
+可以查 root domain 目前 name server 狀況
 
 ## 查看 背景執行的Thread
 Thread
