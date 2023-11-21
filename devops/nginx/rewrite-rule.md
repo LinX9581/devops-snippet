@@ -1,4 +1,13 @@
 
+
+## 如果要取得中文
+
+    // 不能直接把 $1 往後丟要定義一個變數給它
+	location ~* ^/reporter/([^/]+)/ {
+		set $rpt_value $1;
+        proxy_pass http://fn-servlet/rpt=$rpt_value;
+    }
+
 https://rew.linx.website/news/5421700?utm_source=dable
 $uri = news/5421700
 $args = utm_source=dable
@@ -22,7 +31,7 @@ location / {
     echo $para2;
 }
 
-# if 的另類寫法 會先判斷domain後面 $uri $uri.html $uri/是否有檔 否則執行最後一個參數 =404
+## if 的另類寫法 會先判斷domain後面 $uri $uri.html $uri/是否有檔 否則執行最後一個參數 =404
 try_files $uri $uri.html $uri/ =404;
 
 location [=|~|~*|^~] /uri/ { … }

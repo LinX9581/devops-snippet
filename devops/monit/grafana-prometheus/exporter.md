@@ -111,7 +111,9 @@ curl 127.0.0.1:9104/metrics
 
 # process-exporter
 grafana id = 13882
-需安裝圖表插件打開 Grafana 的網頁，選擇“Configuration” -> “Plugins” -> “Plugins”，然後搜尋“Treemap”插件，並啟用它
+需安裝圖表插件打開 Grafana 的網頁，選擇“Configuration” -> “Plugins” -> “Plugins”，然後搜尋"Treemap"插件，並啟用它
+沒有的話 連進容器執行
+grafana cli plugins install marcusolsson-treemap-panel
 
 localhost
 https://chenzhonzhou.github.io/2020/11/19/prometheus-process-exporter-jian-kong-fu-wu-jin-cheng/

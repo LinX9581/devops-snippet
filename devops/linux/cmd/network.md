@@ -14,7 +14,7 @@ https://www.whatsmydns.net/
 Thread
 https://ithelp.ithome.com.tw/articles/10297649
 
-* 查詢所有node 執行的路徑
+* 查詢所有node 執行的路徑   
 pwdx $(ps -C "node" --format pid --no-headers)
 
 * 查詢哪些port被占用

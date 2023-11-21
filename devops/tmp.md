@@ -1,3 +1,9 @@
+# 用程式做圖表
+https://github.com/mingrammer/diagrams
+
+# 系統設計大全
+https://github.com/ByteByteGoHq/system-design-101
+
 # 筆記大全
 https://wangchujiang.com/reference/docs/regex.html
 

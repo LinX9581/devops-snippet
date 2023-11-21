@@ -33,6 +33,21 @@ gitlab-runner register -n \
 所以權限的問題 要改下面這段 讓他們共用一些Key(必要的話)
 volumes = ["/gitlab-runner/auth/docker/:/certs/client/:rw","/root/.ssh/:/root/.ssh/","/cache:/cache:rw"]
 
+有關docker的部分要改成下面 , image 要改成 docker:stable , privileged = true
+```
+  [runners.docker]
+    tls_verify = false
+    image = "docker:stable"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = true
+    volumes = ["/gitlab-runner/auth/docker/:/certs/client/:rw","/root/.ssh/:/root/.ssh/","/cache:/cache:rw"]
+    shm_size = 0
+
+```
+
+
 
 * simple .gitlab-ci.yml
 要注意 tag 必須和 runner 的 tag 一致才會被執行

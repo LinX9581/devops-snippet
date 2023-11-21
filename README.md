@@ -10,5 +10,6 @@
 * nginx
 * terraform
 
-### K8S
+### GKE
+
 

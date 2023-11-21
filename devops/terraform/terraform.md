@@ -38,6 +38,20 @@ EOF
 * 執行並匯入變數檔案
 terraform apply -var-file="init.tfvars"
 
+* 防火牆設定使用變數
+
+variable "nnip_source_ranges" {
+  description = "IP address ranges starting with 61"
+  type        = list(string)
+  default     = ["127.0.0.2"]
+}
+
+  source_ranges = concat(
+    ["127.0.0.1"],
+    var.nnip_source_ranges
+  )
+
+
 # terraform import
 1. 自動化工具 terraformer
 export PROVIDER=google
