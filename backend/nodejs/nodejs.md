@@ -21,17 +21,37 @@ vscode 安裝套件 重開vscode
 yarn remove babel-cli babel-preset-env
 yarn add @babel/core @babel/node @babel/preset-env --dev
 
-.babelrc
+cat>/var/www/html/.babelrc<<EOF
 {
   "presets": [
     "@babel/preset-env"
   ]
 }
+EOF
 
+cat>/var/www/html/package.json<<EOF
+{
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "devDependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.6"
+  },
+  "name": "crawler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "type": "module"
+}
+
+EOF
 
 ## init 
 yarn add express body-parser cors dotenv

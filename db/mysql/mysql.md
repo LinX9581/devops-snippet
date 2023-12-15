@@ -7,6 +7,9 @@ sudo mysql_secure_installation
 全部Y
 
 ## 常見問題
+* docker install phpmyadmin
+docker run --name="phpMyAdmin-local" -itd -e PMA_HOST=$(ip route show | grep docker0 | awk '{print $9}') -p 8283:80 phpmyadmin/phpmyadmin
+
 * 確認連線狀況
 SHOW PROCESSLIST;
 

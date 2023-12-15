@@ -23,7 +23,7 @@ gcloud container clusters get-credentials linx-gke --zone=asia-east1 --project=k
 
 ## 建立 Docker Image
 
-## 上傳 Imgae to GKR
+## push Imgae
 ```
 權限、時區設定
 gcloud auth login
@@ -34,7 +34,7 @@ gcloud config set project [YOUR_PROJECT_ID]
 gcloud config set compute/zone asia-east1-b
 ```
 
-image push to docker hub
+* image push to docker hub
 ```
 需要先改imagename to 帳戶名稱/imagesname
 docker tag calendar:0.1 linx9581/calendar:0.1
@@ -47,7 +47,7 @@ image pull from docker hub
 docker pull linx9581/calendar:0.1
 ```
 
-image push to gcr
+* image push to gcr
 ```
 gcloud auth activate-service-account --key-file json
 gcloud auth configure-docker
@@ -57,3 +57,16 @@ docker tag [SOURCE_IMAGE] [HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG]
 docker push gcr.io/phonic-entity-320408/calendar:0.1
 docker push [HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG]
 ```
+
+* image push to registry
+
+docker tag php-nn:7.4 <您的 VM IP 或域名>:5000/php-nn:7.4
+docker push <您的 VM IP 或域名>:5000/php-nn:7.4
+
+
+要讓 Docker 認可 Registry ( Client Server 都要)
+/etc/docker/daemon.json
+{
+  "insecure-registries" : ["172.16.200.13:3008"]
+}
+sudo systemctl restart docker

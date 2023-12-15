@@ -1,4 +1,5 @@
 
+cd /tmp
 curl -O -L "https://github.com/grafana/loki/releases/download/v2.9.2/loki-linux-amd64.zip"
 unzip "loki-linux-amd64.zip"
 chmod a+x loki-linux-amd64
@@ -16,3 +17,12 @@ Type=simple
 [Install]
 WantedBy=multi-user.target
 EOF
+
+systemctl daemon-reload
+systemctl enable loki.service
+systemctl start loki
+systemctl status loki
+
+
+
+## 要確定 loki 裡面有資料 grafana 才能連到

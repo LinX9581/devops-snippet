@@ -6,6 +6,11 @@ sudo systemctl enable nginx mariadb
 參數修改
 /etc/mysql/mariadb.conf.d/
 
+## 清除特定日期的資料庫並存在新 Table
+CREATE TABLE post_pv_count_before_202307 LIKE post_pv_count;
+INSERT INTO post_pv_count_before_202307 SELECT * FROM post_pv_count WHERE count_time < '2023-07-01';
+DELETE FROM post_pv_count WHERE count_time < '2023-07-01';
+
 # create view
 create view year1_post_view as select * from table where date_sub(curdate(),interval 366 day) <= `post_create_date`;
 ## 記憶體相關
