@@ -19,16 +19,17 @@ docker search ubuntu -f is-official=true : 搜尋官方Image
 docker run -d -p 4000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /var/Portainer:/data portainer/portainer
 
 # 自架 Docker registry
-docker run -d -p 3008:5000 -v /docker/registry:/var/lib/registry --name registry registry:2
+docker run -d -p 3006:5000 -v /docker/registry:/var/lib/registry --name registry registry:2
+* ip 為 vm 本身的內部IP
 cat>/etc/docker/daemon.json<<EOF
-{ "insecure-registries":["172.20.200.1:3008"] }
+{ "insecure-registries":["172.16.97.6:3006"] }
 EOF
-docker tag node-test 172.20.200.1:3008/node-test
-docker push 172.20.200.1:3008/node-test
-docker pull 172.20.200.1:3008/node-test
+docker tag node-test 172.16.97.6:3006/node-test
+docker push 172.16.97.6:3006/node-test
+docker pull 172.16.97.6:3006/node-test
 
-curl -X GET http://172.20.200.1:3008/v2/_catalog
-curl -X GET http://172.20.200.1:3008/v2/mytomcat/tags/list
+curl -X GET http://172.16.97.6:3006/v2/_catalog
+curl -X GET http://172.16.97.6:3006/v2/mytomcat/tags/list
 
 
 # mount 

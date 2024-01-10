@@ -45,6 +45,17 @@ curl "http://metadata.google.internal/computeMetadata/v1/instance/service-accoun
 在 API and identity management 新增 Allow full access to all Cloud APIs
 或開一個最低權限的IAM 給它
 
-## 取得 Log
-gcloud logging read 'logName="projects/prod-salses-vote/logs/cloudaudit.googleapis.com%2Factivity" AND 
-protoPayload.authenticationInfo.principalEmail="itrd@gmail.com"' --format json --project prod-salses-vote
+
+
+## 更改IAM權限
+要先 gcloud auth login 
+gcloud projects add-iam-policy-binding iam-test-338508 \
+  --member='user:linx9581@gmail.com' \
+  --role='roles/storage.admin' \
+  --role='roles/cloudbuild.builds.editor' \
+  --role='roles/editor'
+
+gcloud projects remove-iam-policy-binding iam-test-338508 \
+  --member='user:shu575290@gmail.com' \
+  --role='roles/editor'
+  

@@ -18,6 +18,7 @@ sudo systemctl start grafana-server
 設定可以調 Grafana時區
 
 ## 安裝圖表
-grafana-cli plugins install grafana-worldmap-panel
-grafana-cli plugins install marcusolsson-treemap-panel
-grafana-cli plugins install grafana-piechart-panel
+docker exec -it grafana /bin/bash
+grafana cli plugins install grafana-worldmap-panel
+grafana cli plugins install marcusolsson-treemap-panel
+grafana cli plugins install grafana-piechart-panel

@@ -1,9 +1,0 @@
-logName:(projects/projectID/logs/compute.googleapis.com%2Ffirewall) 
-AND 
-jsonPayload.rule_details.reference:("network:networkName/firewall:allow-ssh") 
-AND 
-jsonPayload.connection.src_ip:("220.130.95.108") 
-OR 
-jsonPayload.connection.src_ip:("61.56.9.114") 
-OR 
-jsonPayload.connection.src_ip:("192.83.177.12")

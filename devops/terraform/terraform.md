@@ -3,74 +3,90 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install terraform
 
-gcloud auth activate-service-account --key-file terra2.json
-gcloud config set project terra-355307
+# 初始化GCP專案
+讓 VM 預設 Service Account 有權限(至少給到 editor 以上)
+gcloud config set project project_name
 gcloud compute instances list
 
-# terraform init
-mkdir terraform
-cd /terraform/
-
-touch main.tf ..
-
-cat>/terraform/init/main.tf<<EOF
-provider "google" {
-credentials = file("./terra.json")
-  project = "terra-test-353202"
-  region  = "asia-east1"
-  zone    = "asia-east1-b"
-}
-EOF
-
-換專案則換資料夾初始化
-terraform plan
-terraform apply
-
-# terraform var
-
+* 設定 terraform 變數
 cat>/gcp-terraform/init/init.tfvars<<EOF
-project_id = "k8s-2022-09-05"
+project_id = "project_name"
 project_name = "k8s"
-project_json_path = "~/.sakey/k8s-2022-09-05.json"
 firewall_name = "k8s"
 EOF
 
-* 執行並匯入變數檔案
 terraform apply -var-file="init.tfvars"
+會建立 vpc subnetwork firewall vms
 
-* 防火牆設定使用變數
-
-variable "nnip_source_ranges" {
-  description = "IP address ranges starting with 61"
-  type        = list(string)
-  default     = ["127.0.0.2"]
-}
-
-  source_ranges = concat(
-    ["127.0.0.1"],
-    var.nnip_source_ranges
-  )
-
-
-# terraform import
+# 現有專案導入terraform
 1. 自動化工具 terraformer
 export PROVIDER=google
 curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-${PROVIDER}-linux-amd64
 chmod +x terraformer-${PROVIDER}-linux-amd64
 sudo mv terraformer-${PROVIDER}-linux-amd64 /usr/local/bin/terraformer
 
+mkdir /terraform/new -p
+
+cat>/terraform/new/version.tf<<EOF
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.3"
+    }
+  }
+
+  required_version = ">= 1.2.0"
+}
+
+provider "aws" {
+  region = "ap-northeast-1"
+}
+EOF
+
 cat>/gcp-terraform/new/version.tf<<EOF
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.5"
+    }
+  }
+
+  required_version = ">= 1.2.0"
+}
+
 provider "google" {
-credentials = file("~/.sakey/k8s-2022-09-05.json")
-  project = "k8s-2022-09-05"
+  project = "test"
   region  = "asia-east1"
   zone    = "asia-east1-b"
 }
 EOF
 
-完成上面的 init動作才可以import
+cd /terraform/new/
 terraform init
-terraformer import google --resources=instances,networks,subnetworks,firewall --connect=true --regions=asia-east1 --projects=terra-test-353202
+
+* terraformer 的 bug provider 預設會是 Goolge 要改成 hashicorp/google
+* gcp import
+terraformer import google --resources=instances,networks,subnetworks,firewall --connect=true --regions=asia-east1 --projects=project_name
+cd /terraform/new/generated/gcp/instances
+terraform state replace-provider -auto-approve "registry.terraform.io/-/aws" "hashicorp/aws"
+terraform init
+terraform apply
+
+terraformer import google --resources=cloud_run --connect=true --regions=asia-east1 --projects=project_name
+
+* aws import 
+要確保 aws configure 有設定
+terraformer import aws --resources=ec2_instance --regions=ap-northeast-1
+cd /terraform/new/generated/aws/ec2_instance
+terraform state replace-provider -auto-approve "registry.terraform.io/-/aws" "hashicorp/aws"
+terraform init
+terraform apply
+
+terraformer import aws --resources=sg --regions=ap-northeast-1
+
+https://github.com/GoogleCloudPlatform/terraformer/blob/master/docs/aws.md
 
 2. 手動建立 並 import
 假設原有 VM名稱: import-test
