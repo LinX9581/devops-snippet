@@ -9,7 +9,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=~/.sakey/now.json
 gcloud config set project now-227907
 gcloud config set compute/zone asia-east1-b
 
-* 取得 vm列表
+* 取得 vm firewall network list
 gcloud compute instances list
 gcloud compute firewall-rules list
 gcloud compute networks list
@@ -56,6 +56,6 @@ gcloud projects add-iam-policy-binding iam-test-338508 \
   --role='roles/editor'
 
 gcloud projects remove-iam-policy-binding iam-test-338508 \
-  --member='user:shu575290@gmail.com' \
+  --member='user:linx9581@gmail.com' \
   --role='roles/editor'
   

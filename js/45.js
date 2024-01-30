@@ -1,1 +1,0 @@
-Number(pagePerUser).toFixed(2)

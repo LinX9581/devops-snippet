@@ -1,6 +1,4 @@
 
-# 使用 Terraform 管理
-
 ## install terraform
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
@@ -47,6 +45,3 @@ EOF
 cd /devops/cloudflare/generated/cloudflare/dns/
 terraform state replace-provider -auto-approve "registry.terraform.io/-/cloudflare" "cloudflare/cloudflare"
 tf init
-
-
-圖片改用 avif 格式

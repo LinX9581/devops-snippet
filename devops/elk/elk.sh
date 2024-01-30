@@ -20,8 +20,8 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker
 chmod +x /usr/local/bin/docker-compose
 systemctl enable docker.service
 
-curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.15.1-amd64.deb
-sudo dpkg -i filebeat-7.15.1-amd64.deb
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.12.0-amd64.deb
+sudo dpkg -i filebeat-8.12.0-amd64.deb
 filebeat modules enable nginx
 
 cd /var/www

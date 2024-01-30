@@ -22,13 +22,6 @@ aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRole
 已群組為概念，一個群組可以有多個使用者，一個使用者可以有多個群組
 預設的使用者沒有權限 要先建立群組並且綁定
 
-## Cloud shell
-
-* EC2 list
-aws ec2 describe-instances --query 'Reservations[].Instances[].{ID:InstanceId,State:State.Name}'
-
-* firewall list
-aws ec2 describe-security-groups --query 'SecurityGroups[].{ID:GroupId,Name:GroupName}'
 
 ## SSH
 System Manager 
@@ -54,6 +47,10 @@ chown ansible:ansible /home/ansible/.ssh -R
 Create hosted zone
 設定網域後 把 Godday ns 改成 AWS 的 ns
 生效後就能建立 record
+
+## Loadbalancer
+一般網站適合用 ALB (HTTP/HTTPS)
+建立的時候預設會用兩個區域 所以要建立兩個 vpc subnet 否則綁定 cloudfront 有時候會504
 
 ## AWS 和 GCP 差異
 VM的詳細資料 EC2 Sidebar 就很清楚了 GCP還要點進去

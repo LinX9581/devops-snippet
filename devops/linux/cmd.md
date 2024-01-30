@@ -189,6 +189,9 @@ tar cvf bobee.tar --exclude=linxnote.club/wp-content/uploads --exclude=linxnote.
 tar xvf FileName.tar
 ```
 ## 排程
+crontab -e
+crontab -l
+
 ```
 定期刪除五天以前的檔案
 40 1 * * * userxx /usr/bin/rm `date  --date="-5 day"  +\%Y-\%m-\%d`*.gz

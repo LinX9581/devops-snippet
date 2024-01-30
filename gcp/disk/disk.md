@@ -1,6 +1,7 @@
 # 增加VM硬碟空間
 ```
-growpart /dev/sda 1 (要先裝 cloud-utils)
+要先裝 cloud-utils
+growpart /dev/sda 1 
 把剛剛新增的硬碟容量(disk) 擴增到 第一分割區(part)
 part = 主要硬碟區
 

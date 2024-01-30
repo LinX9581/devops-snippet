@@ -12,6 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
         src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2"></script>
+
 </head>
 
 <body>
@@ -75,7 +77,7 @@
 
         let lineOptions = {
             // 這行能讓滑鼠移過去任一個點 都會顯示資訊
-            interaction: {   
+            interaction: {
                 mode: 'index',
                 intersect: false,
             },
@@ -90,7 +92,7 @@
                     //     min: 0, //minimum tick
                     //     max: 400, //maximum tick
                     //     callback: function(value, index, values) {
-                                // 要顯示400 一定也要顯示50 
+                    // 要顯示400 一定也要顯示50 
                     //         if (value == 400) return "400";
                     //         if (value == 100) return "100";
                     //         if (value == 50) return "50";
@@ -133,19 +135,62 @@
                     // 顯示 modal
                     // $(`#${rtSource}RtNews`).modal('show');
                 }
+            },
+            plugins: {
+                // warnging line
+                // annotation: {
+                //     annotations: {
+                //         line1: { // 10 的標註
+                //             type: 'line',
+                //             yMin: 10,
+                //             yMax: 10,
+                //             borderColor: 'rgba(255, 99, 132, 1)', // 線條顏色
+                //             borderWidth: 2,
+                //         },
+                //         line2: { // -10 的標註
+                //             type: 'line',
+                //             yMin: -10,
+                //             yMax: -10,
+                //             borderColor: 'rgba(99, 132, 255, 1)', // 線條顏色，可以選擇不同的顏色
+                //             borderWidth: 2,
+                //         }
+                //     }
+                // }
             }
         }
+
+        let dataArray1 = [1, 2, 3, 4, 5, 6]
+        let dataArray2 = [2, 1, 9, 15, 12, 13]
+        let xArray = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']
+        let timeLableArray1 = [dataArray1, dataArray2]
+        let timeLabel = ['今天', '昨天']
+        let color1 = ['red', 'green']
+
+        let tmpStockArray1 = [];
+        for (let i = 0; i < timeLableArray1.length; i++) {
+            tmpStockArray1.push({
+                label: timeLabel[i],
+                data: timeLableArray1[i],
+                backgroundColor: color1[i],
+                borderColor: color1[i],
+                borderWidth: 1,
+                fill: false,
+                cubicInterpolationMode: 'monotone',
+                tension: 0.1
+            })
+        }
+        genChart('line1', 'line', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], tmpStockArray1, lineOptions)
+
+        // Single Data
         let lineData = [{
             label: '1',
             data: [2, 1, 9, 15, 12, 13],
             backgroundColor: ['Red'],
             borderWidth: 1
         }]
-
-
-        genChart('line1', 'line', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
-        // genChart('bar', 'bar', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
         genChart('line2', 'line', ['1', '2', '3', '4', '5', '6'], lineData, lineOptions)
+
+        // genChart('bar', 'bar', ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], lineData, lineOptions)
         // genChart('pie', 'pie', ['dsad', 'zcx', 'qwc', 'zxc', 'Purpasle', 'Oranasasge'], pieData, pieOptions)
 
         async function genChart(chartId, type, chartTimeLabel, chartData, options) {
