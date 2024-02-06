@@ -1,26 +1,20 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var http = require('http').Server(app);
-app.use(express.static('public'));
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
+const app = express();
+const http = require('http').Server(app);
+
+app.set("views", "views/");
+app.set("view engine", "ejs");
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cors());
-app.get('/', function(req, res) {
-    // res.send('Hey Guys! we have a Gift for You!!!');
-    res.sendFile(__dirname + '/index.html');
-    console.log("asd")
-});
-app.post('/uploads', function(req, res) {
-    console.log(req.body)
-        // res.redirect(307, '/login')
-    res.send(JSON.stringify({
-        "reinsert": "success"
-    }));
-})
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.use(express.static('public'));
+
 const host = '0.0.0.0';
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3005;
 
 http.listen(port, host, function() {
-    console.log("Server started.......");
+    console.log("Server started on " + port);
 });
