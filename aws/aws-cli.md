@@ -1,11 +1,44 @@
 
-# ec2
+# aws-cli
+* install
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
 
-* EC2 list
-aws ec2 describe-instances --query 'Reservations[].Instances[].{ID:InstanceId,State:State.Name}'
+* set IAM
+aws configure
+建立的IAM 要建立 Access key ID 和 Secret access key 以及 region ap-northeast-1
+並且建立群組並且綁定權限
+類似 GCP 建立 Service Account 產生 Json
+
+* check current user
+aws sts get-caller-identity
 
 * set iam-role to ec2
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRoleForInstancesQuickSetup --instance-id i-041a9f1804945d1d4
+
+
+# ec2
+
+* EC2 list
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].{ID:InstanceId,State:State.Name,PublicDNS:PublicDnsName,PrivateDNS:PrivateDnsName,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}'
+
+
+* set iam-role to ec2
+aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRoleForInstancesQuickSetup --instance-id i-041a9f1804945d1d4
+
+# S3
+aws s3 mb s3://linx-s3-test
+aws s3 rb s3://linx-s3-test
+
+aws s3 cp /var/www/test.txt s3://linx-s3-test
+aws s3 cp s3://linx-s3-test/test.txt /var/www/test.txt
+aws s3 rm s3://linx-s3-test/test.txt
+
+aws s3 ls
+aws s3 ls s3://linx-s3-test
+
 
 # firewall
 

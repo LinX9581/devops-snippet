@@ -1,12 +1,14 @@
 
 # /devops/
-  
+
+VScode 善用 F1 找文件  
+Ex. Cloudshell, nodejs, ansible  
+
 ## GCP
 GCE、GKE、GCS、GCP IAM、Firewall、Load Balancer、Cloud SQL、Cloud Run、VPC  
   
 ## AWS  
 EC2、Route53、Cloudfront  
-  
 CDN: Clouflare、Cloudfront  
 Monitor: Prometheus、Grafana、Promtail、ELK、K6  
 Webserver : Nginx  

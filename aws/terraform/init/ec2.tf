@@ -1,10 +1,26 @@
-resource "aws_instance" "test2" {
+
+
+resource "aws_eip" "test8_eip" {
+  instance = aws_instance.test8.id
+  domain = "vpc"
+}
+
+resource "aws_instance" "test8" {
   ami           = "ami-07c589821f2b353aa"  # 請替換為最新的 Ubuntu 20.04 AMI
   instance_type = "t2.micro"
-  iam_instance_profile                 = "AmazonSSMRoleForInstancesQuickSetup"
+  iam_instance_profile                 = "ec2-proflie"
   
   user_data = <<EOF
 #!/bin/bash
+apt update
+sudo timedatectl set-timezone Asia/Taipei
+apt install unzip net-tools -y
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
+
 sudo adduser ansible
 sudo usermod -aG sudo ansible
 echo 'ansible ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible
@@ -19,9 +35,11 @@ chown ansible:ansible /home/ansible/.ssh -R
 
 EOF
 
+  key_name               = "stg-devops"
+  subnet_id               = aws_subnet.subnetwork.id
+  vpc_security_group_ids = [aws_security_group.allow-other.id, aws_security_group.allow-ssh.id,aws_security_group.allow-http.id,aws_security_group.allow-https.id]
 
-  security_groups   = ["ec2-allow-other"]
   tags = {
-    Name = "test2"
+    Name = "test8"
   }
 }

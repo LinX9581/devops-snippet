@@ -21,7 +21,16 @@ sudo systemctl stop google-guest-agent
 ## get IAM
 gcloud projects get-iam-policy [project] --format="json"
 
+## gcloud add metadata
+public key 前面要加上 username:
+gcloud compute project-info add-metadata --metadata-from-file ssh-keys=/devops/id_rsa.pub
+
 ## gcloud allow api
+gcloud services enable compute.googleapis.com
+
+## create service account 
+gcloud iam service-accounts create cloudsql-proxy --display-name="Cloud SQL Proxy"
+gcloud projects add-iam-policy-binding [PROJECT_ID] --member="serviceAccount:cloudsql-proxy@[PROJECT_ID].iam.gserviceaccount.com" --role="roles/cloudsql.client"
 
 ## get current key 
 gcloud auth list

@@ -1,5 +1,7 @@
 ## install
 基本安裝 & 建立使用者
+sudo apt install mysql-server
+
 sudo apt install mariadb-server mariadb-client -y
 sudo systemctl start mariadb
 sudo systemctl enable mariadb
@@ -44,6 +46,13 @@ sudo service mysql restart
 systemctl stop mysqld
 systemctl set-environment MYSQLD_OPTS=--skip-grant-tables
 systemctl start mysqld
+
+* 只允許使用者看特定 view
+SELECT TABLE_NAME FROM information_schema.VIEWS WHERE TABLE_SCHEMA = 'test';
+CREATE USER 'data-center'@'cloudsqlproxy~172.16.2.15' IDENTIFIED BY 'D4D66A02DAEFDB2F70FF2507A78FD5EC';
+GRANT SELECT ON `test`.`finance_post_news_view` TO 'data-center'@'cloudsqlproxy~172.16.2.15';
+GRANT SELECT ON `test`.`sport_post_news_view` TO 'data-center'@'cloudsqlproxy~172.16.2.15';
+FLUSH PRIVILEGES;
 
 ## 特定網段連線
 CREATE USER 'dc'@'172.16.2.0/24' IDENTIFIED BY 'password';

@@ -6,6 +6,8 @@ https://alexisperrier.com/gcp/2018/01/01/google-storage-gsutil.html
 -n // 防止覆蓋文件
 -m // muitiple thread
 
+gcloud config set project 
+
 * create static web
 gcloud storage buckets create gs://nn-gcs-test
 gsutil cp -r /devops/gcs/index.html gs://nn-gcs-test

@@ -8,12 +8,12 @@ sudo apt-get update && sudo apt-get install terraform
 * 建立 IAM roles
 EC2 IAM profile 要加上建立的 IAM roles
 
-* 初始化 terraform 
-main.tf
-network.tf
+* 建立 key pair
+aws ec2 create-key-pair --key-name stg-devops --query 'KeyMaterial' --output text > stg-devops.pem
 
+* 初始化 terraform 
 terraform init
 terraform apply
 
-會依序建立 VPC, subnet
+會依序建立 VPC, subnet, security group, EC2 instance, getway, route table, route table association
 

@@ -66,7 +66,9 @@ https://civitai.com/models/16599/beautypromix
 model 的 Type = CHECKPOINT MERGE
 https://civitai.com/models/6424/chilloutmix
 
-model分為主模型或大模型，小模型分為Vae, Lora, Embedding(Text Invertion)，以及輔助模型像是BLIP, CLIP, ControlNet
+大模型像是 model，
+小模型像是 Vae, Lora, Embedding(Text Invertion)，
+以及輔助模型像是BLIP, CLIP, ControlNet
 
 https://github.com/civitai/civitai/wiki/How-to-use-models#fine-tuned-model-checkpoints-dreambooth-models
 
