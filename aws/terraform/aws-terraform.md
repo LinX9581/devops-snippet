@@ -17,3 +17,20 @@ terraform apply
 
 會依序建立 VPC, subnet, security group, EC2 instance, getway, route table, route table association
 
+* EC2 會建立 以下
+1. Ansible 使用者
+2. 上面建立的 Private SSH Key 
+3. 綁定 security group 包含 allow-other , allow-ssh, allow-http, allow-https
+4. 綁定 role-policy 建立的 IAM Proflie
+
+* network
+1. VPC
+2. Subnet
+3. Internet Gateway
+4. Route Table
+
+* security group
+1. allow-other
+2. allow-ssh
+3. allow-http
+4. allow-https

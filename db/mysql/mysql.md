@@ -49,7 +49,7 @@ systemctl start mysqld
 
 * 只允許使用者看特定 view
 SELECT TABLE_NAME FROM information_schema.VIEWS WHERE TABLE_SCHEMA = 'test';
-CREATE USER 'data-center'@'cloudsqlproxy~172.16.2.15' IDENTIFIED BY 'D4D66A02DAEFDB2F70FF2507A78FD5EC';
+CREATE USER 'data-center'@'cloudsqlproxy~172.16.2.15' IDENTIFIED BY 'password';
 GRANT SELECT ON `test`.`finance_post_news_view` TO 'data-center'@'cloudsqlproxy~172.16.2.15';
 GRANT SELECT ON `test`.`sport_post_news_view` TO 'data-center'@'cloudsqlproxy~172.16.2.15';
 FLUSH PRIVILEGES;
