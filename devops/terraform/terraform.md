@@ -1,85 +1,45 @@
-# install
+# Install
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install terraform
 
-# 初始化GCP專案
-讓 VM 預設 Service Account 有權限(至少給到 editor 以上)
-gcloud config set project project_name
-gcloud compute instances list
+## GCP 初始化範例
+./devops-snippet/gcp/terraform/init
 
-* 設定 terraform 變數
-cat>/gcp-terraform/init/init.tfvars<<EOF
-project_id = "project_name"
-project_name = "k8s"
-firewall_name = "k8s"
-EOF
+## AWS 初始化範例
+./devops-snippet/aws/terraform/init
 
-terraform apply -var-file="init.tfvars"
-會建立 vpc subnetwork firewall vms
-
-# 現有專案導入terraform
+## 現有專案導入terraform
 1. 自動化工具 terraformer
 export PROVIDER=google
 curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-${PROVIDER}-linux-amd64
 chmod +x terraformer-${PROVIDER}-linux-amd64
 sudo mv terraformer-${PROVIDER}-linux-amd64 /usr/local/bin/terraformer
 
-mkdir /terraform/new -p
+假設
+GCP 專案名稱: linx
+AWS Region: ap-northeast-1
 
-cat>/terraform/new/version.tf<<EOF
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.3"
-    }
-  }
+* GCP import
 
-  required_version = ">= 1.2.0"
-}
-
-provider "aws" {
-  region = "ap-northeast-1"
-}
-EOF
-
-cat>/gcp-terraform/new/version.tf<<EOF
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 3.5"
-    }
-  }
-
-  required_version = ">= 1.2.0"
-}
-
-provider "google" {
-  project = "test"
-  region  = "asia-east1"
-  zone    = "asia-east1-b"
-}
-EOF
-
-cd /terraform/new/
+cd ./devops-snippet/devops/terraform/gcp-provider/
 terraform init
-
-* terraformer 的 bug provider 預設會是 Goolge 要改成 hashicorp/google
-* gcp import
-terraformer import google --resources=instances,networks,subnetworks,firewall --connect=true --regions=asia-east1 --projects=project_name
-cd /terraform/new/generated/gcp/instances
+terraformer import google --resources=instances,networks,subnetworks,firewall --connect=true --regions=asia-east1 --projects=linx
+cd linx/generated/gcp/instances
 terraform state replace-provider -auto-approve "registry.terraform.io/-/aws" "hashicorp/aws"
 terraform init
 terraform apply
 
-terraformer import google --resources=cloud_run --connect=true --regions=asia-east1 --projects=project_name
+terraformer import google --resources=cloud_run --connect=true --regions=asia-east1 --projects=linx
 
-* aws import 
-要確保 aws configure 有設定
+※ terraformer 的 bug, provider 預設會是 Goolge 要改成 hashicorp/google
+
+* AWS import
+cd ./devops-snippet/devops/terraform/aws-provider/
+terraform init
+要確保 aws configure 有設定 執行的VM必須有權限
 terraformer import aws --resources=ec2_instance --regions=ap-northeast-1
-cd /terraform/new/generated/aws/ec2_instance
+cd projectname/generated/aws/ec2_instance
 terraform state replace-provider -auto-approve "registry.terraform.io/-/aws" "hashicorp/aws"
 terraform init
 terraform apply
@@ -88,7 +48,10 @@ terraformer import aws --resources=sg --regions=ap-northeast-1
 
 https://github.com/GoogleCloudPlatform/terraformer/blob/master/docs/aws.md
 
-2. 手動建立 並 import
+
+
+
+## 手動建立 import
 假設原有 VM名稱: import-test
 要建立一個相對的 tf file
 terraform import google_compute_instance.import-test import-test
