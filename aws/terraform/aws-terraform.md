@@ -11,13 +11,8 @@ EC2 IAM profile 要加上建立的 IAM roles
 * 建立 key pair
 aws ec2 create-key-pair --key-name stg-devops --query 'KeyMaterial' --output text > stg-devops.pem
 
-<<<<<<< HEAD
-* 初始化 terraform
-cd ./aws/terraform/init 
-=======
 * 初始化 terraform 
 cd ./devops-snippet/aws/terraform/aws-terraform-init
->>>>>>> 1835800a2ae252be76d0ecbf5e91ceff5a4d3482
 terraform init
 terraform apply -var-file="init.tfvars"
 
