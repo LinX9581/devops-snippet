@@ -1,20 +1,23 @@
 variable "project_id" {
     type = string
 }
-variable "project_json_path" {
-    type = string
-}
 
 locals {
   project_id = var.project_id
 }
 
-locals {
-  project_json_path = var.project_json_path
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.5"
+    }
+  }
+
+  required_version = ">= 1.2.0"
 }
 
 provider "google" {
-  credentials = file("${local.project_json_path}")
   project = local.project_id
   region  = "asia-east1"
   zone    = "asia-east1-b"

@@ -6,7 +6,12 @@ resource "aws_eip" "test8_eip" {
 }
 
 resource "aws_instance" "test8" {
+<<<<<<< HEAD:aws/terraform/init/ec2.tf
   ami           = "ami-00247e9dc9591c233"  # 請替換為最新的 Ubuntu 20.04 AMI
+=======
+  ami           = "ami-00247e9dc9591c233"  # 請替換為最新的 Ubuntu 22.04 AMI
+  # ami           = "ami-07c589821f2b353aa"  # 請替換為最新的 Ubuntu 20.04 AMI
+>>>>>>> 1835800a2ae252be76d0ecbf5e91ceff5a4d3482:aws/terraform/aws-terraform-init/ec2.tf
   instance_type = "t2.micro"
   iam_instance_profile                 = "ec2-proflie"
   

@@ -1,4 +1,4 @@
-# AWS Terraform
+# AWS Terraform Init
 
 * 安裝 terraform
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -11,11 +11,20 @@ EC2 IAM profile 要加上建立的 IAM roles
 * 建立 key pair
 aws ec2 create-key-pair --key-name stg-devops --query 'KeyMaterial' --output text > stg-devops.pem
 
+<<<<<<< HEAD
 * 初始化 terraform
 cd ./aws/terraform/init 
+=======
+* 初始化 terraform 
+cd ./devops-snippet/aws/terraform/aws-terraform-init
+>>>>>>> 1835800a2ae252be76d0ecbf5e91ceff5a4d3482
 terraform init
 terraform apply -var-file="init.tfvars"
 
+* 檢視建立的 EC2
+aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].{ID:InstanceId,State:State.Name,PublicDNS:PublicDnsName,PrivateDNS:PrivateDnsName,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}'
+
+## 建立的資源
 會依序建立 VPC, subnet, security group, EC2 instance, getway, route table, route table association
 
 * EC2 會建立 以下
@@ -35,3 +44,24 @@ terraform apply -var-file="init.tfvars"
 2. allow-ssh
 3. allow-http
 4. allow-https
+
+
+## AWS Terraformer
+
+* terraformer install
+export PROVIDER=aws
+curl -LO https://github.com/GoogleCloudPlatform/terraformer/releases/download/$(curl -s https://api.github.com/repos/GoogleCloudPlatform/terraformer/releases/latest | grep tag_name | cut -d '"' -f 4)/terraformer-${PROVIDER}-linux-amd64
+chmod +x terraformer-${PROVIDER}-linux-amd64
+sudo mv terraformer-${PROVIDER}-linux-amd64 /usr/local/bin/terraformer
+
+* AWS import
+cd ./devops-snippet/aws/terraform/aws-provider
+terraform init
+要確保 aws configure 有設定 執行的VM必須有權限
+terraformer import aws --resources=ec2_instance --regions=ap-northeast-1
+cd projectname/generated/aws/ec2_instance
+terraform state replace-provider -auto-approve "registry.terraform.io/-/aws" "hashicorp/aws"
+terraform init
+terraform apply
+
+terraformer import aws --resources=sg --regions=ap-northeast-1
