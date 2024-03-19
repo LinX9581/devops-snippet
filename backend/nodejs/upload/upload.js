@@ -1,60 +1,48 @@
-var express = require('express')
-var multer = require('multer')
-var app = express();
-const path = require('path')
-const fs = require('fs')
+import multer from "multer";
+import path from "path";
+const { v4: uuidv4 } = require("uuid"); // 引入 uuid 來生成唯一檔案名
 
-app.use(express.static('public'));
+// 設置上傳資料夾的路徑
+const uploadDir = "./uploads";
 
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+// 檢查 uploads 目錄是否存在，如果不存在，則創建它
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
-        // Uploads is the Upload_folder_name
-        cb(null, "./")
-    },
-    filename: function(req, file, cb) {
-        console.log(file);
-        cb(null, file.fieldname + "-" + Date.now() + ".jpg")
-    }
-})
-
-const maxSize = 1 * 1000 * 1000;
-
-var upload = multer({
-    storage: storage,
-    limits: { fileSize: maxSize },
-    fileFilter: function(req, file, cb) {
-
-        // Set the filetypes, it is optional
-        var filetypes = /jpeg|jpg|png/;
-        var mimetype = filetypes.test(file.mimetype);
-
-        var extname = filetypes.test(path.extname(
-            file.originalname).toLowerCase());
-
-        if (mimetype && extname) {
-            return cb(null, true);
-        }
-
-        cb("Error: File upload only supports the " +
-            "following filetypes - " + filetypes);
-    }
-
-    // mypic is the name of file attribute
-}).single("mypic");
-
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-    console.log("asd")
+// 設置 multer 存儲選項
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // 設置檔案的存儲目錄
+  },
+  filename: function (req, file, cb) {
+    // 生成一個新的檔案名（使用 uuid 並保留原始檔案的副檔名）
+    const fileExt = path.extname(file.originalname); // 獲取原始檔案的副檔名
+    const filename = uuidv4() + fileExt; // 生成唯一檔案名
+    cb(null, filename);
+  },
 });
 
-app.post('/uploadphoto', function(req, res) {
-    console.log('get file');
-    upload(req, res, (err) => {
-        if (err) console.log(err);
-        else {
-            res.send({ result: 'success' });
-        }
-    });
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 1024 }, // 限制為 5MB
 });
-app.listen(4000, () => console.log(`Server started on port 4000`));
+
+let router = express.Router();
+
+router.post("/whisper", upload.single("file"), async (req, res) => {
+  try {
+    req.setTimeout(10 * 60 * 1000);
+    console.log("upload file");
+    console.log(req.file);
+    if (req.file) {
+    //   const result = await aiApi.whisper({ file: req.file });
+    //   res.json({ result });
+    } else {
+      res.status(400).json({ message: "file not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "whisper error" });
+  }
+});
