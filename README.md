@@ -1,7 +1,7 @@
 
 # /devops/
 
-VScode 善用 F1 找文件  
+VScode 善用 Ctrl + P 找文件  
 Ex. Cloudshell, nodejs, ansible  
 
 ## GCP

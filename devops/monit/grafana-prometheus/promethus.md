@@ -2,7 +2,6 @@
 docker run --name prometheus -d -p 9090:9090 -v /devops/prometheus:/etc/prometheus \
 prom/prometheus --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
 
-
 ```
 
 global:
@@ -34,6 +33,9 @@ scrape_configs:
     static_configs:
       - targets: ['10.140.0.10:3006','10.140.0.2:8080']
 ```
+
+* 確認版本
+curl 127.0.0.1:9090/api/v1/status/buildinfo
 
 ## local install prometheus
 https://linoxide.com/how-to-install-prometheus-on-ubuntu/

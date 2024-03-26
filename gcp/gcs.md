@@ -6,7 +6,10 @@ https://alexisperrier.com/gcp/2018/01/01/google-storage-gsutil.html
 -n // 防止覆蓋文件
 -m // muitiple thread
 
-gcloud config set project 
+gcloud config set project [project_id]
+
+* 讓特定IAM帳戶只有寫入權限
+gcloud projects add-iam-policy-binding [PROJECT_ID] --member="serviceAccount:[SERVICE_ACCOUNT_EMAIL]" --role="roles/storage.objectCreator"
 
 * create static web
 gcloud storage buckets create gs://nn-gcs-test
@@ -14,7 +17,8 @@ gsutil cp -r /devops/gcs/index.html gs://nn-gcs-test
 gsutil acl ch -u AllUsers:R gs://nn-gcs-test/index.html
 https://storage.googleapis.com/nn-gcs-test/index.html
 
-* 新增 移除 檢視
+* create remove view
+gsutil ls -p test-project 
 gsutil -m cp -r dir gs://my-bucket
 gsutil cp -r /var/log/nginx/access.log.3.gz gs://nginx-access-log
 gsutil cp -r gs://linxtest/access.log.2.gz /var/www
@@ -22,9 +26,6 @@ gsutil cp -r gs://wpbk gs://test
 gsutil ls -a gs://bobee-1
 gsutil cp gs://sub-project/babyou gs://sub-project/old-babyou-image/
 gsutil -m rm -r gs://my_bucket/subdir
-
-* 檢視該專案bucket
-gsutil ls -p test-project 
 
 * 讓特定資料夾公開&設定cache 但每次新增檔案 都要重新下指令
 gsutil -m acl set -R -a public-read gs://sub-project/vote2022/
