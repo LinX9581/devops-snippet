@@ -1,23 +1,6 @@
 # Ansible
 cd ./devops-snippet/devops/ansible
 
-## 查看基本資訊
-
-* 查看系統資訊
-ansible-playbook -i ./host/test ./yaml/cmd/show-system-info.yml --extra-vars 'host=local'
-
-* 顯示系統環境變數
-ansible-playbook -i ./host/test ./yaml/cmd/show-system-env.yml --extra-vars 'host=local'
-
-## vars
-ansible-playbook -i ./host/test ./yaml/cmd/vars.yml
-
-## 其他
-* 清除未使用的使用者
-ansible-playbook -i ./host/test ./yaml/cmd/delete_useless_user.yml --extra-vars 'host=local'
-* git pull
-deploy_git.yml
-
 ## 安裝後端環境
 * install oracle java
 ansible-playbook -i ./host/test ./yaml/setup_env/java.yml
@@ -47,6 +30,23 @@ ansible-playbook -i ./host/test ./yaml/monit/gcp-custom-log.yml
 
 * promtail
 ansible-playbook -i ./host/test ./yaml/monit/promtail.yml
+
+## 其他
+
+* 查看系統資訊
+ansible-playbook -i ./host/test ./yaml/cmd/show-system-info.yml --extra-vars 'host=local'
+
+* 顯示系統環境變數
+ansible-playbook -i ./host/test ./yaml/cmd/show-system-env.yml --extra-vars 'host=local'
+
+* 清除未使用的使用者
+ansible-playbook -i ./host/test ./yaml/cmd/delete_useless_user.yml --extra-vars 'host=local'
+
+* git pull
+deploy_git.yml
+
+* 變數相關
+ansible-playbook -i ./host/test ./yaml/cmd/vars.yml
 
 # Ansible 安裝方式
 * 參考
