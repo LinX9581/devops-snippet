@@ -11,15 +11,17 @@ EC2 IAM profile 要加上建立的 IAM roles
 * 建立 key pair
 aws ec2 create-key-pair --key-name stg-devops --query 'KeyMaterial' --output text > stg-devops.pem
 
-* 初始化 terraform 
+* aws terraform init
 cd ./devops-snippet/aws/terraform/aws-terraform-init
+※ 避免之前被用過
+rm -rf terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl .
 terraform init
 terraform apply -var-file="init.tfvars"
 
 * 檢視建立的 EC2
 aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].{ID:InstanceId,State:State.Name,PublicDNS:PublicDnsName,PrivateDNS:PrivateDnsName,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}'
 
-## 建立的資源
+* 建立的資源
 會依序建立 VPC, subnet, security group, EC2 instance, getway, route table, route table association
 
 * EC2 會建立 以下

@@ -26,7 +26,7 @@ cd ./devops-snippet/devops/terraform/gcp-provider/
 terraform init
 terraformer import google --resources=instances,networks,subnetworks,firewall --connect=true --regions=asia-east1 --projects=linx
 cd linx/generated/gcp/instances
-terraform state replace-provider -auto-approve "registry.terraform.io/-/aws" "hashicorp/aws"
+terraform state replace-provider -auto-approve "registry.terraform.io/-/google" "hashicorp/google"
 terraform init
 terraform apply
 
