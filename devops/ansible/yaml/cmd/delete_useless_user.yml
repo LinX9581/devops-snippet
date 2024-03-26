@@ -1,0 +1,29 @@
+---
+- name: show env
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: ../../deploy
+
+    # - name: delete useless use
+    #   shell: "cd /home && sudo rm -rf thesys-emma thesys-ken kano4236 kanowu austinchen johnsonchuang sandychien research_development SOHO-Min soho-mikechen sunnytsay lin linx9581 nownews stg yuskawu_work nnbkman brianchang franktseng genlin520 ctimatt"
+    # - name: show system infos
+      # shell: "sudo uname -a"
+
+    # - name: show home
+    #   shell: "pkill -u zabbix"
+
+    - name: delete_user
+      shell: "sudo sh /home/ansible/deploy/env/shell/delete_user.sh"
+      register: env
+
+    # - name: show home
+    #   shell: "more /etc/passwd"
+    #   register: env
+
+    # - name: Print
+    #   debug:
+    #     msg: "{{ env.stdout.split('\n') }}"

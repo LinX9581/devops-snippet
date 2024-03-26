@@ -1,0 +1,13 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  hosts: '{{ host }}'
+  become: yes  # become root user
+  tasks:
+    - name: deploy
+      shell: "cd /var/www/{{ project }} && git fetch --all && git reset --hard origin/{{ branch }} && git pull origin {{ branch }}"
+      register: status
+
+    - name: Print
+      debug:
+        msg: "{{ status.stdout}}"
+

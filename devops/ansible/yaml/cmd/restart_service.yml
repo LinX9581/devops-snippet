@@ -1,0 +1,12 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  hosts: '{{ host }}'
+  tasks:
+    - name: zabbix restart
+      shell: "sudo systemctl stop zabbix-agent"
+      register: restart
+
+    - name: zabbix status
+      shell: "sudo systemctl disable zabbix-agent"
+      register: status
+

@@ -1,6 +1,56 @@
-# begin
-https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-20-04
+# Ansible
+cd ./devops-snippet/devops/ansible
 
+## 查看基本資訊
+
+* 查看系統資訊
+ansible-playbook -i ./host/test ./yaml/cmd/show-system-info.yml --extra-vars 'host=local'
+
+* 顯示系統環境變數
+ansible-playbook -i ./host/test ./yaml/cmd/show-system-env.yml --extra-vars 'host=local'
+
+## vars
+ansible-playbook -i ./host/test ./yaml/cmd/vars.yml
+
+## 其他
+* 清除未使用的使用者
+ansible-playbook -i ./host/test ./yaml/cmd/delete_useless_user.yml --extra-vars 'host=local'
+* git pull
+deploy_git.yml
+
+## 安裝後端環境
+* install oracle java
+ansible-playbook -i ./host/test ./yaml/setup_env/java.yml
+
+* install php8.0
+ansible-playbook -i ./host/test ./yaml/setup_env/php.yml --extra-vars 'host=local'
+
+* install wordpress
+ansible-playbook -i ./host/test ./yaml/setup_env/wordpress.yml
+
+* install docker
+ansible-playbook -i ./host/test ./yaml/setup_env/docker.yml --extra-vars 'host=local'
+
+* install nodejs 18
+ansible-playbook -i ./host/test ./yaml/setup_env/nodejs.yml --extra-vars 'host=local'
+
+## 安裝監控環境
+* prometheus (會先上傳exporter, 再寫成service 讓他保持重開機自動執行)
+ansible-playbook -i ./host/test ./yaml/monit/exporter-local.yml --extra-vars 'host=local'
+ansible-playbook -i ./host/test ./yaml/monit/exporter-docker.yml --extra-vars 'host=local'
+
+* GCP OPS Agent
+ansible-playbook -i ./host/test ./yaml/monit/gcp-monit.yml
+
+* GCP Logging Agent / auth log history
+ansible-playbook -i ./host/test ./yaml/monit/gcp-custom-log.yml
+
+* promtail
+ansible-playbook -i ./host/test ./yaml/monit/promtail.yml
+
+# Ansible 安裝方式
+* 參考
+https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-ansible-on-ubuntu-20-04
 https://pin-yi.me/ansible/
 
 sudo apt install ansible
@@ -44,19 +94,30 @@ EOF
 
 * 用自建設定檔 & playbook
 ansible-playbook -i inventory env.yml
-ansible-playbook -i ./host/stg ./yaml/env.yml
+ansible-playbook -i ./host/new ./yaml/upload.yml
 
 * 對所有host下指令
 ansible all -i inventory -m ping
 ansible atom -i inventory -a "sysctl -a | grep conntrack"
+
+
 ## ssh 進去機器不會要求確認
 echo -> ansible.cfg (如果機器都是固定則拿掉)
+* 加這個也會順便清除舊的 known_host
+* --flush-cache 
 host_key_checking = False
 
-## 格式化輸出
-- name: Print
-  debug:
-    msg: "{{ falcon_sensor_status.stdout.split('\n')}}"
+## ssh 代理
+* 啟動 ssh 代理
+eval $(ssh-agent)
+
+* 增加代理ssh key
+ssh-add gitlab-deploy-ssh/id_rsa
+
+* 更改 ansible 設定檔
+echo -> ansible.cfg
+[ssh_connection]
+ssh_args = -o ForwardAgent=yes 
 
 ## ansilble 指令 用法
 https://www.796t.com/content/1525534899.html

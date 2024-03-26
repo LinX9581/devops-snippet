@@ -1,0 +1,28 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload tar file
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: ../../../tmp/java
+
+    - name: upload java shell
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: /devops/ansible-deploy-monitor/ansible/deploy/env/shell/oracle-java.sh
+
+    - name: run java.sh
+      shell: "sudo sh /home/ansible/oracle-java.sh"
+      register: sh
+      
+    - name: rm -rf env
+      shell: "sudo rm -rf /home/ansible/java && sudo rm -f /home/ansible/oracle-java.sh"
+      register: sh

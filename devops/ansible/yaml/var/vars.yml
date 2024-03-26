@@ -1,0 +1,20 @@
+# cd /devops/ansible/ && sudo ansible-playbook -i ./host/test ./yaml/cmd/vars.yml --extra-vars 'target=test'
+# 會把--extra-vars 帶入tasks裡
+
+- name: Run command on remote hosts
+  vars:
+    extra_var: "{{ target }}"
+    mysql_root_password: "00000000"
+  hosts: "{{ target }}"
+  tasks:
+    - name: Execute command
+      command: echo "{{ extra_var | default("root") }}"
+      register: output_extra_vars
+
+    - name: Execute command
+      command: echo "{{ mysql_root_password }}"
+      register: output_inertal_vars
+
+    - name: Print
+      debug:
+        msg: "'{{ output_extra_vars.stdout }}' '{{ output_inertal_vars.stdout }}'"

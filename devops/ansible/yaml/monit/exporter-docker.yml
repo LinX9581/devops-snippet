@@ -1,0 +1,20 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: ../../deploy/monit/exporter
+
+    - name: run exporter-docker.sh
+      shell: "sudo sh /home/ansible/exporter/exporter-docker.sh"
+
+    - name: rm exporter-docker.sh
+      shell: "sudo rm /home/ansible/exporter/exporter-docker.sh"

@@ -1,0 +1,21 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+    
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: ../../deploy/env
+
+    - name: run nodejs.sh
+      shell: "sudo sh /home/ansible/env/shell/nodejs.sh"
+
+    - name: rm -rf env
+      shell: "sudo rm -rf /home/ansible/env"
+      register: sh
