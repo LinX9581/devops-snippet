@@ -1,0 +1,19 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: Run OpsAgent.sh
+      shell: "curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh && sudo bash add-google-cloud-ops-agent-repo.sh --also-install --version=2.7.0"
+
+    - name: Show Ops Agent Version
+      shell: "dpkg-query --show --showformat '${Package} ${Version} ${Architecture} ${Status}\n' google-cloud-ops-agent"
+      register: version
+      
+    - name: Print
+      debug:
+        msg: "{{ version.stdout.split('\n') }}"

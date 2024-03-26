@@ -1,0 +1,34 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  become: yes
+  tasks:
+    - name: upload promtail
+      synchronize:
+        mode: push
+        dest: /home/ansible/
+        src: ../../deploy/monit/promtail
+
+    - name: Generate promtail config
+      template:
+        src: ../../deploy/monit/promtail/promtail.yml.j2
+        dest: /home/ansible/promtail/promtail.yml
+
+    - name: create promtail service
+      shell: "sudo sh /home/ansible/promtail/promtail.sh"
+
+    - name: promtail restart
+      shell: "sudo service promtail restart"
+
+    - name: promtail status
+      shell: "sudo service promtail status"
+      register: promtail_status
+
+    - name: Print
+      debug:
+        msg: "'{{ promtail_status.stdout.split('\n') }}'"

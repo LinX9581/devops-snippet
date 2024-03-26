@@ -1,0 +1,26 @@
+---
+- name: user_no_root
+  hosts: '{{ host }}'
+  become: yes  # 使用sudo權限執行任務
+  tasks:
+    - name: Allow jesselin to sudo any command without password
+      lineinfile:
+        path: /etc/sudoers
+        line: 'jesselin ALL=(ALL:ALL) NOPASSWD: ALL'
+        state: present
+        validate: 'visudo -cf %s'  # 使用visudo檢查語法
+
+    - name: Disallow jesselin to sudo su
+      lineinfile:
+        path: /etc/sudoers
+        line: 'jesselin ALL=(ALL:ALL) !/bin/su'
+        state: present
+        validate: 'visudo -cf %s'  # 使用visudo檢查語法
+
+    - name: show
+      shell: "more /etc/sudoers"
+      register: env
+
+    - name: Print
+      debug:
+        msg: "{{ env.stdout.split('\n') }}"

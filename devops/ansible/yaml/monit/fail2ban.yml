@@ -1,0 +1,22 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: install fail2ban
+      shell: "sudo apt install fail2ban -y"
+
+    - name: falcon-sensor status
+      shell: "sudo systemctl restart fail2ban"
+      
+    - name: falcon-sensor status
+      shell: "sudo systemctl status fail2ban"
+      register: falcon_sensor_status
+
+    - name: Print
+      debug:
+        msg: " '{{ falcon_sensor_status.stdout.split('\n') }}'"

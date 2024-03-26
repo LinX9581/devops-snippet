@@ -1,0 +1,28 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: ../../deploy/env
+
+    - name: run wordpress.sh
+      shell: "sudo sh /home/ansible/env/shell/wordpress.sh"
+      register: sh
+      
+    - name: rm -rf env
+      shell: "sudo rm /home/ansible/env"
+      register: sh
+      
+# 資料庫未自動化
+# CREATE DATABASE wp_db;
+# CREATE USER 'dev'@'localhost' IDENTIFIED BY '00000000';
+# GRANT ALL PRIVILEGES ON *.* TO 'dev'@'localhost' WITH GRANT OPTION;
+# FLUSH PRIVILEGES;

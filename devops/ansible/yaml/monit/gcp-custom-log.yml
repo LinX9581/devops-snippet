@@ -1,0 +1,44 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  become: yes
+  tasks:
+    # 增加時間戳記
+    # - name: Append HISTTIMEFORMAT to .bashrc
+    #   blockinfile:
+    #     path: "/root/.bashrc" 
+    #     block: |
+    #       export HISTTIMEFORMAT="%F %T "
+    #     insertafter: EOF
+    #     marker: "# {mark} ANSIBLE MANAGED BLOCK FOR HISTTIMEFORMAT"
+    #     create: yes
+
+    - name: upload gcp-ops-agent
+      synchronize:
+        mode: push
+        dest: /home/ansible/
+        src: ../../deploy/monit/gcp-ops-agent
+
+    # - name: ln -s
+    #   shell: "sudo ln -s /root/.bash_history /var/log/.bash_history"
+
+    - name: run authlog.sh
+      shell: "sudo sh /home/ansible/gcp-ops-agent/authlog.sh"
+      register: run_authlog
+
+    - name: ops agent restart
+      shell: "sudo service google-cloud-ops-agent restart"
+      register: ops_agent_restart
+
+    - name: ops agent status
+      shell: "sudo service google-cloud-ops-agent status"
+      register: ops_agent_status
+
+    - name: Print
+      debug:
+        msg: "'{{ ops_agent_status.stdout.split('\n') }}'"

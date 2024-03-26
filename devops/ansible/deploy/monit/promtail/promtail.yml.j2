@@ -1,0 +1,37 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://172.16.2.45:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: syslog
+          instance: "{{ ansible_hostname }}"
+          __path__: /var/log/syslog
+      - targets:
+          - localhost
+        labels:
+          job: syslog
+          instance: "{{ ansible_hostname }}"
+          __path__: /var/log/auth.log
+      - targets:
+          - localhost
+        labels:
+          job: history
+          instance: "{{ ansible_hostname }}"
+          __path__: /var/log/.bash_history
+      - targets:
+          - localhost
+        labels:
+          job: Java_Log
+          instance: "{{ ansible_hostname }}"
+          __path__: /opt/tomcat/logs/*
