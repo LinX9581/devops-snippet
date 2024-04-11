@@ -8,7 +8,7 @@ pip install flask
 
 * run
 cd ./backend/python/init
-python app.py
+python3 app.py
 
 * build to image
 docker build -t flask-app:1.0 .

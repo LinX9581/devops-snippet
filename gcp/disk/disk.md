@@ -1,3 +1,13 @@
+# Check Disk
+各個檔案大小
+du -d 1 -m -x /run
+
+查詢全盤下容量
+du --exclude="proc" | sort -g
+
+查詢個別資料夾
+du -csh /var/log
+
 # 增加VM硬碟空間
 ```
 要先裝 cloud-utils

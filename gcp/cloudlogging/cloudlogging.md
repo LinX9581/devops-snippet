@@ -27,3 +27,5 @@ jsonPayload.connection.src_ip:("192.83.177.12")
 logName=("projects/project_name/logs/compute.googleapis.com%2Ffirewall") 
 AND jsonPayload.rule_details.reference=("network:default/firewall:default-allow-other")
 AND NOT jsonPayload.connection.src_ip="61.216.130.30"
+
+gcloud logging read "resource.type=global AND jsonPayload.rule_details.reference=\"network:nownews-prod-deploy-vpc/firewall:nownews-prod-deploy-allow-ssh\" AND timestamp>=\"2024-01-01T00:00:00Z\" AND timestamp<=\"2024-01-31T23:59:59Z\"" --project nownews-prod-deploy --limit 100 --format json
