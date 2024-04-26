@@ -20,6 +20,11 @@ instances = cloudsql -> overview -> connection name
 * 該機器要開放外連 要開啟3306 & 白名單IP
 * IAM key 權限需要 cloud sql client&Editor&Admin
 
+## 注意
+ubuntu 22.04 可能會導致連線失敗
+echo "PubkeyAcceptedKeyTypes=+ssh-rsa" >>/etc/ssh/sshd_config 
+service sshd restart
+
 ## 建立參考
 https://kejyuntw.gitbooks.io/google-cloud-platform-learning-notes/content/google-cloud-sql/proxy/google-cloud-sql-proxy-README.html
 

@@ -150,3 +150,6 @@ https://twgreatdaily.com/GbDIr3EBnkjnB-0z63vH.html
 
 # 壓力測試
 https://www.796t.com/content/1551959778.html
+
+# 資源參考
+https://www.youtube.com/watch?v=-bQQ_UxUjqw

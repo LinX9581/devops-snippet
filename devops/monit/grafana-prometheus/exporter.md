@@ -21,6 +21,9 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 
+# domain exporter
+可以監控網域是否過期
+
 # pm2 exporter
 https://github.com/saikatharryc/pm2-prometheus-exporter/blob/master/README.md
 

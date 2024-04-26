@@ -1,6 +1,22 @@
+# hot reload
+curl -X POST http://localhost:9090/-/reload
+curl -X POST http://localhost:9093/-/reload
+
 ## 先在該目錄建立 /prometheus/prometheus.yml 寫入設定檔
-docker run --name prometheus -d -p 9090:9090 -v /devops/prometheus:/etc/prometheus \
-prom/prometheus --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+
+數據另外備份在主機、數據保存90天
+讓 container 擁有GCP權限
+```
+docker run --name prometheus -d -p 9090:9090 \
+  -v /devops/backupdata/prometheus:/prometheus-data \
+  -v /devops/ansible-deploy-monitor/prometheus:/etc/prometheus \
+  prom/prometheus \
+  --web.enable-lifecycle \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/prometheus-data \
+  --storage.tsdb.retention.time=90d
+
+```
 
 ```
 
