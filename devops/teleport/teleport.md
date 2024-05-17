@@ -1,5 +1,8 @@
+* 文件
 https://goteleport.com/docs/
-
+https://gist.github.com/snail007/340aef1ae708a1b51db7a84285398a70
+https://github.com/gravitational/teleport
+https://blog.cptsai.com/2021/07/19/access-from-teleport
 
 * 安裝
 curl https://goteleport.com/static/install.sh | bash -s 13.3.7

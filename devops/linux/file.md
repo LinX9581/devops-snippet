@@ -1,5 +1,46 @@
-# grep replace
+## 資料夾比對工具
+```
+WinMerge
+diff -bur folder1/ folder2/ //會比對檔案差異和改甚麼
+diff -qr folder1/ folder2/ | sort //只比多檔案有多或少或改
+```
+
+## 搜尋取代
+
+* sed 
+sed -i 's/name:.*/name: Duke/g' settings.conf //將 name:* 改成 name: Duke
+sed -i '12i測試' ngx_http_sticky_misc.c //在第12行加入測試
+//寫入多行資料 字串內有 $ 前面要加上/
+cat>/usr/local/nginx/conf/nginx.conf<<EOF
+asdasd
+EOF
+
+* find
+目錄下所有檔案取代
+find ./ -type f -exec sed -i -e 's/game/game1/g' {} \;
+
+找副檔名為go
+find . -type f -name "*.go"
+
+讀取檔案底下的資料量
+find ./ -type f |wc -l
+
+查詢檔案
+sudo find / -name name
+
+* grep
 grep -rl 'googleApis.allCustom' importAnalyticsSchedule/ | xargs sed -i 's/googleApis.allCustom/googleApis.gaAllCustom/g'
+
+grep 'test' d*
+顯示所有以d開頭的文件中包含 test的行。
+grep 'test' aa bb cc
+顯示在aa，bb，cc文件中匹配test的行。
+grep '[a-z]\{5\}' aa
+顯示所有包含每個字符串至少有5個連續小寫字符的字符串的行。
+grep '[9,10,11]' dd     # 二位數
+grep '[0-9]' ee         # 只能顯示一位數0-9 不能8-12 只能[8,9,10,11,12]
+grep 'w\(es\)t.*\1' aa
+如果west被匹配，則es就被存儲到內存中，並標記為1，然後搜索任意個字符(.*)，這些字符後面緊跟著 另外一個es(\1)，找到就顯示該行。如果用egrep或grep -E，就不用”\”號進行轉義，直接寫成’w(es)t.*\1′就可以了
 
 # FILE INFO
 各個檔案大小
@@ -56,7 +97,7 @@ rsync -avh --progress /var/www logmonit@10.140.0.12:/test
 ## NFS ZFS
 [centos參考1](https://www.ichiayi.com/wiki/tech/nfs)
 [centos參考2](https://ithelp.ithome.com.tw/articles/10078793)
-```
+
 # centos 安裝方式
 yum install nfs-utils rpcbind
 

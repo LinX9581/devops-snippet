@@ -2,9 +2,13 @@
 apt install mariadb-server mariadb-client -y
 sudo systemctl start nginx mariadb
 sudo systemctl enable nginx mariadb
+
 # Mysql 參數介紹
-參數修改
+* 參數修改
 /etc/mysql/mariadb.conf.d/
+
+* 參數介紹
+https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql
 
 ## 清除特定日期的資料庫並存在新 Table
 CREATE TABLE post_pv_count_before_202307 LIKE post_pv_count;
@@ -13,6 +17,7 @@ DELETE FROM post_pv_count WHERE count_time < '2023-07-01';
 
 # create view
 create view year1_post_view as select * from table where date_sub(curdate(),interval 366 day) <= `post_create_date`;
+
 ## 記憶體相關
 * innodb_buffer_pool_size
 ```

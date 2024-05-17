@@ -3,6 +3,9 @@ http https tcp
 
 https://cloud.google.com/load-balancing/docs/https/https-logging-monitoring
 
+# 查看所有後端服務 --globle
+gcloud compute backend-services list
+
 # 讓nginx 取得 真實IP的設定方式
 https://geko.cloud/en/forward-real-ip-to-a-nginx-behind-a-gcp-load-balancer/
 
@@ -21,3 +24,6 @@ deny 61.216.80.0/24;
 35.191.0.0/16
 
 gcp 防火牆走 Armor
+
+* Armor 規則
+https://cloud.google.com/armor/docs/rule-tuning

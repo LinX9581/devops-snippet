@@ -1,10 +1,10 @@
 ## 調整時區、內核、CPU、硬碟
 
-調整時區
+* 調整時區
 sudo timedatectl set-timezone Asia/Taipei
 sudo dpkg-reconfigure tzdata
 
-系統內核版本 , 查看Linux發行版本 , 系統型號
+* 系統內核版本 , 查看Linux發行版本 , 系統型號
 uname -a
 cat /etc/lsb-release
 cat /etc/os-release

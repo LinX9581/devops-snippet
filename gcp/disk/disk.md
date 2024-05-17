@@ -8,6 +8,12 @@ du --exclude="proc" | sort -g
 查詢個別資料夾
 du -csh /var/log
 
+新增一個70G檔案
+fallocate -l 70G /tmp/temp.img
+
+df -h
+lsblk
+
 # 增加VM硬碟空間
 ```
 要先裝 cloud-utils

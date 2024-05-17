@@ -1,5 +1,5 @@
 # cross-project-connect
-## 建立步驟
+## STEP
 https://blog.cloud-ace.tw/database/cloud-sqlpart2-cloud-sql-proxy/
 1. 先在IAM的服務帳戶建立帳戶
 並建立金鑰
@@ -13,12 +13,36 @@ chmod +x cloud_sql_proxy
 gcloud services enable sqladmin.googleapis.com
 
 instances = cloudsql -> overview -> connection name
-多個資料庫就,隔開 key的方式讓跳板機直接吃service account 不要把key存vm
+多個資料庫就,隔開
 ./cloud_sql_proxy -instances=k88888888s-329606:asia-east1:vpc2=tcp:0.0.0.0:3306 -credential_file=/k88888888s-329606-5b13666eef94.json &
 ./cloud_sql_proxy -instances=k88888888s-329606:asia-east1:vpc2=tcp:0.0.0.0:3307 &
 * 如果只想讓local連就把 0.0.0.0: 拿掉，否則該台會變跳板機，其他台可以透過該台的IP連到該專案的cloud sql
 * 該機器要開放外連 要開啟3306 & 白名單IP
 * IAM key 權限需要 cloud sql client&Editor&Admin
+
+## 開機自動執行
+
+cat > /etc/supervisor/conf.d/cloud_sql_proxy.conf << EOF
+[Unit]
+Description=Google Cloud SQL Proxy
+After=network.target
+
+[Service]
+ExecStart=/cloudsql-proxy/cloud_sql_proxy -instances=nownews-news-prod:asia-east1:prod-mysql-db=tcp:0.0.0.0:3307,nownews-news-prod:asia-east1:prod-mysql-db-replica3-300g=tcp:0.0.0.0:3308,nownews-news-prod:asia-east1:prod-analytics-m-db=tcp:0.0.0.0:3306
+Restart=always
+StandardOutput=file:/var/log/cloud_sql_proxy.log
+StandardError=file:/var/log/cloud_sql_proxy_error.log
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl start cloud_sql_proxy
+sudo systemctl enable cloud_sql_proxy
+
+實際上 log 會存在
+/var/log/cloud_sql_proxy_error.log
 
 ## 注意
 ubuntu 22.04 可能會導致連線失敗

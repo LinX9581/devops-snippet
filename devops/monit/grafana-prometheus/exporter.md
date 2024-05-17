@@ -112,6 +112,9 @@ mysql -h 192.168.5.242 -u exporter -p 123456
 curl 127.0.0.1:9104/metrics
 也要確保 promethues 能 curl 127.0.0.1:9104/metrics
 
+* 參數介紹
+https://yunlzheng.gitbook.io/prometheus-book/part-ii-prometheus-jin-jie/exporter/commonly-eporter-usage/use-promethues-monitor-mysql
+
 # process-exporter
 grafana id = 13882
 需安裝圖表插件打開 Grafana 的網頁，選擇“Configuration” -> “Plugins” -> “Plugins”，然後搜尋"Treemap"插件，並啟用它

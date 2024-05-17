@@ -29,3 +29,21 @@ AND jsonPayload.rule_details.reference=("network:default/firewall:default-allow-
 AND NOT jsonPayload.connection.src_ip="61.216.130.30"
 
 gcloud logging read "resource.type=global AND jsonPayload.rule_details.reference=\"network:nownews-prod-deploy-vpc/firewall:nownews-prod-deploy-allow-ssh\" AND timestamp>=\"2024-01-01T00:00:00Z\" AND timestamp<=\"2024-01-31T23:59:59Z\"" --project nownews-prod-deploy --limit 100 --format json
+
+
+#!/bin/bash
+
+# 變數
+PROJECT_ID="<YOUR_PROJECT_ID>"
+TIME_RANGE="2023-05-01T00:00:00Z/2023-05-02T00:00:00Z"
+VM_NAME="<YOUR_VM_NAME>"
+LOG_LIMIT=100
+
+# 使用 gcloud 提取日志
+gcloud logging read \
+    "resource.type=\"gce_instance\" \
+     AND resource.labels.instance_id=\"$VM_NAME\" \
+     AND timestamp>=\"$TIME_RANGE\"" \
+    --project="$PROJECT_ID" \
+    --limit="$LOG_LIMIT" \
+    --format="json"

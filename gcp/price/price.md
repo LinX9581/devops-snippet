@@ -3,6 +3,7 @@ http://blog.maxkit.com.tw/2017/06/google-computer-engine.html
 
 # 官方
 https://cloud.google.com/pricing/list#section-4
+
 ## GCS
 前5G免費 1G/0.6U
 (per GB per Month)
@@ -21,6 +22,17 @@ SSD 2.5T~63.9T 1G/0.33
 First 5 forwarding rules	$0.025	Per Hour
 Per additional forwarding rule	$0.010	Per Hour
 Ingress data processed by load balancer	$0.008	Per GB
+
+## Cloud function
+1. price
+https://cloud.google.com/functions/pricing
+
+* 免費額度
+類型	        價格/GB
+外送資料	    $0.12 美元
+每月外送資料	5 GB 的免費額度
+傳入資料	    免費
+將資料外送至相同區域的 Google API	免費
 
 ## Big Query
 1. 已量計價 每月前1T免費 1T/$5

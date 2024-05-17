@@ -23,6 +23,7 @@ gcloud projects get-iam-policy [project] --format="json"
 
 ## gcloud add metadata
 public key 前面要加上 username:
+sed -i '1s/^/ansible: /' /devops/id_rsa.pub
 gcloud compute project-info add-metadata --metadata-from-file ssh-keys=/devops/id_rsa.pub
 
 ## gcloud allow api
