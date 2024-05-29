@@ -76,6 +76,9 @@ curl -u user:password -X DELETE "localhost:9200/index_prefix-access-2023.03.06?p
 sudo nano /etc/cron.d/elk_cron_job
 0 0 * * * root /var/www/delete_index.sh
 
+## 記憶體不夠大
+調整 docker-compose.yml 的 JAVA 參數
+
 ## 帳號相關
 連進elastic container 執行以下指令
 bin/elasticsearch-users useradd nnviewer -p 1234 -r viewer

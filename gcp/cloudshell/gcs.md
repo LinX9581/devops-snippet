@@ -92,3 +92,12 @@ sudo apt-get install gcsfuse
 gcsfuse --key-file [key] --only-dir [dir] [bocket] [destination]
 gcsfuse --key-file /key.json --only-dir vote2022 sub-project /mnt/gcs
 umount /mnt/gcs
+
+* 允許非 root 可以存取
+echo "user_allow_other" | sudo tee -a /etc/fuse.conf
+sudo gcsfuse -o allow_other media-tools-gcs /gcs
+sudo gcsfuse -o allow_other --implicit-dirs --file-mode=777 --dir-mode=777 media-tools-gcs /gcs
+
+* 開機自動執行
+/etc/fstab
+media-tools-gcs /gcs gcsfuse rw,allow_other 0 0

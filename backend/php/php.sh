@@ -2,7 +2,7 @@
 #! /bin/bash
 # 預設系統是 ubuntu & php7.4
 export os=ubuntu	# debian or ubuntu
-export php=7.4		# 8.0 or all
+export php=8.1		# 8.0 or all
 
 sudo apt update
 sudo apt upgrade -y
@@ -29,7 +29,7 @@ sudo apt-get install ca-certificates apt-transport-https -y
 apt install git nginx mariadb-server mariadb-client -y
 sudo systemctl start nginx mariadb
 sudo systemctl enable nginx mariadb
-if [ $php = "8.0" ]
+if [ $php = "8.1" ]
 then
 	sudo apt install php8.0-fpm php8.0-common php8.0-mysql php8.0-gmp php8.0-curl php8.0-intl php8.0-mbstring php8.0-xmlrpc php8.0-gd php8.0-xml php8.0-cli php8.0-zip -y
 	sudo systemctl enable php8.0-fpm

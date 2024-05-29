@@ -3,6 +3,8 @@
 https://ellis-wu.github.io/2017/03/31/openvpn-installation/
 ```
 
+## 查看外部IP
+curl ifconfig.me
 
 ## 查看網站路由
 traceroute www.google.com

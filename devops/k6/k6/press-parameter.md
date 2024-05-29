@@ -22,9 +22,10 @@ keepalive 設置為10%到30%。
 pm = static
 pm.max_children = 4000
 
+* 監控 fpm 連線數
 while [ 1 ]; do service php7.4-fpm status | grep 'Status' | cut -c 25-49; sleep 1; echo '------'; done
 
-查看單台 tcp 連線數 ( node_exporter 有監控)
+* 查看單台 tcp 連線數 ( node_exporter 有監控)
 netstat -ant | wc -l
 while [ 1 ]; do netstat -ant | wc -l; sleep 1; echo '------'; done
 
