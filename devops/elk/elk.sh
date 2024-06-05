@@ -22,7 +22,7 @@ systemctl enable docker.service
 
 curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.12.0-amd64.deb
 sudo dpkg -i filebeat-8.12.0-amd64.deb
-filebeat modules enable nginx
+
 
 cd /var/www
 git clone https://github.com/LinX9581/elk.git
@@ -73,6 +73,8 @@ cat>/etc/filebeat/modules.d/nginx.yml<<EOF
   ingress_controller:
     enabled: false
 EOF
+
+filebeat modules enable nginx
 
 cat>/var/www/elk/logstash/pipeline/logstash.conf<<EOF
 input {

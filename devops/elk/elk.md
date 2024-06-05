@@ -3,8 +3,8 @@ Linux Nginx Docker-compose ELK filebeat git
 
 ## 本地安裝 filebeat
 ```
-curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.15.1-amd64.deb
-sudo dpkg -i filebeat-7.15.1-amd64.deb
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.12.0-amd64.deb
+sudo dpkg -i filebeat-8.12.0-amd64.deb
 filebeat modules enable nginx
 ```
 
@@ -20,7 +20,7 @@ git clone https://github.com/deviantony/docker-elk
 cd /docker-elk
 docker-compose up -d 
 
-如果個別設定檔需要更改
+改個別設定
 docker-compose up --detach --build logstash
 
 ## filebeat tp logstash
