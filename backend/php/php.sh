@@ -2,7 +2,7 @@
 #! /bin/bash
 # 預設系統是 ubuntu & php7.4
 export os=ubuntu	# debian or ubuntu
-export php=8.1		# 8.0 or all
+export php=8.1		# 8.1 or all
 
 sudo apt update
 sudo apt upgrade -y
@@ -31,15 +31,15 @@ sudo systemctl start nginx mariadb
 sudo systemctl enable nginx mariadb
 if [ $php = "8.1" ]
 then
-	sudo apt install php8.0-fpm php8.0-common php8.0-mysql php8.0-gmp php8.0-curl php8.0-intl php8.0-mbstring php8.0-xmlrpc php8.0-gd php8.0-xml php8.0-cli php8.0-zip -y
-	sudo systemctl enable php8.0-fpm
-	sudo systemctl start php8.0-fpm
+	sudo apt install php8.1-fpm php8.1-common php8.1-mysql php8.1-gmp php8.1-curl php8.1-intl php8.1-mbstring php8.1-xmlrpc php8.1-gd php8.1-xml php8.1-cli php8.1-zip -y
+	sudo systemctl enable php8.1-fpm
+	sudo systemctl start php8.1-fpm
 elif [ $php = "all" ]
 then
 	sudo apt install php7.4 php7.4-fpm php7.4-cli php7.4-common php7.4-xmlrpc php7.4-opcache php7.4-mysql php7.4-gd php7.4-zip php7.4-xml php7.4-cli php7.4-dev php7.4-imap php7.4-soap php7.4-intl php7.4-curl php7.4-mbstring -y
-	sudo apt install php8.0-fpm php8.0-common php8.0-mysql php8.0-gmp php8.0-curl php8.0-intl php8.0-mbstring php8.0-xmlrpc php8.0-gd php8.0-xml php8.0-cli php8.0-zip -y
-	sudo systemctl start php8.0-fpm php7.4-fpm
-	sudo systemctl enable php8.0-fpm php7.4-fpm
+	sudo apt install php8.1-fpm php8.1-common php8.1-mysql php8.1-gmp php8.1-curl php8.1-intl php8.1-mbstring php8.1-xmlrpc php8.1-gd php8.1-xml php8.1-cli php8.1-zip -y
+	sudo systemctl start php8.1-fpm php7.4-fpm
+	sudo systemctl enable php8.1-fpm php7.4-fpm
 else 
 	sudo apt install php7.4 php7.4-fpm php7.4-cli php7.4-common php7.4-xmlrpc php7.4-opcache php7.4-mysql php7.4-gd php7.4-zip php7.4-xml php7.4-cli php7.4-dev php7.4-imap php7.4-soap php7.4-intl php7.4-curl php7.4-mbstring -y
 	sudo systemctl enable php7.4-fpm
@@ -178,9 +178,9 @@ server {
 }
 EOF
 
-if [ $php = "8.0" ]
+if [ $php = "8.1" ]
 then
-	sed -i 's/7.4/8.0/g' /etc/nginx/sites-enabled/default
+	sed -i 's/7.4/8.1/g' /etc/nginx/sites-enabled/default
 fi
 
 service nginx restart

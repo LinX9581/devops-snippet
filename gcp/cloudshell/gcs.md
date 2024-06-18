@@ -98,6 +98,38 @@ echo "user_allow_other" | sudo tee -a /etc/fuse.conf
 sudo gcsfuse -o allow_other media-tools-gcs /gcs
 sudo gcsfuse -o allow_other --implicit-dirs --file-mode=777 --dir-mode=777 media-tools-gcs /gcs
 
-* 開機自動執行
-/etc/fstab
-media-tools-gcs /gcs gcsfuse rw,allow_other 0 0
+https://cloud.google.com/storage/docs/gcsfuse-mount
+
+* 開機自動掛載
+cat>/etc/systemd/system/gcsfuse.service<<EOF
+[Unit]
+Description=Mount Google Cloud Storage bucket using gcsfuse
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/gcsfuse -o allow_other --implicit-dirs --file-mode=777 --dir-mode=777 media-tools-gcs /gcs
+ExecStop=/bin/fusermount -u /gcs
+Restart=on-failure
+RestartSec=10
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl enable --now gcsfuse.service
+sudo systemctl restart gcsfuse.service
+
+
+* gcsfuse 地雷
+media-tools-gcs /gcs gcsfuse rw,allow_other,implicit_dirs,file_mode=777,dir_mode=777 0 0
+
+只要加上 implicit_dirs,file_mode=777,dir_mode=777 
+儘管 mount -a 能正常掛載
+但重開機就會掛掉 只能進 serial console 去復原
+開機自動執行高權限掛載 只能透過 Service 的方式
+service 的方式會確保網路正常才掛載
