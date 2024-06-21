@@ -1,14 +1,6 @@
 groups:
 - name: AllInstances
   rules:
-  - alert: HighErrorRate
-    expr: changes({filename="/root/.pm2/logs/bg-out.log",job="pm2logs"}[1m]) > 0
-    for: 0m
-    annotations:
-      title: 'Instance down'
-      summary: High error rate in logs
-    labels:
-      severity: 'critical'
   # InstanceDown
   - alert: InstanceDown
     expr: up == 0

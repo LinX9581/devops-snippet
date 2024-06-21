@@ -30,7 +30,7 @@ service account 至少要 viewer 以上的權限
 
 * 外部IP監控
 
-```
+
   - job_name: 'gce-test-project-node'
     gce_sd_configs:
       - project: 'test-project'
@@ -54,7 +54,7 @@ service account 至少要 viewer 以上的權限
       - source_labels: [__meta_gce_public_ip]
         target_label: __address__
         replacement: '${1}:9256' 
-```
+
 
 
 
