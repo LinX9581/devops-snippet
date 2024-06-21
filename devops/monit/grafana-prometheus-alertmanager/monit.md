@@ -17,6 +17,14 @@ Dashboard id 12708 -> nginx
 Dashboard id 2587 -> K6
 Dashboard id 893 -> container
 Dashboard id 11074 -> vm
+Dashboard id 13659 -> blackbox_exporter
+Dashboard id 7362 -> mysql 
+Dashboard id 13882 -> process_exporter
+
+
+
+5. 各個 alertmanager rule
+https://awesome-prometheus-alerts.grep.to/rules.html#mysql
 
 
 # K8S

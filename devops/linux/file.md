@@ -83,6 +83,9 @@ tar xvf FileName.tar
 -h：將數字以比較容易閱讀的格式輸出。
 
 # 未壓縮 ssh 網內傳輸 
+rsync -avh monitor@192.168.1.12:/mybackup/ /mypath/myfile.gz
+rsync -avh /mypath/myfile.gz pi@192.168.1.12:/mybackup/
+
 rsync -avh --progress 'ssh -i /root/.ssh/id_rsa' /var/www/lynis-3.0.0.tar.gz drone@10.140.15.213:/var/www
 速度為 30~100M
 # port 12345

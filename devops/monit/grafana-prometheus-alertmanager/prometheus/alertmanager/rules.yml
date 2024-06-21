@@ -1,0 +1,101 @@
+groups:
+- name: AllInstances
+  rules:
+  - alert: HighErrorRate
+    expr: changes({filename="/root/.pm2/logs/bg-out.log",job="pm2logs"}[1m]) > 0
+    for: 0m
+    annotations:
+      title: 'Instance down'
+      summary: High error rate in logs
+    labels:
+      severity: 'critical'
+  # InstanceDown
+  - alert: InstanceDown
+    expr: up == 0
+    for: 1m
+    annotations:
+      title: 'Instance {{ $labels.instance }} down'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.'
+    labels:
+      severity: 'critical'
+  # MysqlDown
+  - alert: MysqlDown
+    expr: mysql_up == 0
+    for: 10s
+    labels:
+      severity: 'down'
+    annotations:
+      summary: MySQL down (instance {{ $labels.instance }})
+      description: "MySQL instance is down on {{ $labels.instance }}\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  # MysqlSlowQueries
+  - alert: MysqlSlowQueries
+    expr: increase(mysql_global_status_slow_queries[1m]) > 4
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: MySQL slow queries (instance {{ $labels.instance }})
+      description: "MySQL server mysql has some new slow query.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  # Mysql_High_QPS
+  - alert: Mysql_High_QPS
+    expr: rate(mysql_global_status_questions[5m]) > 1200 
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: Mysql_High_QPS detected"
+      description: "{{$labels.instance}}: Mysql opreation is more than 1200 per second ,(current value is: {{ $value }})"  
+  # HostOutOfDiskSpace
+  - alert: HostOutOfDiskSpace
+    expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host out of disk space (instance {{ $labels.instance }})
+      description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  # HostHighCpuLoad
+  - alert: HostHighCpuLoad
+    expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100) > 80
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host high CPU load (instance {{ $labels.instance }})
+      description: "CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  # HostOutOfMemory
+  - alert: HostOutOfMemory
+    expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 6
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host out of memory (instance {{ $labels.instance }})
+      description: "Node memory is filling up (< 6% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  # uptime check = 0
+  - alert: BlackboxSlowProbe
+    expr: avg_over_time(probe_duration_seconds[1m]) > 4
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Blackbox slow probe (instance {{ $labels.instance }})
+      description: "Blackbox probe took more than 4s to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  # BlackboxProbeHttpFailure
+  - alert: BlackboxProbeHttpFailure
+    expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+    for: 5s
+    labels:
+      severity: critical
+    annotations:
+      summary: Blackbox probe HTTP failure (instance {{ $labels.instance }})
+      description: "HTTP status code is not 200-399\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  # BlackboxSslCertificateWillExpireSoon
+  - alert: BlackboxSslCertificateWillExpireSoon
+    expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 5
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Blackbox SSL certificate will expire soon (instance {{ $labels.instance }})
+      description: "SSL certificate expires in 5 days\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"

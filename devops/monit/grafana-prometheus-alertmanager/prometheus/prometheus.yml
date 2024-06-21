@@ -1,0 +1,74 @@
+# 替換 IP 172.16.97.9 -> Prometheus Server IP
+# 替換 project-name -> GCP Project ID
+
+
+global:
+  scrape_interval: 45s
+  evaluation_interval: 45s
+
+rule_files:
+- "/etc/prometheus/alertmanager/rules.yml"
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - 172.16.97.9:9093
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['172.16.97.9:9090']
+      
+  # - job_name: 'loki'
+  #   static_configs:
+  #     - targets: ['172.16.2.45:3100']
+
+  # node_exporter   
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx_with_ip4]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+        - http://127.0.0.1       # prod
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 172.16.97.9:9115  # The blackbox exporter's real hostname:port.
+
+  # 使用 GCE SD 配置來發現位於台灣的所有 VM，監控 node_exporter
+  - job_name: 'gce-project-name-node'
+    gce_sd_configs:
+      - project: 'project-name'
+        zone: 'asia-east1-b'  
+        port: 9100
+      - project: 'project-name'
+        zone: 'asia-east1-a'  
+        port: 9100
+    relabel_configs:
+      - source_labels: [__meta_gce_instance_status]
+        regex: 'RUNNING'
+        action: 'keep' 
+      - source_labels: [__meta_gce_instance_name]
+        target_label: instance
+
+  # 使用 GCE SD 配置來發現位於台灣的所有 VM，監控 process_exporter
+  - job_name: 'gce-project-name-process'
+    gce_sd_configs:
+      - project: 'project-name'
+        zone: 'asia-east1-b'  
+        port: 9256
+      - project: 'project-name'
+        zone: 'asia-east1-a'  
+        port: 9256
+    relabel_configs:
+      - source_labels: [__meta_gce_instance_status]
+        regex: 'RUNNING'
+        action: 'keep'
+      - source_labels: [__meta_gce_instance_name]
+        target_label: instance

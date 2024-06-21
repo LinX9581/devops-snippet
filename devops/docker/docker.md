@@ -15,6 +15,7 @@ docker rename open_ovpn_1 gra_open_ovpn_1
 ping -c 2 172.17.0.3 : ping
 docker update --restart=always ID : 讓container重開機自動重啟
 docker search ubuntu -f is-official=true : 搜尋官方Image
+docker logs ID --tail 10
 # GUI Docker Portainer
 docker run -d -p 4000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /var/Portainer:/data portainer/portainer
 

@@ -4,6 +4,10 @@ https://prometheus.io/download/
 民間教學
 https://chenzhonzhou.github.io/2019/03/04/prometheus-jian-kong-redis/
 
+# 常用圖表
+13659 7362 13882 11074
+
+
 # 開機自動重啟
 [Unit]
 Description=nginx-prometheus-exporter
@@ -57,7 +61,7 @@ modules:
       preferred_ip_protocol: "ip4"
 EOF
 
-docker run -d -p 9115:9115 --name blackbox-exporter -v /devops/ansible-deploy-monitor/prometheus/exporter/blackbox_exporter:/config prom/blackbox-exporter --config.file=/config/blackbox.yml
+docker run -d -p 9115:9115 --name blackbox-exporter -v /devops/prometheus/exporter/blackbox_exporter:/config prom/blackbox-exporter --config.file=/config/blackbox.yml
 
 * Loacl install
 wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.21.1/blackbox_exporter-0.21.1.linux-386.tar.gz

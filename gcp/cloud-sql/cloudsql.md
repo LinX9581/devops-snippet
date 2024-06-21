@@ -28,7 +28,7 @@ Description=Google Cloud SQL Proxy
 After=network.target
 
 [Service]
-ExecStart=/cloudsql-proxy/cloud_sql_proxy -instances=nownews-news-prod:asia-east1:prod-mysql-db=tcp:0.0.0.0:3307,nownews-news-prod:asia-east1:prod-mysql-db-replica3-300g=tcp:0.0.0.0:3308,nownews-news-prod:asia-east1:prod-analytics-m-db=tcp:0.0.0.0:3306
+ExecStart=/cloudsql-proxy/cloud_sql_proxy -instances=k88888888s-329606:asia-east1:prod-mysql-db=tcp:0.0.0.0:3307,k88888888s-329606:asia-east1:prod-mysql-db-replica3-300g=tcp:0.0.0.0:3308,k88888888s-329606:asia-east1:prod-analytics-m-db=tcp:0.0.0.0:3306
 Restart=always
 StandardOutput=file:/var/log/cloud_sql_proxy.log
 StandardError=file:/var/log/cloud_sql_proxy_error.log

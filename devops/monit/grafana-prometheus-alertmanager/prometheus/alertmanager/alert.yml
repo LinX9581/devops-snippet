@@ -1,0 +1,29 @@
+global: 
+  resolve_timeout: 5m
+route:
+  receiver: critical
+  group_wait: 10s # 最初即第一次等待多久時間傳送一組警報的通知
+  group_interval: 5m
+  repeat_interval: 5m
+  routes:
+  - match:
+      severity: critical
+    receiver: critical
+  - match:
+      severity: down
+    receiver: critical
+  - match:
+      severity: warning
+    receiver: critical
+  - match:
+      severity: test
+    receiver: test
+receivers:
+- name: 'critical'
+  webhook_configs:
+  - url: 'http://127.0.0.1:3500/prome'
+    send_resolved: true
+- name: 'test'
+  webhook_configs:
+  - url: 'http://127.0.0.1:3500/prome'
+    send_resolved: true
