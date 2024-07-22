@@ -16,18 +16,6 @@ resource "aws_iam_role" "ec2_role" {
   })
 }
 
-# 綁定已建立的 Policy 到 Role 上
-resource "aws_iam_role_policy_attachment" "s3_ssm_policy_attachment" {
-  role       = aws_iam_role.ec2_role.name
-  policy_arn = aws_iam_policy.s3_ssm_policy.arn
-}
-
-# 建立一個 EC2 Profile 並綁定 Role
-resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "ec2-proflie"
-  role = aws_iam_role.ec2_role.name
-}
-
 # 建立一個 Policy 並設定 S3 和 SSM 的權限
 resource "aws_iam_policy" "s3_ssm_policy" {
   name        = "S3AndSSMReadOnlyPolicy"
@@ -62,4 +50,26 @@ resource "aws_iam_policy" "s3_ssm_policy" {
       }
     ]
   })
+}
+
+# 綁定已建立的 Policy 到 Role 上
+resource "aws_iam_role_policy_attachment" "s3_ssm_policy_attachment" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.s3_ssm_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_core_policy_attachment" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_patch_policy_attachment" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMPatchAssociation"
+}
+
+# 建立一個 EC2 Profile 並綁定 Role
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2-profile"
+  role = aws_iam_role.ec2_role.name
 }

@@ -4,7 +4,7 @@
 
 ## SSH
 * 統一讓每台EC2
-System Manager 
+System Manager ( EC2 必須要有 SSM 權限)
 防火牆 outbount 要開 443
 Create Host Management
 AWS-RunShellScript
@@ -26,6 +26,7 @@ chown ansible:ansible /home/ansible/.ssh -R
 ## Loadbalancer
 一般網站適合用 ALB (HTTP/HTTPS)
 建立的時候預設會用兩個區域 所以要建立兩個 vpc subnet 否則綁定 cloudfront 有時候會504
+ALB 是會被 security group 控管 , 相比 GCP LB 不會被 firewall 控管只能被 armor 控管
 
 ## AWS 和 GCP 差異
 VM的詳細資料 EC2 Sidebar 就很清楚了 GCP還要點進去

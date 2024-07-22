@@ -5,36 +5,41 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install terraform
 
-* 建立 IAM roles
-EC2 IAM profile 要加上建立的 IAM roles
-
 * 建立 key pair
 aws ec2 create-key-pair --key-name stg-devops --query 'KeyMaterial' --output text > stg-devops.pem
 
 * aws terraform init
 cd ./devops-snippet/aws/terraform/aws-terraform-init
+
+* 修改init.tfvars 
+要指定 public key 才能 SSH 進 EC2
+ssh_public_key  = ""
+
 ※ 避免之前被用過
 rm -rf terraform.tfstate terraform.tfstate.backup .terraform.lock.hcl .
 terraform init
 terraform apply -var-file="init.tfvars"
 
+
 * 檢視建立的 EC2
 aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].{ID:InstanceId,State:State.Name,PublicDNS:PublicDnsName,PrivateDNS:PrivateDnsName,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}'
 
 * 建立的資源
-會依序建立 VPC, subnet, security group, EC2 instance, getway, route table, route table association
+會依序建立 VPC, subnet, security group, EC2 instance, getway, route table, route table association, role-policy, IAM profile
 
-* EC2 會建立 以下
+* 建立的 EC2 會綁定以下環境
 1. Ansible 使用者
-2. 上面建立的 Private SSH Key 
-3. 綁定 security group 包含 allow-other , allow-ssh, allow-http, allow-https
-4. 綁定 role-policy 建立的 IAM Proflie
+2. 綁定 security group 包含 allow-other , allow-ssh, allow-http, allow-https
+3. 綁定 role-policy
 
 * network
 1. VPC
 2. Subnet
 3. Internet Gateway
 4. Route Table
+如果用的是 network_nat.tf 會建立 NAT Gateway
+會有一個public subnet 是給NAT使用
+再讓 private subnet 透過 NAT Gateway 連線外部
 
 * security group
 1. allow-other
@@ -42,6 +47,16 @@ aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" -
 3. allow-http
 4. allow-https
 
+* iam
+一個有以下 Policy 的 role : ec2-role
+1. AmazonSSMManagedInstanceCore
+2. AmazonSSMPatchAssociation
+3. 有S3,SSM 的 Policy : s3_ssm_policy
+
+綁定該role的profile : ec2-profile
+
+* 查看目前建立的資源
+terraform state list  
 
 ## AWS Terraformer
 

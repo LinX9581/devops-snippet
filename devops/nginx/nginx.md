@@ -1,43 +1,27 @@
+
+## uninstall nginx
+sudo systemctl stop apache2.service
+sudo systemctl disable apache2.service
+sudo apt-get --purge remove nginx -y
+sudo apt-get autoremove -y
+dpkg --get-selections|grep nginx
+sudo apt-get --purge remove nginx
+sudo apt-get --purge remove nginx-common -y
+sudo apt-get --purge remove nginx-core -y
+
+## 自己編譯的nginx
+* 先找執行檔在哪
+find / -name "nginx"
+whereis nginx
+
+sudo /etc/nginx/sbin/nginx    # 啟用 Nginx 
+sudo /etc/nginx/sbin/nginx -s stop   
+sudo /etc/nginx/sbin/nginx -s reload 
+
+
 ## 參數詳解
 https://zhuanlan.zhihu.com/p/372610935
 
-# nginx req limit
-server.conf
-limit_req zone=uat;
-
-nginx.conf
-limit_req_status 403;
-limit_req_zone $http_x_forwarded_for zone=uat:10m rate=5r/s;
-limit_req zone=uat burst=5 nodelay; 
-
-https://blog.csdn.net/hellow__world/article/details/78658041
-
-# proxy to https
-location / {
-    proxy_pass https://$http_x_forwarded_to; 
-    proxy_ssl_server_name on;
-}
-# nginx cors
-add_header Access-Control-Allow-Origin *;
-add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
-add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization';
-
-# nginx 防盜鏈
-location ~* .*\.(gif|jpg|ico|png|css|svg|js|flv)$ {
-	root /usr/local/nginx/static;
-	valid_referers none blocked  *.gupao.com ; // 有效的来源
-	if ($invalid_referer) { // 无效的来源的话就给404
-		#rewrite ^/ http://www.youdomain.com/404.jpg;
-		return 403;
-		break;
-	 }
-	 access_log off;
-}
-复制
-none
- “Referer” 来源头部为空的情况
- blocked
- “Referer”来源头部不为空，但是里面的值被代理或者防火墙删除了，这些值都不以http://或者https://开头.
 # nginx 設定檔產生器
 https://www.digitalocean.com/community/tools/nginx?domains.0.php.php=false&domains.0.reverseProxy.reverseProxy=true&domains.0.routing.root=false&global.app.lang=zhTW
 
@@ -61,6 +45,37 @@ https://www.upyun.com/tech/article/378/%E6%88%91%E7%9C%BC%E4%B8%AD%E7%9A%84%20Ng
 # TCP LB
 https://iter01.com/68023.html
 
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	server_name _;
+
+	location / {
+		proxy_pass http://backend;
+		proxy_http_version 1.1;
+		proxy_set_header Host $host;
+	}
+    ## 必須裝健康模組
+	location = /status {
+		check_status;
+	}
+    ## 必須裝動態更新模組
+	location /dynamic {
+        dynamic_upstream;
+    }
+}
+
+upstream backend {
+	sticky expires=1h;
+	zone zone_for_backends 1m;
+	#VM1
+	server 34.81.41.232:3100;
+	#VM2
+	server 35.234.52.29:3100;
+}
+
+
 # nginx 防護
 https://github.com/loveshell/ngx_lua_waf
 sudo apt install libnginx-mod-http-lua
@@ -68,11 +83,6 @@ sudo apt install libnginx-mod-http-lua
 # php-fpm
 https://blog.gtwang.org/linux/nginx-fastcgi-cache-for-wordpress-tutorial/
 
-# 解析真實IP deny ip , rate limit 預設是用
-real_ip_header X-Forwarded-For;
-set_real_ip_from 130.211.0.0/22; // Private IP range for GCP Load Balancers
-set_real_ip_from 35.191.0.0/16;  // Private IP range for GCP Load Balancers
-real_ip_recursive on;
 
 # 開檔案上限
 https://www.gushiciku.cn/pl/gOAI/zh-tw

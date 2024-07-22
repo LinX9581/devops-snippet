@@ -1,14 +1,17 @@
+# #!/bin/bash
 
-* create bucket
-aws s3 mb s3://nn-s3-test
+# # 設置變數
+BUCKET_NAME="s3-nn-test6"
+FOLDER_NAME="s3-nn-folder"
+REGION="ap-northeast-1"
 
-* upload file
-aws s3 cp ./index.html s3://nn-s3-test
-
-* 讓 bucket 公開
+aws s3 mb s3://$BUCKET_NAME --region $REGION 
+# 讓 S3 bucket 可以公開讀取
 aws s3api put-public-access-block --bucket $BUCKET_NAME --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
 
-* 讓 bucket 裡面的資料夾都能被訪問
+echo "<html><body><h1>$BUCKET_NAME Hello World</h1></body></html>" > index.html
+aws s3 cp index.html s3://$BUCKET_NAME/$FOLDER_NAME/index.html
+
 aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy '{
     "Version": "2012-10-17",
     "Statement": [
@@ -32,7 +35,4 @@ aws s3 website s3://$BUCKET_NAME --index-document index.html --error-document er
 
 curl http://$BUCKET_NAME.s3-website-$REGION.amazonaws.com/s3-nn-folder/index.html
 
-
-* 變成 https 的方式
-1. 建 ALB 綁 Cloudflare
-2. 改用 route53 + cloudfront
+echo http://$BUCKET_NAME.s3-website-$REGION.amazonaws.com/s3-nn-folder/index.html

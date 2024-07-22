@@ -1,1 +1,5 @@
-project_name = "linx"
+project_name    = "linx"
+instance_name   = "test1"
+iam_profile     = "ec2-proflie"
+ssh_public_key  = ""
+key_name        = "stg-devops"

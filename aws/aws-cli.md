@@ -9,6 +9,7 @@ sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --u
 * set IAM
 aws configure
 建立的IAM 要建立 Access key ID 和 Secret access key 以及 region ap-northeast-1
+IAM -> User -> Username -> Security credentials -> Create access key
 並且建立群組並且綁定權限
 類似 GCP 建立 Service Account 產生 Json
 
@@ -28,8 +29,18 @@ aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" -
 * set iam-role to ec2
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRoleForInstancesQuickSetup --instance-id i-041a9f1804945d1d4
 
+# VPC
+aws ec2 describe-vpcs --query 'Vpcs[].[VpcId, Tags[?Key==`Name`].Value | [0], CidrBlock]' --output table
+aws ec2 describe-subnets --query 'Subnets[].[SubnetId, Tags[?Key==`Name`].Value | [0], CidrBlock, VpcId]' --output table
+aws ec2 describe-security-groups --query 'SecurityGroups[].[GroupId, GroupName, VpcId]' --output table
+
+# ALB
+aws elbv2 describe-load-balancers --query 'LoadBalancers[].[LoadBalancerName,DNSName,VpcId]' --output table
+
 # S3
+* create bucket
 aws s3 mb s3://linx-s3-test
+* delete bucket
 aws s3 rb s3://linx-s3-test
 
 aws s3 cp /var/www/test.txt s3://linx-s3-test
