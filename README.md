@@ -2,7 +2,7 @@
 # /devops/
 
 VScode 善用 Ctrl + P 找文件  
-Ex. Cloudshell, nodejs, ansible  
+Ex. gcloud, aws-cli, nodejs, ansible, nginx  
 
 ## GCP
 GCE、GKE、GCS、GCP IAM、Firewall、Load Balancer、Cloud SQL、Cloud Run、VPC  

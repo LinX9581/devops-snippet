@@ -1,3 +1,5 @@
+## install nginx
+apt install nginx -y
 
 ## uninstall nginx
 sudo systemctl stop apache2.service
@@ -8,16 +10,6 @@ dpkg --get-selections|grep nginx
 sudo apt-get --purge remove nginx
 sudo apt-get --purge remove nginx-common -y
 sudo apt-get --purge remove nginx-core -y
-
-## 自己編譯的nginx
-* 先找執行檔在哪
-find / -name "nginx"
-whereis nginx
-
-sudo /etc/nginx/sbin/nginx    # 啟用 Nginx 
-sudo /etc/nginx/sbin/nginx -s stop   
-sudo /etc/nginx/sbin/nginx -s reload 
-
 
 ## 參數詳解
 https://zhuanlan.zhihu.com/p/372610935

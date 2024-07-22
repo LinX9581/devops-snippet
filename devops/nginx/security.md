@@ -18,6 +18,20 @@ if ($cors_origin) {
     add_header 'Access-Control-Allow-Headers' 'Origin, Content-Type, Accept' always;
 }
 
+# 常用 webserver 更改設定的方式
+* gcp lb
+gcloud compute backend-services update YOUR_BACKEND_SERVICE_NAME \
+    --custom-request-header="X-My-Custom-Header: value"
+
+* apache2
+sudo nano /etc/apache2/apache2.conf
+最下面新增
+Header always set X-Content-Type-Options "nosniff"
+sudo systemctl restart apache2
+
+* nginx 
+  add_header X-Content-Type-Options "nosniff";
+
 # X-Frame-Options
 * 阻止其他人 iframe 
 add_header X-Frame-Options "SAMEORIGIN";
@@ -31,15 +45,15 @@ add_header Referrer-Policy "strict-origin";
 add_header X-XSS-Protection "1; mode=block";
 
 # X-Content-Type-Options
-* 防止 MIME 類型嗅探攻擊
+* 避免讓惡意腳本被瀏覽器判斷成正常檔案型別 防止 MIME 類型嗅探攻擊
 add_header X-Content-Type-Options "nosniff";
 
 # Strict-Transport-Security
 * 強制使用 HTTPS，防止中間人攻擊和 SSL 剝離攻擊。
 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
-# Insecure HTTP Headers: Content-Security-Policy
-
+# Content-Security-Policy
+* 外部引用的靜態資源 只允許白名單網站
 寬鬆版本
 add_header Content-Security-Policy "default-src 'self' * data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' * data: blob:; style-src 'self' 'unsafe-inline' *; img-src 'self' * data: blob:; font-src 'self' * data:; frame-src 'self' *; frame-ancestors 'self'; upgrade-insecure-requests;" always;
 
@@ -51,6 +65,7 @@ add_header X-Frame-Options "SAMEORIGIN";
 add_header Content-Security-Policy "frame-ancestors 'self'";
 
 # nginx cors
+* 外部呼叫時 只允許白名單網站
 * 寬鬆設置
 add_header Access-Control-Allow-Origin *;
 add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE, PATCH, HEAD, CONNECT' always;
