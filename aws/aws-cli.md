@@ -30,9 +30,15 @@ aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" -
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRoleForInstancesQuickSetup --instance-id i-041a9f1804945d1d4
 
 # VPC
+* vpc
 aws ec2 describe-vpcs --query 'Vpcs[].[VpcId, Tags[?Key==`Name`].Value | [0], CidrBlock]' --output table
+
+* subnets
 aws ec2 describe-subnets --query 'Subnets[].[SubnetId, Tags[?Key==`Name`].Value | [0], CidrBlock, VpcId]' --output table
+
+* security-groups
 aws ec2 describe-security-groups --query 'SecurityGroups[].[GroupId, GroupName, VpcId]' --output table
+aws ec2 describe-security-groups --group-ids sg-0120b6a0fc92b60ce --query 'SecurityGroups[*].[GroupName, {Inbound: IpPermissions[*].{FromPort:FromPort,ToPort:ToPort,IpProtocol:IpProtocol,IpRanges:IpRanges[*].CidrIp}}, {Outbound: IpPermissionsEgress[*].{FromPort:FromPort,ToPort:ToPort,IpProtocol:IpProtocol,IpRanges:IpRanges[*].CidrIp}}]' --output table
 
 # ALB
 aws elbv2 describe-load-balancers --query 'LoadBalancers[].[LoadBalancerName,DNSName,VpcId]' --output table

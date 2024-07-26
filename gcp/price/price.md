@@ -10,9 +10,11 @@ https://cloud.google.com/pricing/list#section-4
 Standard Storage $0.020
 Nearline Storage 0.010
 Coldline Storage 0.005
-Archive Storage  0.0015
+Archive Storage  0.0015 (最低允許儲存天數 365天, 提前刪除一樣會扣整年的費用)
+
 ## StackDriver Logging
 前50G免費 1G/0.5U
+monitor 改成用多少付多少
 
 ## Cloud Filestore
 HDD 1T~63.9T 1G/0.22
@@ -22,6 +24,13 @@ SSD 2.5T~63.9T 1G/0.33
 First 5 forwarding rules	$0.025	Per Hour
 Per additional forwarding rule	$0.010	Per Hour
 Ingress data processed by load balancer	$0.008	Per GB
+
+* 只要有一組LB 外部IP就會被收這筆費用 一個月18U
+Cloud Load Balancer Forwarding Rule Minimum Global
+
+* 外部訪問LB的流量費
+Global External Application Load Balancer Outbound Data Processing for Taiwan (asia-east1)
+
 
 ## Cloud function
 1. price

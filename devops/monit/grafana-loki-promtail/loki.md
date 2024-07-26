@@ -25,4 +25,11 @@ systemctl status loki
 
 
 
-## 要確定 loki 裡面有資料 grafana 才能連到
+* 要確定 loki 裡面有資料 grafana 才能連到
+
+* loki cluster
+https://medium.com/lonto-digital-services-integrator/grafana-loki-configuration-nuances-2e9b94da4ac1
+
+* 優化 loki
+https://ganhua.wang/loki-ruler
+https://github.com/tedmax100/OpenTelemetryEntryBeook/blob/main/ch10/loki_ruler/loki_ruler.md

@@ -1,3 +1,9 @@
+
+IAM 
+Artifact Registry Administrator
+Cloud Run Admin
+Service Account User
+
 1. push to artifacts and deploy to cloud run
 
 ```
@@ -8,12 +14,12 @@ APP_VERSION=1.7
 CLOUDRUN_SERVICE=my-service7
 
 gcloud config set project $GCP_PROJECT_NAME
-gcloud auth configure-docker asia-docker.pkg.dev
-
+gcloud auth configure-docker $AR_TARGET
+gcloud auth configure-docker --quiet
 gcloud artifacts repositories create $AR_PROJECT_NAME --repository-format=docker --location=asia --description="Docker repository"
 docker build -t asia-docker.pkg.dev/$GCP_PROJECT_NAME/$AR_PROJECT_NAME/$PROJECT_NAME:$APP_VERSION .
+docker images
 docker push asia-docker.pkg.dev/$GCP_PROJECT_NAME/$AR_PROJECT_NAME/$PROJECT_NAME:$APP_VERSION
-
 gcloud run deploy $CLOUDRUN_SERVICE \
     --image=asia-docker.pkg.dev/$GCP_PROJECT_NAME/$AR_PROJECT_NAME/$PROJECT_NAME:$APP_VERSION \
     --region=asia-east1 \
