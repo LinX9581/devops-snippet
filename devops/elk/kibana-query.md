@@ -16,6 +16,8 @@ nginx.access.response_code < 200 or nginx.access.response_code > 400
 nginx.access.response_code : 40*
 nginx.access.url.keyword : /news/536*
 
+nginx.access.referrer : *t.co*
+NOT nginx.access.referrer: "*t.co*"
 
 不區分大小寫，也不會保證順序 也會被分詞
 message:hello world

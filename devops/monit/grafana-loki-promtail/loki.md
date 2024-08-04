@@ -27,6 +27,11 @@ systemctl status loki
 
 * 要確定 loki 裡面有資料 grafana 才能連到
 
+* 預設資料只保存 15天
+yaml 要新增
+limits_config:
+  retention_period: 2160h
+
 * loki cluster
 https://medium.com/lonto-digital-services-integrator/grafana-loki-configuration-nuances-2e9b94da4ac1
 
