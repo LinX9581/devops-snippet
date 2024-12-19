@@ -14,10 +14,10 @@ variable "key_name" {
   type        = string
 }
 
-resource "aws_eip" "eip-2" {
-  instance = aws_instance.deploy-instance.id
-  domain = "vpc"
-}
+# resource "aws_eip" "eip-2" {
+#   instance = aws_instance.deploy-instance.id
+#   domain = "vpc"
+# }
 
 resource "aws_instance" "deploy-instance" {
   ami           = "ami-07c589821f2b353aa"  # ubuntu22.04
@@ -57,14 +57,14 @@ EOF
   }
 }
 
-# 只有內部IP 但有對外NAT IP
+# # 只有內部IP 但有對外NAT IP
 # resource "aws_instance" "instance1" {
 #   ami           = "ami-07c589821f2b353aa"  # ubuntu22.04
 #   instance_type = "t2.micro"
 #   iam_instance_profile                 = var.iam_profile
 #   associate_public_ip_address = false
 #   key_name               = var.key_name
-#   subnet_id               = aws_subnet.subnetwork_1.id
+#   subnet_id               = aws_subnet.subnetwork.id
 #   vpc_security_group_ids = [aws_security_group.allow-other.id, aws_security_group.allow-ssh.id,aws_security_group.allow-http.id,aws_security_group.allow-https.id]
 
 #   user_data = <<EOF

@@ -1,6 +1,6 @@
 [環境變數、開發&測試](https://huskylin.github.io/2020/06/18/Node-js-PM2-%E8%A8%AD%E7%BD%AE%E7%92%B0%E5%A2%83%E8%AE%8A%E6%95%B8%EF%BC%8C%E6%9B%B4%E5%BD%88%E6%80%A7%E5%9C%B0%E9%96%8B%E7%99%BC%E8%88%87%E9%83%A8%E5%B1%AC/)
 ```
-pm2 start yarn --time --name "NNTV" -- start
+pm2 start yarn --time --name "template" -- start
 pm2 logs 0 --lines 150
 pm2 restart 0 --time --watch
 pm2 update

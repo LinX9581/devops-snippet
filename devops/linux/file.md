@@ -65,7 +65,7 @@ apt clean
 ## 解壓縮
 ```
 壓縮特定檔到特定地方
-tar cvf wp-test/test.tar wordpress-init/
+tar -cvf nn-media-tools.tar nn-media-tools
 壓縮 但排除特定檔案
 tar cvf bobee.tar --exclude=linxnote.club/wp-content/uploads --exclude=linxnote.club/wp-content/uploads2 linxnote.club
 解壓縮

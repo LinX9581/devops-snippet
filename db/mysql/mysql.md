@@ -22,6 +22,8 @@ docker run --name="phpMyAdmin-local" -itd -e PMA_HOST=$(ip route show | grep doc
 * 確認連線狀況
 SHOW PROCESSLIST;
 
+
+
 * import export error : The user specified as a definer (該table綁定特定使用者而該使用者已不在)
 
 把原來的作者改掉 或者加指令 直接繞過

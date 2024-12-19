@@ -2,16 +2,6 @@
 # 參考
 https://ikala.cloud/how-to-query-and-calculate-google-analytics-data-in-bigquery-1/
 
-# 匯入數據
-GA數據匯入 資料量多大 只適用GA360 (要將 GA 的資料匯出至 BigQuery，你必須擁有 GA360 帳戶)
-AD Manager
-GCS數據匯入
-
-# 應用場景
-1. 多大的流量適合用 Big Query
-2. Big Query 應用場景 : nginx log、mysql、pv、關鍵字
-3. 如果量小 有適合的數據分析平台? 視覺化UI圖表
-
 # 費用
 https://cloud.google.com/bigquery/pricing?hl=zh-tw#on_demand_pricing
 1. 已量計價 每月前1T免費 1T/$5.75

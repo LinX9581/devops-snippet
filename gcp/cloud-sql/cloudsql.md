@@ -1,5 +1,17 @@
-# cross-project-connect
-## STEP
+## DMS
+1. CDC 即時同步資料
+會建立 replica 去同步 source database, 之後要把 DMS 的排程停掉 把 replica 變成獨立資料庫 (cloudSQL 介面上會有個 Promote replica)
+
+2. one-time 
+
+## 故障排除
+allocaion ip ranges 被 release 會導致無法建立 cloudsql
+可用 
+gcloud services vpc-peerings list --network=[YOUR_VPC_NETWORK] --project=[YOUR_PROJECT_ID]
+查看已建立的 allocation 然後重建
+
+## cross-project-connect
+### STEP
 https://blog.cloud-ace.tw/database/cloud-sqlpart2-cloud-sql-proxy/
 1. 先在IAM的服務帳戶建立帳戶
 並建立金鑰
@@ -20,9 +32,9 @@ instances = cloudsql -> overview -> connection name
 * 該機器要開放外連 要開啟3306 & 白名單IP
 * IAM key 權限需要 cloud sql client&Editor&Admin
 
-## 開機自動執行
+### 開機自動執行
 
-cat > /etc/supervisor/conf.d/cloud_sql_proxy.conf << EOF
+cat > /etc/systemd/system/cloud_sql_proxy.service << EOF
 [Unit]
 Description=Google Cloud SQL Proxy
 After=network.target

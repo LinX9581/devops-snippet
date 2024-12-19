@@ -67,6 +67,21 @@ filter 才能絕對符合
 elasticsearch.yml 增加
 xpack.security.authc.api_key.enabled: true
 
+* 查看當前 index shards
+curl -u user:password -X GET "http://127.0.0.1:9200/_cat/indices?v"
+
+* 合併1月份索引成1個
+curl -u user:password -X POST "http://172.18.0.1:9200/_reindex" -H 'Content-Type: application/json' -d'
+{
+  "source": {
+    "index": "backed_log_nginx_access-2024.01.*"
+  },
+  "dest": {
+    "index": "backed_log_nginx_access-2024.01"
+  }
+}
+'
+
 * 查看目前所有index
 curl -u user:password 172.18.0.1:9200/_cat/indices
 * 刪除index

@@ -1,6 +1,9 @@
 # 所有防火牆清單
 gcloud compute firewall-rules list
 
+# 阻擋 VM 對外的網站訪問
+https://cloud.google.com/firewall/docs/quickstarts/configure-nwfwpolicy-fqdn-egress
+
 # 爬取現有阻擋的所有IP，已該IP+上新阻擋的IP，更新防火牆
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);

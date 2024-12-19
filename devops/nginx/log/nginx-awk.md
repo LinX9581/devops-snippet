@@ -2,6 +2,8 @@
 
 # 整體前10名訪問量IP
 awk '{print $NF}' /var/log/nginx/access.log | sort | uniq -c | sort -nr | head -n 10
+
+awk '{print $0, $NF}' /var/log/nginx/access.log | sort -nk2 | tail -n 1
 # 特定時間 前十名訪問量
 grep '13:19' /var/log/nginx/access.log | awk '{print $NF}' | sort | uniq -c | sort -nr | head -n 10
 

@@ -14,14 +14,15 @@ fallocate -l 70G /tmp/temp.img
 df -h
 lsblk
 
-# swap
+* swap
 sudo fallocate -l 2G /swapfile   
 sudo chmod 600 /swapfile         
 sudo mkswap /swapfile            
 sudo swapon /swapfile            
-
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
+* mount filestore
+sudo mount 172.30.120.26:/uploads /mnt/uploads
 
 # 增加VM硬碟空間
 ```
@@ -38,7 +39,17 @@ xfs_growfs /dev/sda1
 
 ```
 
-## 新增移除分割硬碟 mount
+
+
+
+
+
+
+
+
+
+
+### 新增移除分割硬碟 mount (不常用)
 [分割參考](https://blog.gtwang.org/linux/linux-add-format-mount-harddisk/)
 ```
 新增硬碟

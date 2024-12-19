@@ -1,8 +1,12 @@
 ## 調整時區、內核、CPU、硬碟
 
+* 補丁修復
+sudo systemctl status unattended-upgrades
+
 * 調整時區
 sudo timedatectl set-timezone Asia/Taipei
 sudo dpkg-reconfigure tzdata
+timedatectl status
 
 * 系統內核版本 , 查看Linux發行版本 , 系統型號
 uname -a

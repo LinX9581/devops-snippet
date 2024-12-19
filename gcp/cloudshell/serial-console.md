@@ -13,3 +13,8 @@ usermod -aG google-sudoers nn-admin
 
 * 重開機
 進入 Serial Console 輸入上面帳密
+ 
+## Serial Console 進不去的處理方式
+停機編輯 meta-data
+add systemd.unit=emergency.target
+reboot

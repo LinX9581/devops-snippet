@@ -39,7 +39,7 @@ sleep 5
 
 ## 加 history 到 特定分類
 
-* 要注意 log agent 沒辦法讀取 根目錄 所以要軟連結到其他地方
+* log agent 沒辦法讀取 根目錄 所以要軟連結到其他地方
 ln -s ~/.bash_history /var/log/.bash_history
 
 ```
