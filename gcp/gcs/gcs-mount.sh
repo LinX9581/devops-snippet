@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 定義變數
-GCS_BUCKET="nownews-terraform-gcs"
+GCS_BUCKET="test"
 MOUNT_POINT="/gcs"
 
 export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s`
