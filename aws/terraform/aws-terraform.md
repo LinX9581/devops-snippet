@@ -38,7 +38,7 @@ aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" -
 3. Internet Gateway
 4. Route Table
 如果用的是 network_nat.tf 會建立 NAT Gateway
-會有一個public subnet 是給NAT使用
+會有一個 public subnet 是給 NAT 使用
 再讓 private subnet 透過 NAT Gateway 連線外部
 
 * security group

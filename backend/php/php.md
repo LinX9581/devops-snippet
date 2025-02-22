@@ -1,3 +1,9 @@
+# fpm
+while [ 1 ]; do netstat -ant | wc -l; sleep 1; echo '------'; done
+
+* 簡易查詢 nginx ip 數量
+awk '{print $NF}' /var/log/nginx/walkerland_1_access.log | sort | uniq -c | sort -nr | head -n 10
+
 # php 參數顯示
 grep -v ";" /etc/php/7.4/fpm/pool.d/www.conf | grep -Ev "^$"
 

@@ -1,5 +1,5 @@
 project_name    = "linx"
 instance_name   = "test1"
 iam_profile     = "ec2-profile"
-ssh_public_key  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDTHDA7v/Pmm83OellAFrc67IEZIU31C9ovuCFYDTFCeeHyk61gHno7K+lcjue55RaH/8hFetHIbe9uLP8LqkumKHoHdwVzTkaxAuthRxDAh1HtBhddoxMmKJuDOxFMvUjvcnB+sPcot39AAPJPDR3c3QxAWUul7pjouma8OEjuBzNNNDL4cHY7sMsvQBhOepgaZmofMS41XSqm1uNW7gli6Ep0ISUSLm+iWZzqpwG1LJW/i9Imd2RWX9gAJ69/JyrmnjUswSL+2aoiF+UGzGx/pZcYK+iZY+ZIC22hYkENeAU+8ZfCHX5lKAvMu/R71N4BA/Nb/L6HrxPYVJcc1zLK1BMQGgdzUAMSV/PK/3A29uTjzKsTwAzbrpB5UTNaUQw559waYfFP126P9WLvjXkiA2dAqJNeqRf/NiJBfthmVSpiEos5xLWTL2ErtIkGc5NLsmG8z8fx4tIStK7/aXLKgm2Rr+cHrTxt9TTvo3+K/Fpj2Mxv5QljghF/Mu4sNLk= ansible@MSI"
+ssh_public_key  = "ssh-rsa  ansible@MSI"
 key_name        = "stg-devops"

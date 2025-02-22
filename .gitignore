@@ -1,3 +1,4 @@
 node_modules
 gsKey.json
 config.js
+.terraform/

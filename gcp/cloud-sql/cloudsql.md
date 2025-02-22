@@ -2,6 +2,8 @@
 1. CDC 即時同步資料
 會建立 replica 去同步 source database, 之後要把 DMS 的排程停掉 把 replica 變成獨立資料庫 (cloudSQL 介面上會有個 Promote replica)
 
+Job 還沒開始 就已經會先建 replica 了
+然後 source 和 目標 最好是同一個區域 台灣 a 區之類
 2. one-time 
 
 ## 故障排除
@@ -68,3 +70,38 @@ https://kejyuntw.gitbooks.io/google-cloud-platform-learning-notes/content/google
 gcloud config set project projectID
 gcloud sql instances patch sqlID --activation-policy=ALWAYS
 gcloud sql instances patch sqlID --activation-policy=NEVER
+
+## 啟用 audit
+用的是 GCP 自製的 cloudsql_mysql_audit 和 mysql 本身的 cloudsql_mysql_audit plugin 會有些不一樣
+
+* 查看是否有啟用的三種方式
+SHOW PLUGINS;
+SHOW PROCEDURE STATUS WHERE Db = 'mysql' AND Name LIKE 'cloudsql%';
+SELECT * FROM information_schema.plugins WHERE PLUGIN_NAME = 'cloudsql_mysql_audit';
+
+* 新增規則
+CALL mysql.cloudsql_create_audit_rule(
+    'test1@%',   -- user@host
+    '*',         -- database
+    '*',         -- table
+    '*',         -- sql command
+    'S',         -- op_result
+    1,           -- reload_mode 1=reload 2=sequence
+    @outval,
+    @outmsg
+);
+
+* 參數
+op_result should only be 'S'(successful), 'U'(unsuccessful), 'B'(both) or 'E' (exclude) 
+
+* 查看規則
+CALL mysql.cloudsql_list_audit_rule('*', @outval, @outmsg);
+
+* 讓 audit log 打到 logging
+iam -> audit -> cloud sql 每個服務都有以下三個選項
+只開 Admin Read 👉 只能監控誰查詢了 Cloud SQL 設定 (修改設定屬於 System Event 預設就有了)
+只開 Data Read 👉 只能監控誰讀取了資料，但不記錄寫入行為 (特定用戶 Select Show mysqldump)
+只開 Data Write 👉 只能監控誰改變了資料，但不記錄讀取行為 (特定用戶 Delete Update 等等)
+
+* 刪除規則
+要開 owner 才看的到 log

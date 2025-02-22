@@ -11,9 +11,10 @@ docker run -d --name gitlab-runner --restart always \
 * ssh to runner
 docker exec -it gitlab-runner bash
 
-* register runner (要讓gitlab 綁定自建的runner)
+* register runner (to bind gitlab and runner)
 registration-token = repo -> setting -> CI/CD -> Runners -> Set up a specific Runner manually
 
+* ssh gitlab-runner container & register runner
 gitlab-runner register -n \
   --url https://gitlab.{domain}.com/ \
   --registration-token {register code} \
@@ -25,15 +26,20 @@ gitlab-runner register -n \
   --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
   --docker-disable-cache=true
 
-* runner config
+* runner 最主要的設定檔 runner config
 /srv/gitlab-runner/config/config.toml
 
 因為建立的方式是 Docker in Docker 實際上 Runner 和VM本身共用 docker.sock 
 跑的任何一個 CI Job 都是另外起一個 Conatiner 執行
 所以權限的問題 要改下面這段 讓他們共用一些Key(必要的話)
+這樣的話 每個 Runner 起來的 Container 都會共用以下的資料夾
 volumes = ["/gitlab-runner/auth/docker/:/certs/client/:rw","/root/.ssh/:/root/.ssh/","/cache:/cache:rw"]
 
-有關docker的部分要改成下面 , image 要改成 docker:stable , privileged = true
+有關docker的部分要改成下面 , privileged = true
+image 的部分則是假設 .gitlab-ci.yml 沒有指定 image 預設就會用 docker:stable
+一開始註冊 Runner 也能選預設 image 但還是以 /srv/gitlab-runner/config/config.toml 裡設定的為主
+
+設定檔的格式
 ```
   [runners.docker]
     tls_verify = false
@@ -47,9 +53,21 @@ volumes = ["/gitlab-runner/auth/docker/:/certs/client/:rw","/root/.ssh/:/root/.s
 
 ```
 
+## 完整流程
+1. 先建立 Runner Container
+2. 連入 Runner Container 並且註冊 Runner 填入 gitlab url 和 token
+3. 更改 /srv/gitlab-runner/config/config.toml 設定檔 , 假設裡面的 runner 建立的 image 需要 ssh 到其他機器 就要讓本地的 /root/.ssh 同步到 runner container，之後重啟 runner container
+4. 在 gitlab 上建立一個 project 並且在裡面建立一個 .gitlab-ci.yml 確保 tag 和 runner 的 tag 一致
 
 
-* simple .gitlab-ci.yml
+## 相關runner 指令
+gitlab-runner list
+
+* 會刪除未註冊的runner (網頁版可能刪了 但server上還在)
+gitlab-runner verify --delete
+
+
+## .gitlab-ci.yml 範例
 要注意 tag 必須和 runner 的 tag 一致才會被執行
 
 ```

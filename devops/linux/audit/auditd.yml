@@ -1,0 +1,70 @@
+---
+- name: 設定 Ubuntu 系統 auditd 以符合 ISO 2022 最低要求
+  hosts: "{{ host }}"
+  become: yes
+  tasks:
+    - name: 安裝 auditd 套件
+      apt:
+        name: auditd
+        state: present
+        update_cache: yes
+
+    - name: 確保 auditd 服務已啟動且設為開機自動啟動
+      service:
+        name: auditd
+        enabled: yes
+        state: started
+
+    - name: 修改 max_log_file 設定為 1024
+      lineinfile:
+        path: /etc/audit/auditd.conf
+        regexp: '^max_log_file\s*='
+        line: 'max_log_file = 1024'
+        backrefs: yes
+
+    - name: 修改 num_logs 設定為 180
+      lineinfile:
+        path: /etc/audit/auditd.conf
+        regexp: '^num_logs\s*='
+        line: 'num_logs = 180'
+        backrefs: yes
+
+    - name: 部署審計規則以監控關鍵檔案變更
+      copy:
+        dest: /etc/audit/rules.d/iso_audit.rules
+        content: |
+          ## 以下審計規則由 Ansible 自動管理
+          ## 監控 /etc/passwd 檔案的變更
+          -w /etc/passwd -p wa -k passwd_changes
+          ## 監控 /etc/shadow 檔案的變更
+          -w /etc/shadow -p wa -k shadow_changes
+          ## 監控 /etc/sudoers 檔案的變更
+          -w /etc/sudoers -p wa -k sudoers_changes
+          ##監控審計設定檔變更（確保審計系統本身未被竄改）
+          -w /etc/audit/ -p wa -k auditconfig
+      notify: 載入審計規則
+
+    - name: 確保 /var/log/audit 目錄權限正確 (僅限 root 存取)
+      file:
+        path: /var/log/audit
+        owner: root
+        group: root
+        mode: '0700'
+        state: directory
+
+    - name: 確保 /etc/audit/auditd.conf 檔案權限正確
+      file:
+        path: /etc/audit/auditd.conf
+        owner: root
+        group: root
+        mode: '0640'
+
+  handlers:
+    - name: 重啟 auditd
+      service:
+        name: auditd
+        state: restarted
+
+    - name: 載入審計規則
+      command: augenrules --load
+      notify: 重啟 auditd

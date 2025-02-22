@@ -1,0 +1,2 @@
+JAVA_OPTS="-Xms2560m -Xmx3072m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdumps -Duser.timezone=Asia/Taipei"
+CATALINA_OPTS="-Duser.timezone=Asia/Taipei"

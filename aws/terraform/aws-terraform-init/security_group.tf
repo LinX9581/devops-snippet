@@ -16,7 +16,7 @@ resource "aws_security_group" "allow-other" {
     to_port     = 9100
     protocol    = "tcp"
     cidr_blocks = concat(
-      ["35.236.154.220/32"],
+      ["35.236.154.0/32"],
       var.common_ip_source_ranges
     )
   }
@@ -26,7 +26,15 @@ resource "aws_security_group" "allow-other" {
     from_port   = 9256
     to_port     = 9256
     protocol    = "tcp"
-    cidr_blocks = ["35.236.154.220/32"]
+    cidr_blocks = ["35.236.154.0/32"]
+  }
+
+  ingress {
+    description = "nodejs"
+    from_port   = 3000
+    to_port     = 3100
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {

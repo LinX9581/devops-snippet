@@ -40,11 +40,17 @@ gsutil -m rm -r gs://my_bucket/subdir
 ```bash
 # 設置特定 IAM 帳戶只有寫入權限
 gcloud projects add-iam-policy-binding [PROJECT_ID] --member="serviceAccount:[SERVICE_ACCOUNT_EMAIL]" --role="roles/storage.objectCreator"
+
+# 設置特定 service account 只能讀取特定 bucket
+gsutil iam ch serviceAccount:[SERVICE_ACCOUNT_EMAIL]:objectViewer gs://[BUCKET_NAME]
+
+
 ```
 
 更多指令用法請參考:
 - [gsutil cp 命令文檔](https://cloud.google.com/storage/docs/gsutil/commands/cp)
 - [Google Storage gsutil 指南](https://alexisperrier.com/gcp/2018/01/01/google-storage-gsutil.html)
+
 
 ## 防護機制
 

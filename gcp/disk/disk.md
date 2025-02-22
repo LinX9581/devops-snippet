@@ -40,7 +40,12 @@ xfs_growfs /dev/sda1
 ```
 
 
+## 清除空間
+清除安裝套件快取
+sudo apt clean
 
+清除系統LOG
+truncate -s 0 /var/log/syslog
 
 
 
