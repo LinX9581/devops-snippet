@@ -4,6 +4,7 @@ du -d 1 -m -x /run
 
 查詢全盤下容量
 du --exclude="proc" | sort -g
+du --exclude="proc" -ah / | sort -rh | head -n 50
 
 查詢個別資料夾
 du -csh /var/log
@@ -36,6 +37,10 @@ resize2fs /dev/sda1
 
 centos 
 xfs_growfs /dev/sda1
+
+AWS 可能會用 nvme
+sudo growpart /dev/nvme0n1 1
+sudo resize2fs /dev/nvme0n1p1
 
 ```
 

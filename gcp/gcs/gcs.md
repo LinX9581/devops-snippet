@@ -9,6 +9,15 @@
 
 ## 常用指令
 
+### 安裝 gcloud
+```bash
+apt update
+sudo apt-get install apt-transport-https ca-certificates gnupg curl -y
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+sudo apt-get update && sudo apt-get install google-cloud-cli -y
+```
+
 ### 設置項目
 ```bash
 gcloud config set project [project_id]
@@ -19,23 +28,21 @@ gcloud auth activate-service-account --key-file="C:\youtube.json"
 ```bash
 # 列出 bucket 內容
 gsutil ls -p test-project 
-
 gsutil ls -l gs://youtube
 
 # 複製檔案/目錄到 GCS
-gsutil -m cp -r dir gs://my-bucket
 gsutil cp -r /gcs/test.txt gs://nn-gcs-test
-
-# 從 GCS 下載檔案
+gsutil cp -r /devops/a/ gs://nn-gcs-test/
 gsutil cp -r gs://nn-gcs-test/access.log.2.gz /var/www
-
-# 在 GCS 內複製
 gsutil cp -r gs://wpbk gs://test
-
-# 刪除 GCS 內的檔案/目錄
 gsutil -m rm -r gs://my_bucket/subdir
 ```
 
+### 背景執行
+```bash
+nohup gsutil -m cp -n -r /ebs/images/upload/ gs://img_walkerland_com_tw/image/ > upload_log.txt 2>&1 &
+pkill -9 -f gsutil
+```
 ### IAM 權限設置
 ```bash
 # 設置特定 IAM 帳戶只有寫入權限

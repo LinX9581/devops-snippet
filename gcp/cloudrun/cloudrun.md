@@ -9,3 +9,4 @@ https://hub.docker.com/_/tomcat/?utm_source=chatgpt.com
 並根據 dockerfile 的內容打包
 推到 Artifact Registry
 建立 Cloud Run
+指定 Artifact Registry 的映像檔

@@ -7,8 +7,8 @@ serial-port-enable : TRUE
 
 * VM 開機執行腳本建立使用者
 #!/bin/bash
-adduser nn-admin
-echo nn-admin:28331543 | chpasswd
+useradd nn-admin
+echo nn-admin:aaaa | chpasswd
 usermod -aG google-sudoers nn-admin
 
 * 重開機

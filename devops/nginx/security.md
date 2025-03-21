@@ -1,3 +1,7 @@
+# header 驗證方式
+curl -I https://www.test.com
+openssl s_client -connect www.test.com:443 -tls1_2
+
 # 常用 header 設定
 add_header X-Frame-Options "SAMEORIGIN";
 add_header Content-Security-Policy "frame-ancestors 'self'";
@@ -92,8 +96,8 @@ const corsOptions = {
         // 允許沒有 origin 的請求（比如直接訪問）
         if (!origin) return callback(null, true);
         
-        // 允許來自 nownews.com 和 linx.website 子域名的請求
-        if (/^https?:\/\/.*\.(nownews\.com|linx\.website)$/.test(origin)) {
+        // 允許來自 test.com 和 linx.website 子域名的請求
+        if (/^https?:\/\/.*\.(test\.com|linx\.website)$/.test(origin)) {
           callback(null, true);
         } else {
           callback(new Error('Not allowed by CORS'));
@@ -106,8 +110,8 @@ const corsOptions = {
     
     // 對所有路徑應用這個 CORS 策略
     app.use(cors(corsOptions));
-    // 允許來自 nownews.com 和 linx.website 子域名的請求
-    if (/^https?:\/\/.*\.(nownews\.com|linx\.website)$/.test(origin)) {
+    // 允許來自 test.com 和 linx.website 子域名的請求
+    if (/^https?:\/\/.*\.(test\.com|linx\.website)$/.test(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

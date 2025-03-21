@@ -11,12 +11,12 @@ AWS-RunShellScript
 
 建立無密碼的 ansible 使用者
 ```
-sudo adduser ansible
+sudo useradd -m -s /bin/bash ansible
 sudo usermod -aG sudo ansible
-echo 'ansible ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible
-mkdir -p /home/ansible/.ssh
-chmod 700 /home/ansible/.ssh
-echo '' >> /home/ansible/.ssh/authorized_keys
+echo 'ansible ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible >/dev/null
+sudo mkdir -p /home/ansible/.ssh
+sudo chmod 700 /home/ansible/.ssh
+echo '' >> /home/ansible/.ssh/authorized_keys >/dev/null
 sudo chown ansible:ansible /home/ansible
 sudo chmod 700 /home/ansible
 chmod 600 /home/ansible/.ssh/authorized_keys

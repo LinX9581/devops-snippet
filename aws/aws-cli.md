@@ -16,6 +16,8 @@ IAM -> User -> Username -> Security credentials -> Create access key
 * check current user
 aws sts get-caller-identity
 
+aws configure list 
+
 * set iam-role to ec2
 aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRoleForInstancesQuickSetup --instance-id i-041a9f1804945d1d4
 

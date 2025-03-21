@@ -77,3 +77,4 @@ terraform init
 terraform apply
 
 terraformer import aws --resources=sg --regions=ap-northeast-1
+terraformer import aws --resources=ec2_instance --regions=ap-northeast-1

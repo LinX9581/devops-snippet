@@ -3,8 +3,8 @@
 pihole -g -l
 
 * 手動阻擋
-pihole -b analytics.nownews.com
-nslookup analytics.nownews.com localhost
+pihole -b analytics.test.com
+nslookup analytics.test.com localhost
 
 * Ansible
 ---

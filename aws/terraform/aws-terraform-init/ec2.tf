@@ -20,7 +20,7 @@ variable "key_name" {
 # }
 
 resource "aws_instance" "deploy-instance" {
-  ami           = "ami-07c589821f2b353aa"  # ubuntu22.04
+  ami           = "ami-0a290015b99140cd1"  # ubuntu22.04
   instance_type = "t2.micro"
   iam_instance_profile                 = var.iam_profile
   associate_public_ip_address = true 
@@ -28,12 +28,31 @@ resource "aws_instance" "deploy-instance" {
   subnet_id               = aws_subnet.subnetwork_2.id
   vpc_security_group_ids = [aws_security_group.allow-other.id, aws_security_group.allow-ssh.id,aws_security_group.allow-http.id,aws_security_group.allow-https.id]
 
+  root_block_device {
+    encrypted   = true
+    volume_size = 8
+    volume_type = "gp2" # 免費額度支援 , gp3 IOPS 不是免費
+  }
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_put_response_hop_limit = 2
+    http_tokens                 = "required"
+  }
+
+  private_dns_name_options {
+    enable_resource_name_dns_a_record    = false
+    enable_resource_name_dns_aaaa_record = false
+    hostname_type                        = "ip-name"
+  }
+
   user_data = <<EOF
 #!/bin/bash
 apt update
 sudo timedatectl set-timezone Asia/Taipei
 apt install unzip net-tools -y
 
+apt install amazon-cloudwatch-agent -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install

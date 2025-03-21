@@ -17,6 +17,10 @@ eslint --init
 
 vscode 安裝套件 重開vscode
 
+## update nodejs
+nvm install 20
+nvm use 20
+
 ## babel
 yarn remove babel-cli babel-preset-env
 yarn add @babel/core @babel/node @babel/preset-env --dev

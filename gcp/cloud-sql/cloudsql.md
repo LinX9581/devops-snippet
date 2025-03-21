@@ -81,11 +81,11 @@ SELECT * FROM information_schema.plugins WHERE PLUGIN_NAME = 'cloudsql_mysql_aud
 
 * 新增規則
 CALL mysql.cloudsql_create_audit_rule(
-    'test1@%',   -- user@host
+    'analytics_user@%',   -- user@host
     '*',         -- database
     '*',         -- table
     '*',         -- sql command
-    'S',         -- op_result
+    'B',         -- op_result
     1,           -- reload_mode 1=reload 2=sequence
     @outval,
     @outmsg
@@ -97,11 +97,17 @@ op_result should only be 'S'(successful), 'U'(unsuccessful), 'B'(both) or 'E' (e
 * 查看規則
 CALL mysql.cloudsql_list_audit_rule('*', @outval, @outmsg);
 
+* 刪除規則
+CALL mysql.cloudsql_delete_audit_rule('1,2',0,@outval,@outmsg);
+SELECT @outval, @outmsg; -- 查看執行結果
+
+規則id , reload_mode
+0 for not reload the rule and 1 for reload.
+
 * 讓 audit log 打到 logging
 iam -> audit -> cloud sql 每個服務都有以下三個選項
 只開 Admin Read 👉 只能監控誰查詢了 Cloud SQL 設定 (修改設定屬於 System Event 預設就有了)
 只開 Data Read 👉 只能監控誰讀取了資料，但不記錄寫入行為 (特定用戶 Select Show mysqldump)
 只開 Data Write 👉 只能監控誰改變了資料，但不記錄讀取行為 (特定用戶 Delete Update 等等)
 
-* 刪除規則
 要開 owner 才看的到 log

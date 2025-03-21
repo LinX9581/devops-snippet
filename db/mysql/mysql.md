@@ -1,6 +1,6 @@
 ## install
 基本安裝 & 建立使用者
-sudo apt install mysql-server
+sudo apt install mysql-server -y
 
 sudo apt install mariadb-server mariadb-client -y
 sudo systemctl start mariadb

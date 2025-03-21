@@ -86,6 +86,8 @@ tar xvf FileName.tar
 rsync -avh monitor@192.168.1.12:/mybackup/ /mypath/myfile.gz
 rsync -avh /mypath/myfile.gz pi@192.168.1.12:/mybackup/
 
+rsync -avh --exclude='thumbs/*' --exclude='uploads/*' --exclude='fcpxml/*' --exclude='srt/*' --exclude='txt/*' ansible@104.199.3.1:/var/www/html /devops
+
 rsync -avh --progress 'ssh -i /root/.ssh/id_rsa' /var/www/lynis-3.0.0.tar.gz drone@10.140.15.213:/var/www
 速度為 30~100M
 # port 12345
@@ -132,7 +134,7 @@ mount -t nfs  10.140.0.53:/data /ubuntunfs
 
 ## 開機自動執行
 chmod +x /etc/rc.local
-nano rc.local // 把mount指令寫上去
+nano /etc/rc.local // 把mount指令寫上去
 解除mount
 umount -f -l /var/www
 

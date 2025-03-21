@@ -1,7 +1,7 @@
 
 #! /bin/bash
 export prometheusIP=172.16.2.4
-export gcpProject=nownews-terraform
+export gcpProject=test-terraform
 export webhookUrl=http:\/\/172.16.2.4:3005\/webhook
 
 # install Docker
