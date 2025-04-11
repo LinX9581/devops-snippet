@@ -15,10 +15,10 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 
 # virtualenv
-sudo apt install python3-virtualenv -y
+sudo apt install python3.12-venv
 
 cd dir
-virtualenv venv
+python3 -m venv venv
 * 會在當前目錄建立虛擬環境
 source venv/bin/activate
 * 針對 /var/www/test2 建立虛擬環境

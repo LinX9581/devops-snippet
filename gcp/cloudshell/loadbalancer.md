@@ -3,7 +3,7 @@ http https tcp
 
 https://cloud.google.com/load-balancing/docs/https/https-logging-monitoring
 
-# 查看所有後端服務 --globle
+# 查看所有後端服務 --global
 gcloud compute backend-services list
 
 # 讓nginx 取得 真實IP的設定方式

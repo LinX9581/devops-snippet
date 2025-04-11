@@ -6,31 +6,42 @@ https://ip-ranges.amazonaws.com/ip-ranges.json
 ## Cloudwatch
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-commandline-fleet.html
 https://amazoncloudwatch-agent.s3.region.amazonaws.com/ubuntu/arm64/latest/amazon-cloudwatch-agent.deb
-wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/arm64/latest/amazon-cloudwatch-agent.deb
+
+
+wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb -O amazon-cloudwatch-agent.deb
 sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
 
-sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/path/to/your/config.json -s
-
+sudo tee /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json > /dev/null <<EOF
 {
+  "agent": {
+    "metrics_collection_interval": 60,
+    "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log"
+  },
   "metrics": {
-    "append_dimensions": {
-      "InstanceId": "${aws:InstanceId}"
-    },
+    "namespace": "CWAgent",
     "metrics_collected": {
+      "cpu": {
+        "measurement": ["usage_idle", "usage_iowait", "usage_user", "usage_system"],
+        "resources": ["*"],
+        "totalcpu": true
+      },
       "disk": {
-        "measurement": [
-          "used_percent",
-          "inodes_free"
-        ],
-        "resources": [
-          "*"
-        ]
+        "measurement": ["used_percent", "inodes_free"],
+        "resources": ["*"]
       },
       "mem": {
-        "measurement": [
-          "mem_used_percent"
-        ]
+        "measurement": ["mem_used_percent"]
+      },
+      "net": {
+        "measurement": ["bytes_sent", "bytes_recv"],
+        "resources": ["*"]
+      },
+      "swap": {
+        "measurement": ["swap_used_percent"]
       }
     }
   }
 }
+EOF
+sudo systemctl enable amazon-cloudwatch-agent && \
+sudo systemctl restart amazon-cloudwatch-agent

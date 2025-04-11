@@ -70,51 +70,71 @@ gitlab-runner verify --delete
 ## .gitlab-ci.yml 範例
 要注意 tag 必須和 runner 的 tag 一致才會被執行
 
+避免 runner 有過大權限，只讓他運行一個腳本
 ```
-stages:
-  - test
-  - deploy_vm
-
-variables:
-  NODEJS_APP_VERSION: "3.6"
-
-test_job:
-  image: node:14.18.0
-  stage: test
-  only:
-    - master
-  script:
-    - yarn install
-    - npm run test 
-  tags: 
-    - docker-prod-runner   
-
 deply_job: 
   image: node:14.18.0
   stage: deploy_vm
   only:
-    - master
+    - main
   script:
-    # bash /deploy/run-ansible.sh {要佈署的VM群組 , 專案名稱 , Branch}
-    - ssh -o StrictHostKeyChecking=no gitlab-runner@172.16.2.45 "bash /deploy/run-ansible.sh ga nn-search-trend master"
-  tags:
-    - docker-prod-runner
+    # bash /deploy/run-ansible.sh {要佈署的VM群組 , 專案名稱 , Branch , 語言}
+    - ssh -o StrictHostKeyChecking=no gitlab-runner@172.16.2.6 "bash /deploy/run-ansible.sh $CI_PROJECT_NAME $CI_PROJECT_NAME main python"
 
 ```
 
-基本的 ansible 使用 git 佈署
-```
----
-- name: Copy and Run shell scripts on remote machine
-  hosts: '{{ host }}'
-  become: yes  # become root user
-  tasks:
-    - name: deploy
-      shell: "cd /var/www/{{ project }} && git fetch --all && git reset --hard origin/{{ branch }} && git pull origin {{ branch }}"
-      register: status
+## 限縮 Runner 權限
 
-    - name: Print
-      debug:
-        msg: "{{ status.stdout}}"
+要限縮 172.16.2.6 這台機器的 gitlab-runner 使用者能執行的指令
+
+/home/gitlab-runner/.ssh/authorized_keys
+前面加上
+command="/devops/restricted-deploy.sh $SSH_ORIGINAL_COMMAND",no-port-forwarding,no-X11-forwarding,no-a
+gent-forwarding,no-pty 
+
+把可執行指令寫在 /devops/restricted-deploy.sh 裡面
+scp 如果同檔名 他不會執行刪除 所以要設白名單
+```
+#!/bin/bash
+
+LOG_FILE="/devops/deploy.log"
+
+# 檢查傳入的命令
+case "$SSH_ORIGINAL_COMMAND" in
+    "scp -t /deploy/"*)
+        # 提取目標檔案名稱
+        target_file=$(echo "$SSH_ORIGINAL_COMMAND" | sed 's/scp -t //')
+        # 檢查目標檔案是否位於 /deploy/ 且副檔名為 .war
+        if [[ "$target_file" =~ ^/deploy/.*\.war$ ]]; then
+            # 如果目標檔案已存在，先移除
+            [ -f "$target_file" ] && rm -f "$target_file"
+            # 執行 scp 上傳
+            exec /usr/bin/scp -t "$target_file"
+        else
+            echo "$(date '+%Y-%m-%d %H:%M:%S') - Rejected: Only .war files are allowed in /deploy/" >> "$LOG_FILE"
+            echo "Only .war files are allowed in /deploy/"
+            exit 1
+        fi
+        ;;
+    "sudo bash /deploy/deploy.sh "*)
+        # 提取參數並執行 deploy.sh
+        params="${SSH_ORIGINAL_COMMAND#sudo bash /deploy/deploy.sh }"
+        exec sudo bash /deploy/deploy.sh "$params"
+        ;;
+    "bash /deploy/run-ansible.sh "*)
+        # 提取參數並執行 /deploy/run-ansible.sh
+        params="${SSH_ORIGINAL_COMMAND#bash /deploy/run-ansible.sh }"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Executing: sudo bash /deploy/run-ansible.sh with params: '$params'" >> "$LOG_FILE"
+        exec bash /deploy/run-ansible.sh "$params"
+        ;;
+    *)
+        # 其他命令一律拒絕
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Rejected: Command not allowed" >> "$LOG_FILE"
+        echo "Command not allowed"
+        exit 1
+        ;;
+esac
 
 ```
+
+--extra-vars "host=prod-intra-system project='html && ls -l'"

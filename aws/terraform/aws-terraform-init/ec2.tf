@@ -52,7 +52,8 @@ apt update
 sudo timedatectl set-timezone Asia/Taipei
 apt install unzip net-tools -y
 
-apt install amazon-cloudwatch-agent -y
+wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb -O amazon-cloudwatch-agent.deb
+sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
