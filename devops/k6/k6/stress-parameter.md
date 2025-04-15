@@ -75,6 +75,8 @@ error: Cannot assign requested address
 每個連線都會占用port 預設60秒才會釋放
 * 直接改文件
 more /etc/sysctl.conf 
+sysctl -p
+
 * 指令改參數
 sysctl -w net.ipv4.tcp_fin_timeout=15 # 但調這個沒用 
 sysctl -w net.ipv4.tcp_tw_reuse=1     # 釋放後會給新的port使用    #####這個最重要 會大量降低 time wait

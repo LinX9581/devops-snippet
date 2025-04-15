@@ -1,5 +1,7 @@
 #! /bin/bash
 
+elk_password=elk_password
+
 # ubuntu 安裝方式會不一樣
 sudo apt update
 sudo apt -y upgrade
@@ -20,61 +22,8 @@ sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker
 chmod +x /usr/local/bin/docker-compose
 systemctl enable docker.service
 
-curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.12.0-amd64.deb
-sudo dpkg -i filebeat-8.12.0-amd64.deb
-
-
 cd /var/www
-git clone https://github.com/LinX9581/elk.git
-
-# chown lin /etc/filebeat/filebeat.yml /etc/filebeat/modules.d/nginx.yml /var/www/docker-elk/logstash/pipeline/logstash.conf /var/www/docker-elk/elasticsearch/config/elasticsearch.yml
-# chown root /etc/filebeat/filebeat.yml /etc/filebeat/modules.d/nginx.yml /var/www/docker-elk/logstash/pipeline/logstash.conf /var/www/docker-elk/elasticsearch/config/elasticsearch.yml
-# docker-compose up
-
-cat>/etc/filebeat/filebeat.yml<<EOF
-filebeat.inputs:
-- type: log
-  enabled: true
-  backoff: "1s"             # 一秒掃一次
-  tail_files: false         # 預設是false 會從log最後一行開始記錄
-  paths:
-    - /var/log/nginx/access.log
-  exclude_files: ['\.gz$']
-  fields:                   # 這邊設的變數可以從logstash的output中取得 [fields][log_topics]
-    log_topics: log_nginx_access
-  fields_under_root: true   # 這邊設置true output那邊就不用加[fields]
-- type: log
-  enabled: true
-  backoff: "1s"
-  tail_files: false
-  paths:
-    - /var/log/nginx/access-1.log
-  exclude_files: ['\.gz$']
-  fields:
-    log_topics: log_nginx_access1
-  fields_under_root: true
-
-output.logstash:
-  hosts: ["localhost:5044"]
-
-# 當機的話 資訊會存在 var/lib/filebeat/registry
-# 檔案太大的話 clean_inactive clean_removed
-
-EOF
-
-cat>/etc/filebeat/modules.d/nginx.yml<<EOF
-- module: nginx
-  access:
-    enabled: true
-    var.paths: ["/var/log/nginx/access.log"]
-  error:
-    enabled: true
-    var.paths: ["/var/log/nginx/error.log"]
-  ingress_controller:
-    enabled: false
-EOF
-
-filebeat modules enable nginx
+git clone https://github.com/deviantony/docker-elk.git
 
 cat>/var/www/elk/logstash/pipeline/logstash.conf<<EOF
 input {
@@ -127,7 +76,7 @@ output {
 		elasticsearch {
 			hosts => "elasticsearch:9200"
 			user => "elastic"
-			password => "changeme"
+			password => "$elk_password"
 			index => "nginx-access-%{+xxxx.ww}"
 		}
 	}
@@ -135,11 +84,24 @@ output {
 		elasticsearch {
 			hosts => "elasticsearch:9200"
 			user => "elastic"
-			password => "changeme"
+			password => "$elk_password"
 			index => "nginx-access-1-%{+xxxx.ww}"
 		}
 	}
 }
+EOF
+
+cat>/var/www/docker-elk/logstash/config/logstash.yml<<EOF
+---
+http.host: "0.0.0.0"
+xpack.monitoring.elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+
+## X-Pack security credentials
+#
+xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.username: elastic
+xpack.monitoring.elasticsearch.password: '$elk_password'
+
 EOF
 
 cat>/var/www/elk/elasticsearch/config/elasticsearch.yml<<EOF

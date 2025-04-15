@@ -1,44 +1,39 @@
 ## 環境
 Linux Nginx Docker-compose ELK filebeat git
 
-## 本地安裝 filebeat
-```
-curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.12.0-amd64.deb
-sudo dpkg -i filebeat-8.12.0-amd64.deb
-filebeat modules enable nginx
-```
-
-更改 三個設定檔
-docker-elk/logstash/pipeline/logstash.conf
-/etc/filebeat/filebeat.yml
-/etc/filebeat/modules.d/nginx.yml
-內容都在 elk.sh
-
 ## 執行 ELK
-* 官方ELK
-git clone https://github.com/deviantony/docker-elk
-cd /docker-elk
-docker-compose up -d 
+* 執行腳本
+sh elk.sh
 
-改個別設定
+有改設定就執行以下指令
 docker-compose up --detach --build logstash
 
-## filebeat tp logstash
-filebeat -e
+## 要收 log 的 VM 要裝 filebeat
+* 執行腳本
+sh filebeat.sh
 
-## elasticsearch 建立索引
-左上選單 -> Stack Management -> Index Patterns -> Create index patterns
+主要會改兩個設定檔
+elasticsearch.yml 
+logstash
+
+只需要確保 /etc/filebeat/filebeat.yml
+INDEX_NAME 要和 Logstash 的設定檔 log_topics 匹配
 
 ## 顯示數據
 左上選單 -> Discover
 
 ## ERROR
+0. 7.5版以下的 ELK index 要在介面建立
 
 1. log 無法 match
 Grok match 工具
 https://grokdebug.herokuapp.com/
 
 sample
+確保 nginx log 格式
+    log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
+                      '\$status \$body_bytes_sent "\$http_referer" '
+                      '"\$http_user_agent" "\$http_x_forwarded_for"';
 ```
 162.158.5.135 - - [17/Nov/2021:07:47:40 +0000] "GET / HTTP/2.0" 200 384 "-" "curl/7.64.0" "104.199.233.193"
 
@@ -47,8 +42,10 @@ sample
 
 2. filebeat 跑在背景關不掉
 rm -rf /var/lib/filebeat/filebeat.lock
-或者 service filebeat stop
-filebeat -e
+sudo systemctl stop filebeat
+sudo pkill -f filebeat
+sudo systemctl start filebeat
+sudo systemctl enable filebeat
 
 3. 不同log寫入不同index
 https://blog.csdn.net/wsdc0521/article/details/106308441
