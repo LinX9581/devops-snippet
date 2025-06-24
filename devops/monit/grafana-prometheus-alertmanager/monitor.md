@@ -59,7 +59,13 @@ grafana cli plugins install grafana-piechart-panel
 
 restart container 
 
+backup & upgrade
+sudo docker cp grafana:/var/lib/grafana /devops/grafana-data/
+sudo docker run --name=grafana -d -p 3000:3000 -v /devops/grafana-data/grafana:/var/lib/grafana grafana/grafana:11.6.0-security-01
+sudo docker run --name=grafana -d -p 3000:3000 -v /devops/grafana-data/grafana:/var/lib/grafana -e GF_SECURITY_ANGULAR_SUPPORT_ENABLED=true --user $(id -u):$(id -g) grafana/grafana:11.6.0-security-01
 
+-e GF_SECURITY_ANGULAR_SUPPORT_ENABLED=true  :  有些圖表適用 angular 但新版不支援 angular 這個參數可以讓 angular 圖表正常顯示
+--user $(id -u):$(id -g)  :  這個參數可以讓 grafana 使用者擁有 grafana 資料夾的權限
 
 # K8S
 參考

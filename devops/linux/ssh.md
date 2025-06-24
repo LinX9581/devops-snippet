@@ -20,3 +20,6 @@ PermitRootLogin no
 AllowUsers ansible
 
 sudo systemctl restart sshd
+
+* 加入特定使用者為root
+echo 'ansible ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/ansible >/dev/null

@@ -34,6 +34,11 @@ https://blog.csdn.net/hellow__world/article/details/78658041
 # 原理介紹
 https://www.upyun.com/tech/article/378/%E6%88%91%E7%9C%BC%E4%B8%AD%E7%9A%84%20Nginx%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9ANginx%20%E5%92%8C%E4%BD%8D%E8%BF%90%E7%AE%97.html
 
+# 有用 websocket 的話要加
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+	
 # TCP LB
 https://iter01.com/68023.html
 

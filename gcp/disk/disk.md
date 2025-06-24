@@ -42,6 +42,8 @@ AWS 可能會用 nvme
 sudo growpart /dev/nvme0n1 1
 sudo resize2fs /dev/nvme0n1p1
 
+sudo growpart /dev/xvda 1
+sudo resize2fs /dev/xvda1
 ```
 
 

@@ -45,3 +45,13 @@ sudo tee /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json > /de
 EOF
 sudo systemctl enable amazon-cloudwatch-agent && \
 sudo systemctl restart amazon-cloudwatch-agent
+
+
+## EC2 Snapshot
+快照一般會建議用 Data Lifecycle Manager (DLM)
+
+* 查看目前快照
+aws dlm get-lifecycle-policies
+
+* 取得特定快照
+aws dlm get-lifecycle-policy --policy-id <policy-id>

@@ -2,11 +2,11 @@
 ## Step
 * Create Runner By Docker
 
-docker run -d --name gitlab-runner --restart always \
+docker run -d --name gitlab-runner1 --restart always \
     -v /root/.ssh/:/root/.ssh/ \
     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    gitlab/gitlab-runner:v15.5.1
+    gitlab/gitlab-runner:v16.3.1
 
 * ssh to runner
 docker exec -it gitlab-runner bash
@@ -29,7 +29,7 @@ gitlab-runner register -n \
 * runner 最主要的設定檔 runner config
 /srv/gitlab-runner/config/config.toml
 
-因為建立的方式是 Docker in Docker 實際上 Runner 和VM本身共用 docker.sock 
+因為建立的方式是 把 Docker API 掛載到 Runner，Runner 會直接呼叫 VM本身的 Docker API 去建立容器執行 CI Job 
 跑的任何一個 CI Job 都是另外起一個 Conatiner 執行
 所以權限的問題 要改下面這段 讓他們共用一些Key(必要的話)
 這樣的話 每個 Runner 起來的 Container 都會共用以下的資料夾

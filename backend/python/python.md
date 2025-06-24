@@ -11,7 +11,7 @@ sudo apt update
 sudo apt install python3 python3-dev python3-pip -y
 
 * python cmd replace python3
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
 
 # virtualenv

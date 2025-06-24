@@ -63,6 +63,7 @@ pm.max_requests = 100
 
 * 監控 fpm 連線數
 while [ 1 ]; do service php7.4-fpm status | grep 'Status' | cut -c 25-49; sleep 1; echo '------'; done
+*/5 * * * * echo "$(date '+%F %T') $(curl -s http://127.0.0.1:81/status)" >> /pid.txt
 
 * 查看單台 tcp 連線數 ( node_exporter 有監控)
 netstat -ant | wc -l
@@ -77,7 +78,7 @@ error: Cannot assign requested address
 more /etc/sysctl.conf 
 sysctl -p
 
-* 指令改參數
+* 指令改參數 
 sysctl -w net.ipv4.tcp_fin_timeout=15 # 但調這個沒用 
 sysctl -w net.ipv4.tcp_tw_reuse=1     # 釋放後會給新的port使用    #####這個最重要 會大量降低 time wait
 sysctl -w net.ipv4.tcp_tw_recycle=1

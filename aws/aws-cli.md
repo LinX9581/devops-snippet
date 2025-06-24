@@ -27,10 +27,6 @@ aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRole
 * EC2 list
 aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[].Instances[].{ID:InstanceId,State:State.Name,PublicDNS:PublicDnsName,PrivateDNS:PrivateDnsName,PublicIP:PublicIpAddress,PrivateIP:PrivateIpAddress}'
 
-
-* set iam-role to ec2
-aws ec2 associate-iam-instance-profile --iam-instance-profile Name=AmazonSSMRoleForInstancesQuickSetup --instance-id i-041a9f1804945d1d4
-
 # VPC
 * vpc
 aws ec2 describe-vpcs --query 'Vpcs[].[VpcId, Tags[?Key==`Name`].Value | [0], CidrBlock]' --output table

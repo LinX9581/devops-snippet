@@ -15,3 +15,6 @@ gcloud secrets add-iam-policy-binding REDIS_HOST \
 
 # check cloud run iam
 gcloud run services describe stg-bn-news --region=asia-east1 --format="value(spec.template.spec.serviceAccountName)"
+
+# modify secret
+echo -n "172.16.7.4" | gcloud secrets versions add REDIS_HOST --data-file=-

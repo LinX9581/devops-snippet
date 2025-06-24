@@ -15,7 +15,7 @@ nginx.access.response_code : status = [404 TO 504]
 nginx.access.response_code < 200 or nginx.access.response_code > 400
 nginx.access.response_code : 40*
 nginx.access.url.keyword : /news/536*
-
+nginx.access.response_code.keyword >5
 nginx.access.referrer : *t.co*
 NOT nginx.access.referrer: "*t.co*"
 

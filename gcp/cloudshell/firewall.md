@@ -33,3 +33,13 @@ gcloud compute firewall-rules list --format="table(
         disabled
     )"
 ```
+
+
+# 防火牆政策
+gcloud compute network-firewall-policies list \
+  --global \
+  --project=stg
+
+gcloud compute network-firewall-policies describe vm-egress-blacklist \
+  --global \
+  --project=stg

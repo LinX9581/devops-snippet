@@ -33,7 +33,7 @@ gsutil ls -l gs://youtube
 # 複製檔案/目錄到 GCS
 gsutil cp -r /gcs/test.txt gs://nn-gcs-test
 gsutil cp -r /devops/a/ gs://nn-gcs-test/
-gsutil cp -r gs://nn-gcs-test/access.log.2.gz /var/www
+gsutil -m cp -r gs://nn-gcs-test/access.log.2.gz /var/www
 gsutil cp -r gs://wpbk gs://test
 gsutil -m rm -r gs://my_bucket/subdir
 ```

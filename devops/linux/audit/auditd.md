@@ -21,5 +21,8 @@ num_logs = 180
 aureport -f
 aureport -f -ts 01/19/25 00:00:00 -te 02/18/25 23:59:59
 
+* 查看規則
+auditctl -l
+
 
 curl -G -s "http://localhost:3100/loki/api/v1/query_range" --data-urlencode 'query={job="audit_filtered"}' --data-urlencode 'limit=10'

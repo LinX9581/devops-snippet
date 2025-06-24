@@ -47,3 +47,14 @@ gcloud logging read \
     --project="$PROJECT_ID" \
     --limit="$LOG_LIMIT" \
     --format="json"
+
+
+## 新增刪除異動通知
+logName="projects/devops/logs/cloudaudit.googleapis.com%2Factivity"
+(
+protoPayload.methodName:("insert" OR "create" OR "delete" OR "remove")
+)
+
+## 特定 sa key 的操作紀錄
+logName="projects/devops/logs/cloudaudit.googleapis.com%2Factivity"
+protoPayload.authenticationInfo.serviceAccountKeyName:"251b2e6192c48f2a57c969dc3bab1f71db908290"

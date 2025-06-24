@@ -14,6 +14,8 @@ services:
     cap_add:
       - NET_ADMIN
     restart: always
+    environment:
+      - TZ=Asia/Taipei     
 
 docker-compose run --rm ovpn ovpn_genconfig -u udp://34.146.159.216
 docker-compose run --rm ovpn ovpn_initpki
