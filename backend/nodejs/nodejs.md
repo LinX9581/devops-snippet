@@ -11,6 +11,7 @@ pm2 restart 0 --time --watch
 pm2 update
 pm2 startup
 pm2 save
+pm2 show id //檢查當前 nodejs 版本
 ## eslint
 npm i eslint -g
 eslint --init
