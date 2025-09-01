@@ -57,5 +57,5 @@ protoPayload.methodName:("insert" OR "create" OR "delete" OR "remove")
 
 ## 特定 sa key 的操作紀錄
 logName="projects/devops/logs/cloudaudit.googleapis.com%2Factivity"
-protoPayload.authenticationInfo.serviceAccountKeyName:"251b2e6192c48f2a57c969dc3b"
+protoPayload.authenticationInfo.serviceAccountKeyName:"15e1b3b8ae90d3a84f83092fa9eb426bf689d88c"
 

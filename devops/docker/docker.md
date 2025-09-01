@@ -32,6 +32,17 @@ docker pull 172.16.97.6:3006/node-test
 curl -X GET http://172.16.97.6:3006/v2/_catalog
 curl -X GET http://172.16.97.6:3006/v2/mytomcat/tags/list
 
+# 刪除特定字串的 docker images 只保留最新的三個
+docker images --format "table {{.Repository}}:{{.Tag}}\t{{.CreatedAt}}" | \
+  grep "stg-fn-servlet/stg-fn-servlet" | \
+  tail -n +4 | \
+  awk '{print $1}' | \
+  xargs -r docker rmi
+
+* 特定字串不保留 全刪除
+docker images --format "{{.Repository}}:{{.Tag}}" | \
+  grep "stg-bn-news/stg-bn-news" | \
+  xargs -r docker rmi
 
 # mount 
 file to file

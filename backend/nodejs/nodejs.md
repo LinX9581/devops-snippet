@@ -19,8 +19,10 @@ eslint --init
 vscode 安裝套件 重開vscode
 
 ## update nodejs
-nvm install 20
-nvm use 20
+nvm install 22.18.0
+nvm use 22.18.0
+nvm alias default 22.18.0
+npm i pm2 nodemon -g
 
 ## babel
 yarn remove babel-cli babel-preset-env
