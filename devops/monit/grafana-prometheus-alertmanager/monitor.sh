@@ -5,18 +5,22 @@ export gcpProject=test-terraform
 export webhookUrl=http:\/\/172.16.2.4:3005\/webhook
 
 # install Docker
-sudo apt update
-sudo apt -y upgrade
-sudo timedatectl set-timezone Asia/Taipei
-sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu `lsb_release -cs` test"
-sudo apt update
-sudo apt install docker-ce -y
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m)"  -o /usr/local/bin/docker-compose
-sudo mv /usr/local/bin/docker-compose /usr/bin/docker-compose
-chmod +x /usr/bin/docker-compose
-systemctl enable docker.service
+# sudo apt update
+# sudo apt -y upgrade
+# sudo apt update
+# sudo timedatectl set-timezone Asia/Taipei
+
+# # ubuntu
+# sudo mkdir -p /etc/apt/keyrings
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+# echo \
+#   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+#   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# sudo apt-get update
+# sudo chmod a+r /etc/apt/keyrings/docker.gpg
+# sudo apt-get update
+# sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+# systemctl enable docker.service
 
 # install Prometheus
 mkdir /devops/prometheus/alertmanager -p
@@ -98,6 +102,7 @@ scrape_configs:
 EOF
 
 docker run --name prometheus -d -p 9090:9090 \
+  --restart=always \
   -v /devops/prometheus-data:/prometheus-data \
   -v /devops/prometheus:/etc/prometheus \
   prom/prometheus \
@@ -105,6 +110,7 @@ docker run --name prometheus -d -p 9090:9090 \
   --config.file=/etc/prometheus/prometheus.yml \
   --storage.tsdb.path=/prometheus-data \
   --storage.tsdb.retention.time=180d
+
 
 
 # install alertmanager
@@ -158,6 +164,7 @@ receivers:
 EOF
 
 docker run --name alertmanager -d -p 9093:9093 \
+  --restart=always \
   -v /devops/prometheus/alertmanager:/alertmanager \
   prom/alertmanager \
   --storage.path=/tmp \
@@ -175,8 +182,14 @@ modules:
       preferred_ip_protocol: "ip4"
 EOF
 
-docker run -d -p 9115:9115 --name blackbox-exporter -v /devops/prometheus/exporter/blackbox_exporter:/config prom/blackbox-exporter --config.file=/config/blackbox.yml
-
+docker run -d -p 9115:9115 \
+  --name blackbox-exporter \
+  --restart=always \
+  -v /devops/prometheus/exporter/blackbox_exporter:/config \
+  prom/blackbox-exporter \
+  --config.file=/config/blackbox.yml
+  
 # install grafana
 docker run --name=grafana1 -d -p 3000:3000 \
-    grafana/grafana:10.4.4 
+  --restart=always \
+  grafana/grafana:10.4.4 

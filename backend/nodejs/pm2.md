@@ -8,6 +8,13 @@ pm2 startup
 pm2 save
 ```
 
+pm2 unstartup systemd
+pm2 startup systemd
+systemctl daemon-reload
+systemctl start pm2-root
+pm2 save
+systemctl enable pm2-root
+
 底下來源
 https://tn710617.github.io/zh-tw/pm2/
 

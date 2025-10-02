@@ -26,9 +26,9 @@ echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
 echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> ~/.bashrc
 
 # 安裝 Node.js
-nvm install 20
-nvm use 20
-nvm alias default 20
+nvm install 22
+nvm use 22
+nvm alias default 22
 
 # 全局安裝 npm 套件
 npm install -g pm2 yarn nodemon

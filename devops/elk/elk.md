@@ -31,9 +31,9 @@ https://grokdebug.herokuapp.com/
 
 sample
 確保 nginx log 格式
-    log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
-                      '\$status \$body_bytes_sent "\$http_referer" '
-                      '"\$http_user_agent" "\$http_x_forwarded_for"';
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
 ```
 162.158.5.135 - - [17/Nov/2021:07:47:40 +0000] "GET / HTTP/2.0" 200 384 "-" "curl/7.64.0" "104.199.233.193"
 
@@ -92,8 +92,16 @@ sudo nano /etc/cron.d/elk_cron_job
 調整 docker-compose.yml 的 JAVA 參數
 
 ## 帳號相關
+* 建立使用者
 連進elastic container 執行以下指令
 bin/elasticsearch-users useradd nnviewer -p 1234 -r viewer
+
+* 新版的使用者
+官方預設的帳號 logstash_internal 是最低權限原則 會無法建立 index
+要從以下檔案新增 index
+docker-elk/setup/roles/logstash_writer.json 
+
+或是改成 elk
 
 ## 安裝方式
 nginx access log 1~2G 

@@ -1,10 +1,10 @@
 #! /bin/bash
-curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-8.12.0-amd64.deb
-sudo dpkg -i filebeat-8.12.0-amd64.deb
+curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-9.1.4-amd64.deb
+sudo dpkg -i filebeat-9.1.4-amd64.deb
 
 NGINX_LOG_PATH=access.log
-INDEX_NAME=log_nginx_access
-LOGSTASH_IP=localhost
+INDEX_NAME=www_log_nginx_access
+LOGSTASH_IP=127.0.0.1
 
 # INDEX_NAME 要和 Logstash 的設定檔 log_topics 匹配
 
