@@ -1,9 +1,0 @@
-- name: Apply default values
-  set_fact:
-    actual_login_user: '{{ login_user | default("root") }}'
-    actual_plugin: '{{ plugin | default("mysql_native_password") }}'
-    actual_host: '{{ host | default("localhost") }}'
-
-- name: show tcp_fin_timeout
-  shell: "echo '{{ actual_login_user }}' > myfile.txt"
-  register: tcp_fin_timeout

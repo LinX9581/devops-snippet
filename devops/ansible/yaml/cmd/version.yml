@@ -1,0 +1,21 @@
+---
+- name: Check SSH and System Version
+  hosts: '{{ host }}'
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Show SSH version
+      command: ssh -V
+      register: ssh_version
+      ignore_errors: yes
+
+    - name: Show system version
+      command: uname -a
+      register: system_version
+      ignore_errors: yes
+
+    - name: Display versions
+      debug:
+        msg: 
+          - "SSH Version: {{ ssh_version.stderr }}"
+          - "System Version: {{ system_version.stdout }}"

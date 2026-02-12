@@ -1,0 +1,38 @@
+---
+- name: Check file and service on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+    - name: service_name
+      prompt: Enter the service name to check (leave blank to skip)
+      private: no
+      default: ""
+
+  hosts: '{{ host }}'
+  gather_facts: false
+  become: yes 
+
+  tasks:
+    - name: Parse service names (split by comma)
+      set_fact:
+        service_list: "{{ service_name.split(',') | map('trim') | list }}"
+      when: service_name != ""
+
+    - name: Check service status
+      shell: "systemctl is-active {{ item | quote }}"
+      register: service_status
+      loop: "{{ service_list }}"
+      when: service_name != ""
+      ignore_errors: yes
+      no_log: true
+      
+    - name: Build service status summary
+      set_fact:
+        service_summary: "{{ service_status.results | map(attribute='item') | zip(service_status.results | map(attribute='stdout') | map('default', 'failed/not found')) | map('join', ': ') | join(', ') }}"
+      when: service_name != "" and service_status.results is defined
+
+    - name: Print service status
+      debug:
+        msg: "{{ service_summary }}"
+      when: service_name != "" and service_summary is defined

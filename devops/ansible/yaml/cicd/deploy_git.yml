@@ -1,0 +1,79 @@
+---
+- name: Deploy and run project using pm2
+  hosts: '{{ host }}'
+  become: yes
+  vars:
+    project_path: "/var/www/{{ project }}"
+
+  tasks:
+
+    - name: Deploy code from git
+      shell: >
+        cd {{ project_path }} &&
+        git fetch --all &&
+        git reset --hard origin/{{ branch }} &&
+        git pull origin {{ branch }}
+      register: git_status
+
+    - name: Ensure virtual environment exists (Python only)
+      shell: "cd {{ project_path }} && python3 -m venv venv"
+      args:
+        creates: "{{ project_path }}/venv/bin/activate"
+      when: language == 'python'
+
+    - name: Install requirements.txt (Python only)
+      pip:
+        requirements: "{{ project_path }}/requirements.txt"
+        virtualenv: "{{ project_path }}/venv"
+        state: present
+      when: language == 'python'
+
+    - name: Install Node.js dependencies with Yarn
+      shell: >
+        bash -c 'source /root/.nvm/nvm.sh &&
+                cd {{ project_path }} &&
+                yarn install'
+      when: language == 'nodejs'
+
+    - name: Check if pm2 process exists
+      shell: >
+        bash -c 'source /root/.nvm/nvm.sh &&
+                pm2 list | grep "{{ project }}"'
+      register: pm2_status
+      ignore_errors: true
+      failed_when: false
+
+    - name: Restart Python project if already running with PM2
+      shell: >
+        bash -c 'source /root/.nvm/nvm.sh &&
+                 pm2 restart {{ project }}'
+      when:
+        - language == 'python'
+        - pm2_status.rc == 0
+
+    - name: Start Python project with PM2 if not already running
+      shell: >
+        bash -c 'source /root/.nvm/nvm.sh && pm2 start app.py --interpreter {{ project_path }}/venv/bin/python3 --time --name {{ project }} --max-restarts 5'
+      args:
+        chdir: "{{ project_path }}"
+      when:
+        - language == 'python'
+        - pm2_status.rc != 0
+
+    - name: Restart Node.js project if already running with PM2
+      shell: >
+        bash -c 'source /root/.nvm/nvm.sh &&
+                 pm2 restart {{ project }}'
+      when:
+        - language == 'nodejs'
+        - pm2_status.rc == 0
+
+    - name: Start Node.js project with PM2 if not already running
+      shell: >
+        bash -c 'source /root/.nvm/nvm.sh &&
+                 pm2 start yarn --time --name {{ project }} -- start'
+      args:
+        chdir: "{{ project_path }}"
+      when:
+        - language == 'nodejs'
+        - pm2_status.rc != 0

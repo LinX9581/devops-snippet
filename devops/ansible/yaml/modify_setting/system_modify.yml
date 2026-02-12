@@ -1,0 +1,36 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload config
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: /devops/ansible-deploy-monitor/ansible/deploy/env/config
+
+    - name: set sysctl.conf
+      shell: "sudo cp /home/ansible/config/sysctl.conf /etc/"
+
+    - name: set tcp_fin_timeout
+      shell: "sudo sysctl -w net.ipv4.tcp_fin_timeout=7"
+      register: tcp_fin_timeout
+
+    - name: set tcp_tw_reuse
+      shell: "sudo sysctl -w net.ipv4.tcp_tw_reuse=1"
+      register: tcp_tw_reuse
+
+    - name: set 
+      shell: "sudo sysctl -p "
+
+    - name: show tcp_count
+      shell: "sudo netstat -ant | wc -l"
+      register: tcp_count
+
+    - name: Print
+      debug:
+        msg: "'{{ tcp_fin_timeout.stdout }}' '{{ tcp_tw_reuse.stdout }}' 'tcp連線數:{{ tcp_count.stdout }}'"

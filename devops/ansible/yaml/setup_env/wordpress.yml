@@ -18,7 +18,7 @@
       register: sh
       
     - name: rm -rf env
-      shell: "sudo rm /home/ansible/env"
+      shell: "sudo rm -rf /home/ansible/env"
       register: sh
       
 # 資料庫未自動化

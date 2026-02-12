@@ -1,0 +1,64 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+  # - name: check tomcat
+  #   shell: "curl http://127.0.0.1/nn-client/index.jsp"
+  #   register: check_tomcat
+
+  - name: check tomcat
+    shell: "sudo sh /opt/tomcat/bin/version.sh"
+    register: check_tomcat
+
+  - name: Print
+    debug:
+      msg: "{{ check_tomcat.stdout.split('\n') }}"
+
+  - name: show ssh version
+    command: ssh -V
+    register: env
+    ignore_errors: yes
+
+  - name: Print
+    debug:
+      msg: "{{ env.stderr_lines }}"
+
+
+  - name: show tcp_fin_timeout
+    shell: "sudo sysctl -a | grep tcp_fin_timeout"
+    register: tcp_fin_timeout
+
+  - name: show tcp_tw_reuse
+    shell: "sudo sysctl -a | grep tcp_tw_reuse"
+    register: tcp_tw_reuse
+
+  - name: show dirty_ratio
+    shell: "sysctl vm.dirty_ratio"
+    register: dirty_ratio
+
+  - name: show dirty_background_ratio
+    shell: "sysctl vm.dirty_background_ratio"
+    register: dirty_background_ratio
+
+  - name: show tcp_count
+    shell: "sudo netstat -ant | wc -l"
+    register: tcp_count
+
+  # - name: set sysctl
+  #   shell: "sudo sysctl -p"
+  #   register: tcp_count
+
+  - name: Print
+    debug:
+      msg: |
+        tcp_fin_timeout: '{{ tcp_fin_timeout.stdout }}'
+        tcp_tw_reuse: '{{ tcp_tw_reuse.stdout }}'
+        dirty_ratio: '{{ dirty_ratio.stdout }}'
+        dirty_background_ratio: '{{ dirty_background_ratio.stdout }}'
+        tcp連線數: '{{ tcp_count.stdout }}'
+

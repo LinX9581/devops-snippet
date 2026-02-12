@@ -1,0 +1,29 @@
+---
+- name: Delete users from target hosts
+  hosts: "{{ host }}"
+  become: yes
+  tasks:
+    - name: Delete users
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: absent
+        remove: yes
+      loop: "{{ (del_users | default('') | split(',') | map('trim') | reject('equalto','') | list) }}"
+      when: del is defined and del == "y"
+
+    - name: 列出 /etc/passwd 中 uid >= 1000 的使用者資訊
+      shell: "awk -F: '$3 >= 1000 {print $1, $3, $6}' /etc/passwd"
+      register: non_system_users
+      ignore_errors: yes
+
+    - name: 顯示一般使用者列表
+      debug:
+        msg: "{{ ('Non-system users ->\n' + (non_system_users.stdout if non_system_users.stdout|length > 0 else 'No non-system users found.')).splitlines() }}"
+
+    - name: show home
+      shell: "ls -l /home"
+      register: env
+
+    - name: Print
+      debug:
+        msg: "{{ env.stdout.split('\n') }}"

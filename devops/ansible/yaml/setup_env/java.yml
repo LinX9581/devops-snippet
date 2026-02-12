@@ -1,28 +1,66 @@
 ---
-- name: Copy and Run shell scripts on remote machine
+- name: Setup Java and Tomcat
   vars_prompt:
     - name: host
       prompt: What is your host?
       private: no
+    - name: action
+      prompt: "Choose an action: (1) Install only, (2) Install and configure, (3) Configure only"
+      private: no
       
   hosts: '{{ host }}'
+  vars:
+    install_java: "{{ action in ['1', '2'] }}"
+    configure_tomcat: "{{ action in ['2', '3'] }}"
+  
   tasks:
-    - name: upload tar file
-      synchronize:
-        mode: push
-        dest: /home/ansible
-        src: ../../../tmp/java
+    - name: Install Java
+      block:
+        - name: Upload Java tar file
+          synchronize:
+            mode: push
+            dest: /home/ansible
+            src: ../../../tmp/java
 
-    - name: upload java shell
-      synchronize:
-        mode: push
-        dest: /home/ansible
-        src: /devops/ansible-deploy-monitor/ansible/deploy/env/shell/oracle-java.sh
+        - name: Upload Java installation script
+          synchronize:
+            mode: push
+            dest: /home/ansible
+            src: /devops/ansible-deploy-monitor/ansible/deploy/env/shell/oracle-java.sh
 
-    - name: run java.sh
-      shell: "sudo sh /home/ansible/oracle-java.sh"
-      register: sh
-      
-    - name: rm -rf env
-      shell: "sudo rm -rf /home/ansible/java && sudo rm -f /home/ansible/oracle-java.sh"
-      register: sh
+        - name: Run Java installation script
+          shell: "sudo sh /home/ansible/oracle-java.sh"
+          
+        - name: Clean up Java installation files
+          shell: "sudo rm -rf /home/ansible/java && sudo rm -f /home/ansible/oracle-java.sh"
+      when: install_java | bool
+
+    - name: Configure Tomcat
+      block:
+        - name: Upload Tomcat configuration
+          synchronize:
+            mode: push
+            dest: /home/ansible
+            src: /devops/ansible-deploy-monitor/ansible/deploy/env/config
+
+        - name: Set Java server.xml
+          shell: "sudo cp /home/ansible/config/server.xml /opt/tomcat/conf/"
+
+        - name: Clean up configuration files
+          shell: "rm -rf /home/ansible/config"
+      when: configure_tomcat | bool
+
+    - name: Setup Tomcat service
+      block:
+        - name: Upload Tomcat service script
+          synchronize:
+            mode: push
+            dest: /home/ansible/
+            src: /devops/ansible-deploy-monitor/ansible/deploy/env/config/create-tomcat-service.sh
+
+        - name: Create Tomcat service
+          command: "sudo sh /home/ansible/create-tomcat-service.sh"
+
+        - name: Restart Tomcat service
+          command: "sudo service tomcat restart"
+      when: install_java | bool or configure_tomcat | bool

@@ -1,0 +1,21 @@
+---
+- name: Deploy Python environment
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: ../../deploy/env
+
+    - name: run python.sh
+      shell: "sudo sh /home/ansible/env/shell/security.sh"
+      register: sh_output
+
+    - name: rm -rf env
+      shell: "sudo rm -rf /home/ansible/env"

@@ -1,0 +1,168 @@
+---
+- name: Install and configure specified components on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+    - name: component
+      prompt: Which components to install? (e.g., prometheus, fail2ban, edr, gcp-monit, gcp-logging-agent, promtail, or 'all' for everything, comma-separated for multiple)
+      private: no
+
+  hosts: '{{ host }}'
+  become: yes
+  vars:
+    # Split the input into a list and trim whitespace
+    component_list: "{{ component.split(',') | map('trim') | list }}"
+    # List of all valid components
+    all_components: ["prometheus", "fail2ban", "edr", "gcp-monit", "gcp-logging-agent", "promtail"]
+
+  tasks:
+    # Prometheus Exporter
+    - name: Install Prometheus Exporter
+      when: "'prometheus' in component_list or 'all' in component_list"
+      block:
+        - name: Upload Prometheus exporter files
+          synchronize:
+            mode: push
+            dest: /home/ansible
+            src: ../../deploy/monit/exporter
+        - name: Run exporter-local.sh
+          shell: "sh /home/ansible/exporter/exporter-local.sh"
+        - name: Clean up exporter-local.sh
+          file:
+            path: /home/ansible/exporter/exporter-local.sh
+            state: absent
+
+    # Fail2ban
+    - name: Install and Configure Fail2ban
+      when: "'fail2ban' in component_list or 'all' in component_list"
+      block:
+        - name: Install fail2ban
+          apt:
+            name: fail2ban
+            state: present
+            update_cache: yes
+        - name: Restart fail2ban service
+          systemd:
+            name: fail2ban
+            state: restarted
+        - name: Check fail2ban status
+          systemd:
+            name: fail2ban
+          register: fail2ban_status
+        - name: Print fail2ban status
+          debug:
+            msg: "{{ fail2ban_status.status }}"
+
+    # EDR (Falcon Sensor)
+    - name: Install EDR (Falcon Sensor)
+      when: "'edr' in component_list or 'all' in component_list"
+      block:
+        - name: Upload Falcon Sensor files
+          synchronize:
+            mode: push
+            dest: /home/ansible/
+            src: ../../deploy/monit/falcon-sensor
+        - name: Install required modules
+          apt:
+            name: "{{ item }}"
+            state: present
+            update_cache: yes
+          loop:
+            - libnl-3-200
+            - libnl-genl-3-200
+        - name: Install Falcon Sensor package
+          apt:
+            deb: "/home/ansible/falcon-sensor/falcon-sensor_6.53.0-15003_amd64_Ubuntu.deb"
+        - name: Run falcon-sensor.sh
+          shell: "bash /home/ansible/falcon-sensor/falcon-sensor.sh"
+        - name: Check Falcon Sensor status
+          systemd:
+            name: falcon-sensor
+          register: falcon_sensor_status
+        - name: Print Falcon Sensor status
+          debug:
+            msg: "{{ falcon_sensor_status.status }}"
+
+    # GCP Monitoring (Ops Agent)
+    - name: Install GCP Monitoring (Ops Agent)
+      when: "'gcp-monit' in component_list or 'all' in component_list"
+      block:
+        - name: Install Google Cloud Ops Agent
+          shell: "curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh && bash add-google-cloud-ops-agent-repo.sh --also-install"
+        - name: Show Ops Agent version
+          shell: "dpkg-query --show --showformat '${Package} ${Version} ${Architecture} ${Status}\n' google-cloud-ops-agent"
+          register: version
+        - name: Print Ops Agent version
+          debug:
+            msg: "{{ version.stdout_lines }}"
+
+    # GCP Logging Agent
+    - name: Install GCP Logging Agent
+      when: "'gcp-logging-agent' in component_list or 'all' in component_list"
+      block:
+        - name: Append HISTTIMEFORMAT to .bashrc
+          blockinfile:
+            path: "/root/.bashrc"
+            block: |
+              export HISTTIMEFORMAT="%F %T "
+            insertafter: EOF
+            marker: "# {mark} ANSIBLE MANAGED BLOCK FOR HISTTIMEFORMAT"
+            create: yes
+        - name: Upload GCP Ops Agent files
+          synchronize:
+            mode: push
+            dest: /home/ansible/
+            src: ../../deploy/monit/gcp-ops-agent
+        - name: Ensure /root/.bash_history exists
+          file:
+            path: /root/.bash_history
+            state: touch
+            mode: '0600'
+            modification_time: preserve
+            access_time: preserve
+        - name: Create symlink for bash history
+          file:
+            src: /root/.bash_history
+            dest: /var/log/.bash_history
+            state: link
+        - name: Run authlog.sh
+          shell: "sh /home/ansible/gcp-ops-agent/authlog.sh"
+        - name: Restart Ops Agent
+          service:
+            name: google-cloud-ops-agent
+            state: restarted
+        - name: Check Ops Agent status
+          service:
+            name: google-cloud-ops-agent
+          register: ops_agent_status
+        - name: Print Ops Agent status
+          debug:
+            msg: "{{ ops_agent_status.status }}"
+
+    # Promtail
+    - name: Install Promtail
+      when: "'promtail' in component_list or 'all' in component_list"
+      block:
+        - name: Upload Promtail files
+          synchronize:
+            mode: push
+            dest: /home/ansible/
+            src: ../../deploy/monit/promtail
+        - name: Generate Promtail config
+          template:
+            src: ../../deploy/monit/promtail/promtail.yml.j2
+            dest: /home/ansible/promtail/promtail.yml
+        - name: Create Promtail service
+          shell: "sh /home/ansible/promtail/promtail.sh"
+        - name: Restart Promtail service
+          service:
+            name: promtail
+            state: restarted
+        - name: promtail status
+          shell: "sudo service promtail status"
+          register: promtail_status
+
+        - name: Print
+          debug:
+            msg: "'{{ promtail_status.stdout.split('\n') }}'"

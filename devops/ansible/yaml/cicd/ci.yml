@@ -1,0 +1,17 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+    - name: upload
+      prompt: What is your upload file?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload file
+      synchronize:
+        mode: push
+        dest: /tmp/{{ upload }}
+        src: /deploy/{{ upload }}

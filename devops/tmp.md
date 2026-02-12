@@ -7,6 +7,9 @@ https://github.com/ByteByteGoHq/system-design-101
 # 筆記大全
 https://wangchujiang.com/reference/docs/regex.html
 
+* 17live sre
+https://medium.com/17live-tech/what-i-see-and-hear-as-an-sre-at-17-media-315c97bca8e
+
 leetcode 
 
 ## 限流

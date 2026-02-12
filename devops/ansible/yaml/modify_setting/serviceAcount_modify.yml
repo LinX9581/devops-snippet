@@ -1,0 +1,12 @@
+---
+- name: changeSaKey
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload key
+      synchronize:
+        mode: push
+        dest: /home/ansible/
+        src: /tmp/iam.json
+
+    - name: changeKey
+      shell: "sudo cp /home/ansible/iam.json /home/ansible/logs2gcs/"

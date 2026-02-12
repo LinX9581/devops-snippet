@@ -1,0 +1,41 @@
+---
+- name: Distribute SSH key for deployer
+  hosts: '{{ host }}'
+  become: yes
+
+  vars:
+    # 本地 public key 檔案路徑，可透過參數傳入
+    deployer_pubkey_src: "{{ pubkey_path | default('/devops/sub/test_key/id_rsa.pub') }}"
+    # 要創建的用戶名稱
+    username: "{{ username | default('deployer') }}"
+
+  tasks:
+    - name: Ensure deployer user exists
+      user:
+        name: "{{ username }}"
+        state: present
+        create_home: yes
+        shell: /bin/bash
+
+    - name: Create .ssh directory in deployer's home
+      file:
+        path: "/home/{{ username }}/.ssh"
+        state: directory
+        owner: "{{ username }}"
+        group: "{{ username }}"
+        mode: '0700'
+
+    - name: Install deployer's public key
+      authorized_key:
+        user: "{{ username }}"
+        state: present
+        key: "{{ lookup('file', deployer_pubkey_src) }}"
+
+    - name: Add user to sudoers with NOPASSWD
+      lineinfile:
+        path: /etc/sudoers.d/{{ username }}
+        line: "{{ username }} ALL=(ALL) NOPASSWD: ALL"
+        state: present
+        mode: 0440
+        create: yes
+        validate: 'visudo -cf %s'

@@ -1,9 +1,13 @@
 ---
-- name: Copy and Run shell scripts on remote machine
+- name: Deploy PHP environment with selectable version
   vars_prompt:
     - name: host
       prompt: What is your host?
       private: no
+    - name: php_version
+      prompt: Which PHP version to install (7.4, 8.0, or 8.2)?
+      private: no
+      default: "8.0"
       
   hosts: '{{ host }}'
   tasks:
@@ -14,9 +18,8 @@
         src: ../../deploy/env
 
     - name: run php.sh
-      shell: "sudo sh /home/ansible/env/shell/php.sh"
-      register: sh
+      shell: "sudo OS=ubuntu PHP={{ php_version }} sh /home/ansible/env/shell/php.sh"
+      register: sh_output
 
     - name: rm -rf env
       shell: "sudo rm -rf /home/ansible/env"
-      register: sh

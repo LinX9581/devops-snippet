@@ -1,0 +1,44 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  hosts: "{{ host }}"
+  become: yes
+  tasks:
+    - name: upload file
+      synchronize:
+        mode: push
+        dest: /tmp/{{ upload }}
+        src: /deploy/{{ upload }}
+
+    - name: backup webapps
+      shell: "sudo cp -r /opt/tomcat/webapps/ /opt/tomcat/webappsbk"
+
+    - name: delete webapps
+      shell: "sudo rm -rf /opt/tomcat/webapps/*"
+      register: delete
+
+    - name: deploy war
+      shell: "sudo cp /tmp/{{ upload }} /opt/tomcat/webapps"
+      register: deploy
+
+    - name: POST request to API using curl
+      shell: >
+        curl -X POST http://localhost:3005/restartTomcat 
+        -H "Content-Type: application/json" 
+        -d '{"host": "{{ host }}"}'
+      register: curl_response
+      delegate_to: stg-devops
+
+    - name: sleep 5 && check netstat
+      shell: "sleep 5 && netstat -ntlp | grep ':80'"
+      register: netstat
+
+    - name: Print
+      debug:
+        msg: 
+          - "{{ curl_response.stdout.split('\n') }}"
+          - "{{ netstat.stdout.split('\n') }}"
+# ssh -o StrictHostKeyChecking=no lin@172.16.1.13 "sudo cp -r /opt/tomcat/webapps/ /opt/tomcat/webappsbk && sudo cp /deploy/NOWnews.war /opt/tomcat/webapps && sudo /opt/tomcat-shutdown.sh && sleep 3 && sudo /opt/tomcat-startup.sh"
+# ssh -o StrictHostKeyChecking=no ansible@172.16.2.12 "sudo /opt/tomcat-shutdown.sh && sudo /opt/tomcat-startup.sh"
+
+# 退版
+# sudo cp -r /opt/tomcat/webappsbk /opt/tomcat/webapps/ && sudo /opt/tomcat-shutdown.sh && sudo /opt/tomcat-startup.sh

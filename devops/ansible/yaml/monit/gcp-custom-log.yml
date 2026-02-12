@@ -9,14 +9,14 @@
   become: yes
   tasks:
     # 增加時間戳記
-    # - name: Append HISTTIMEFORMAT to .bashrc
-    #   blockinfile:
-    #     path: "/root/.bashrc" 
-    #     block: |
-    #       export HISTTIMEFORMAT="%F %T "
-    #     insertafter: EOF
-    #     marker: "# {mark} ANSIBLE MANAGED BLOCK FOR HISTTIMEFORMAT"
-    #     create: yes
+    - name: Append HISTTIMEFORMAT to .bashrc
+      blockinfile:
+        path: "/root/.bashrc" 
+        block: |
+          export HISTTIMEFORMAT="%F %T "
+        insertafter: EOF
+        marker: "# {mark} ANSIBLE MANAGED BLOCK FOR HISTTIMEFORMAT"
+        create: yes
 
     - name: upload gcp-ops-agent
       synchronize:
@@ -24,8 +24,8 @@
         dest: /home/ansible/
         src: ../../deploy/monit/gcp-ops-agent
 
-    # - name: ln -s
-    #   shell: "sudo ln -s /root/.bash_history /var/log/.bash_history"
+    - name: ln -s
+      shell: "sudo ln -s /root/.bash_history /var/log/.bash_history"
 
     - name: run authlog.sh
       shell: "sudo sh /home/ansible/gcp-ops-agent/authlog.sh"

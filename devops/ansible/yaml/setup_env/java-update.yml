@@ -1,0 +1,49 @@
+---
+- name: Update Java from 8u311 to 8u461
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  
+  tasks:
+    - name: Stop Tomcat
+      shell: |
+        sudo systemctl stop tomcat 2>/dev/null || sudo sh /opt/shutdown.sh 2>/dev/null || true
+        echo "Tomcat stopped"
+      ignore_errors: yes
+
+    - name: Upload Java files and update script
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: "{{ item }}"
+      loop:
+        - ../../../tmp/java
+        - /devops/ansible-deploy-monitor/ansible/deploy/env/shell/update-java.sh
+
+    - name: Run Java update
+      shell: "chmod +x /home/ansible/update-java.sh && sudo sh /home/ansible/update-java.sh"
+      register: update_result
+
+    - name: Show update result
+      debug:
+        var: update_result.stdout_lines
+
+    - name: Start Tomcat
+      shell: |
+        sudo systemctl start tomcat 2>/dev/null || sudo sh /opt/startup.sh 2>/dev/null || true
+        echo "Tomcat started"
+      ignore_errors: yes
+
+    - name: Clean up
+      shell: "sudo rm -rf /home/ansible/java && sudo rm -f /home/ansible/update-java.sh"
+
+    - name: Verify installation
+      shell: "java -version && echo 'Java update completed successfully'"
+      register: verification
+
+    - name: Show final status
+      debug:
+        var: verification.stdout_lines

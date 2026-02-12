@@ -1,0 +1,41 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload
+      synchronize:
+        mode: push
+        dest: /home/ansible/
+        src: ../../deploy/monit/falcon-sensor
+
+# 裝不起來 先逐行執行
+# sudo rm /var/lib/apt/lists/lock
+# sudo rm /var/cache/apt/archives/lock
+# sudo rm /var/lib/dpkg/lock*
+# sudo apt update
+# sudo dpkg --configure -a
+
+    - name: install module
+      shell: "sudo apt update && sudo apt-get install libnl-3-200 libnl-genl-3-200"
+      register: run_falcon_sensor
+
+    - name: install falcon-sensor
+      shell: "cd /home/ansible/falcon-sensor/ && sudo dpkg -i falcon-sensor_6.53.0-15003_amd64_Ubuntu.deb"
+      register: run_falcon_sensor
+
+    - name: run falcon-sensor.sh
+      shell: "sudo bash /home/ansible/falcon-sensor/falcon-sensor.sh"
+      register: run_falcon_sensor
+
+    - name: falcon-sensor status
+      shell: "systemctl status falcon-sensor"
+      register: falcon_sensor_status
+
+    - name: Print
+      debug:
+        msg: "'{{ run_falcon_sensor.stdout.split('\n') }}' '{{ falcon_sensor_status.stdout.split('\n') }}'"

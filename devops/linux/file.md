@@ -83,8 +83,8 @@ tar xvf FileName.tar
 -h：將數字以比較容易閱讀的格式輸出。
 
 # 未壓縮 ssh 網內傳輸 
-rsync -avh monitor@192.168.1.12:/mybackup/ /mypath/myfile.gz
-rsync -avh /mypath/myfile.gz pi@192.168.1.12:/mybackup/
+rsync -avh ansible@192.168.1.12:/mybackup/ /devops
+rsync -avh /devops/test.txt ansible@192.168.1.12:/mybackup/
 
 rsync -avh --exclude='thumbs/*' --exclude='uploads/*' --exclude='fcpxml/*' --exclude='srt/*' --exclude='txt/*' ansible@104.199.3.1:/var/www/html /devops
 

@@ -1,0 +1,187 @@
+# ---
+# - name: show env
+#   hosts: '{{ host }}'
+#   tasks:
+#     - name: show system infos
+#       shell: "sudo chmod -x /etc/update-motd.d/*"
+#       register: env
+
+# ---
+# - name: show env
+#   hosts: '{{ host }}'
+#   tasks:
+#     - name: show system infos
+#       shell: "sudo aureport -f"
+#       register: env
+
+#     - name: Print
+#       debug:
+#         msg: "{{ env.stdout.split('\n') }}"
+
+- name: 安裝 auditd 並部署審計設定及 audit tail 服務
+  hosts: "{{ host }}"
+  become: yes
+  tasks:
+    - name: 安裝 auditd 套件
+      apt:
+        name: auditd
+        state: present
+        update_cache: yes
+
+    - name: 確保 auditd 服務已啟動且設為開機自動啟動
+      service:
+        name: auditd
+        enabled: yes
+        state: started
+
+    - name: 修改 max_log_file 設定為 1024
+      lineinfile:
+        path: /etc/audit/auditd.conf
+        regexp: '^max_log_file\s*='
+        line: 'max_log_file = 1024'
+        backrefs: yes
+
+    - name: 修改 num_logs 設定為 180
+      lineinfile:
+        path: /etc/audit/auditd.conf
+        regexp: '^num_logs\s*='
+        line: 'num_logs = 180'
+        backrefs: yes
+
+    - name: 部署審計規則以監控關鍵檔案變更
+      copy:
+        dest: /etc/audit/rules.d/iso_audit.rules
+        content: |
+          ## 以下審計規則由 Ansible 自動管理
+          # 監控 `/etc/passwd`
+          -a always,exit -F path=/etc/passwd -F perm=wa -S open,openat,write,rename -k config_changes_passwd
+
+          # 監控 `/etc/shadow`
+          -a always,exit -F path=/etc/shadow -F perm=wa -F auid>=1000 -F auid!=4294967295 -S open,openat,write,rename -k config_changes_shadow
+
+          # 監控 `/etc/sudoers`
+          -a always,exit -F path=/etc/sudoers -F perm=wa -F auid>=1000 -F auid!=4294967295 -S open,openat,write,rename -k config_changes_sudoers
+
+          # 監控 `/etc/audit/audit.rules`
+          -a always,exit -F path=/etc/audit/audit.rules -F perm=wa -F auid>=1000 -F auid!=4294967295 -S open,openat,write,rename -k config_changes_audit
+      notify: 載入審計規則
+
+    - name: 確保 /var/log/audit 目錄權限正確 (僅限 root 存取)
+      file:
+        path: /var/log/audit
+        owner: root
+        group: root
+        mode: '0700'
+        state: directory
+
+    #-----------------------------------------------
+    # 以下為新增的 audit tail 服務相關設定
+    #-----------------------------------------------
+    - name: Copy audit tail script
+      copy:
+        dest: /usr/local/bin/audit_tail.sh
+        content: |
+          #!/bin/bash
+          LOG_FILE="/var/log/audit/audit.log"
+          API_ENDPOINT="https://rpt.nownews.com/stackdriver/audit"
+          AUDIT_TAIL_LOG="/var/log/audit_tail.log"
+
+          # 確保日誌檔案存在
+          if [ ! -f "$AUDIT_TAIL_LOG" ]; then
+            touch "$AUDIT_TAIL_LOG"
+            chmod 644 "$AUDIT_TAIL_LOG"
+          fi
+
+          current_bucket=""
+          last_payload=""
+          last_operation=""
+          last_operation_time=0
+          HOSTNAME=$(hostname)  # 取得機器名稱
+
+          # 記錄啟動日誌
+          echo "[$(date '+%Y-%m-%d %H:%M:%S %Z')] audit_tail.sh 啟動" >> "$AUDIT_TAIL_LOG"
+
+          tail -fn0 "$LOG_FILE" | while read -r line; do
+              # 僅處理 key 為 config_changes_ 開頭，但不含 CONFIG_CHANGE 的事件
+              if echo "$line" | grep -E 'key="config_changes_' | grep -vq "type=CONFIG_CHANGE"; then
+                  # 取得 timestamp (格式如 1623456789.123)
+                  TIMESTAMP=$(echo "$line" | grep -oP 'audit\(\K[0-9]+\.[0-9]+')
+                  
+                  # 使用系統本地時區轉換時間戳
+                  HUMAN_TIME=$(date -d "@${TIMESTAMP%.*}" '+%Y-%m-%d %H:%M:%S')
+                  
+                  # 以 5 秒為一個 bucket，取整數部分（floor)
+                  bucket=$(echo "$TIMESTAMP/10" | awk '{printf "%d", $1}')
+                  
+                  # 取得其他資訊
+                  EXE=$(echo "$line" | grep -oP 'exe="[^"]+' | cut -d'"' -f2)
+                  AUID=$(echo "$line" | grep -oP 'auid=\K\S+' | cut -d' ' -f1)
+                  KEY=$(echo "$line" | grep -oP 'key="[^"]+' | cut -d'"' -f2)
+                  
+                  # 獲取操作名稱 (例如 useradd 或 userdel)
+                  OPERATION=$(basename "$EXE")
+                  CURRENT_TIME=$(date +%s)
+                  
+                  # 將原始日誌寫入調試文件
+                  echo "[$(date '+%Y-%m-%d %H:%M:%S %Z')] 處理事件: $HUMAN_TIME $OPERATION" >> "$AUDIT_TAIL_LOG"
+                  
+                  # 組成 JSON 負載，增加 hostname 和人類可讀時間
+                  JSON_PAYLOAD="{\"timestamp\": \"$TIMESTAMP\", \"human_time\": \"$HUMAN_TIME\", \"exe\": \"$EXE\", \"auid\": \"$AUID\", \"key\": \"$KEY\", \"hostname\": \"$HOSTNAME\", \"operation\": \"$OPERATION\"}"
+                  
+                  # 去重複邏輯：相同操作在30秒內僅發送一次
+                  if [ "$OPERATION" != "$last_operation" ] || [ $((CURRENT_TIME - last_operation_time)) -gt 30 ]; then
+                      # 發送事件
+                      echo "發送事件: $OPERATION at $HUMAN_TIME (系統時間: $(date '+%Y-%m-%d %H:%M:%S %Z'))" >> "$AUDIT_TAIL_LOG"
+                      curl -X POST "$API_ENDPOINT" -H "Content-Type: application/json" -d "$JSON_PAYLOAD" 2>&1 >> "$AUDIT_TAIL_LOG"
+                      
+                      # 更新最後操作資訊
+                      last_operation="$OPERATION"
+                      last_operation_time=$CURRENT_TIME
+                  else
+                      echo "跳過重複事件: $OPERATION (距上次 $((CURRENT_TIME - last_operation_time)) 秒)" >> "$AUDIT_TAIL_LOG"
+                  fi
+                  
+                  # 更新 bucket 及 last_payload
+                  if [ -z "$current_bucket" ] || [ "$bucket" -ne "$current_bucket" ]; then
+                      current_bucket="$bucket"
+                  fi
+                  last_payload="$JSON_PAYLOAD"
+              fi
+          done
+        mode: '0755'
+
+    - name: Create systemd unit file for audit tail service
+      copy:
+        dest: /etc/systemd/system/audit_tail.service
+        content: |
+          [Unit]
+          Description=Audit Tail Service to send audit events
+          After=network.target auditd.service
+
+          [Service]
+          Type=simple
+          ExecStart=/usr/local/bin/audit_tail.sh
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+      notify: Reload systemd
+
+    - name: Ensure audit tail service is enabled and started
+      systemd:
+        name: audit_tail
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: 重啟 auditd
+      service:
+        name: auditd
+        state: restarted
+
+    - name: 載入審計規則
+      command: augenrules --load
+      notify: 重啟 auditd
+
+    - name: Reload systemd
+      command: systemctl daemon-reload

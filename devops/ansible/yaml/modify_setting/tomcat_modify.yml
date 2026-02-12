@@ -1,0 +1,44 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+  # 任何 tomcat 設定修改 都直接用新設定檔覆蓋
+    - name: upload config
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: /devops/ansible-deploy-monitor/ansible/deploy/env/config
+
+    # - name: upload file
+    #   synchronize:
+    #     mode: push
+    #     dest: /home/ansible
+    #     src: /devops/logs2gcs
+
+    - name: set java server.xml
+      shell: "sudo cp /home/ansible/config/server.xml /opt/tomcat/conf/"
+
+    # - name: set setenv.sh
+    #   shell: "sudo cp /home/ansible/config/setenv.sh /opt/tomcat/bin/ && sudo cp /home/ansible/config/script /opt/ -R"
+
+    # - name: Add cron job for logs2gcs
+    #   become: true
+    #   cron:
+    #     name: "Upload Tomcat logs to GCS"
+    #     minute: "0"
+    #     hour: "*"
+    #     user: "root"
+    #     job: "export GOOGLE_APPLICATION_CREDENTIALS=/home/ansible/gcs.json; export GOOGLE_CLOUD_PROJECT=nownews-news-prod; export LOG_FILE_PATH=/etc/tomcat/apache-tomcat-8.5.81/logs/; export LOG_BUCKET_NAME=prod-tomcat-log; export PATH=$PATH:/usr/java/jdk1.8.0_311/bin/; java -jar /home/ansible/logs2gcs/logs2gcs.jar > /home/ansible/logs2gcs/move.log 2>&1"
+
+    # - name: show crontab
+    #   shell: "sudo crontab -l"
+    #   register: crontab
+
+    # - name: Print
+    #   debug:
+    #     msg: "'crontab:{{ crontab.stdout }}'"

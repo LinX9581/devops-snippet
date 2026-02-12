@@ -1,5 +1,5 @@
 [local]
-local ansible_host=18.176.1.43
+testvm-01 ansible_host=18.176.1.43
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3

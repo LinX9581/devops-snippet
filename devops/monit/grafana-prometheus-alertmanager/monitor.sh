@@ -190,6 +190,6 @@ docker run -d -p 9115:9115 \
   --config.file=/config/blackbox.yml
   
 # install grafana
-docker run --name=grafana1 -d -p 3000:3000 \
+docker run --name=grafana -d -p 3000:3000 \
   --restart=always \
-  grafana/grafana:10.4.4 
+  grafana/grafana:11.6.0-security-01

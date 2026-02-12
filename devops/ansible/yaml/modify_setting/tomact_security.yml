@@ -1,0 +1,20 @@
+---
+- name: Copy and Run shell scripts on remote machine
+  vars_prompt:
+    - name: host
+      prompt: What is your host?
+      private: no
+      
+  hosts: '{{ host }}'
+  tasks:
+    - name: upload config
+      synchronize:
+        mode: push
+        dest: /home/ansible
+        src: /devops/ansible-deploy-monitor/ansible/deploy/env/config/tomcat_security.sh
+
+    - name: run script
+      shell: "sh /home/ansible/tomcat_security.sh"
+
+    - name: delete script
+      shell: "rm -rf /home/ansible/tomcat_security.sh"

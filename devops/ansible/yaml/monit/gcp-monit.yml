@@ -8,7 +8,7 @@
   hosts: '{{ host }}'
   tasks:
     - name: Run OpsAgent.sh
-      shell: "curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh && sudo bash add-google-cloud-ops-agent-repo.sh --also-install --version=2.7.0"
+      shell: "curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh && sudo bash add-google-cloud-ops-agent-repo.sh --also-install"
 
     - name: Show Ops Agent Version
       shell: "dpkg-query --show --showformat '${Package} ${Version} ${Architecture} ${Status}\n' google-cloud-ops-agent"
